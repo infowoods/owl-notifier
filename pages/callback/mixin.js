@@ -1,4 +1,4 @@
-import Home from '../components/Home'
+import AuthCallback from '../../components/AuthCallback'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export async function getStaticProps({ locale }) {
@@ -8,5 +8,4 @@ export async function getStaticProps({ locale }) {
     },
   };
 }
-
-export default Home
+export default AuthCallback

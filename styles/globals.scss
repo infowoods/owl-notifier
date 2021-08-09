@@ -14,3 +14,14 @@ a {
 * {
   box-sizing: border-box;
 }
+
+input,
+textarea,
+button,
+select,
+p,
+div,
+span,
+a {
+  -webkit-tap-highlight-color: transparent;
+}

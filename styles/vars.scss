@@ -1,0 +1,144 @@
+$breakpoints: (
+  xs: 360px,
+  sm: 600px,
+  md: 840px,
+  lg: 1024px
+);
+
+@mixin responsive($size) {
+  @if $size == xs {
+    @media (max-width: map-get($breakpoints, sm) - 1) {
+      @content;
+    }
+  } @else {
+    @media (min-width: map-get($breakpoints, $size)) {
+      @content;
+    }
+  }
+}
+
+@mixin mq($name, $large: null, $medium: null, $small: null, $xsmall: null) {
+  @if $xsmall {
+    #{$name}: $xsmall
+  }
+  @if $small {
+    @media (min-width: map-get($breakpoints, sm)) {
+      #{$name}: $small
+    }
+  }
+  @if $medium {
+    @media (min-width: map-get($breakpoints, md)) {
+      #{$name}: $medium
+    }
+  }
+  @if $large {
+    @media (min-width: map-get($breakpoints, lg)) {
+      #{$name}: $large
+    }
+  }
+}
+
+$primary: var(--primary);
+$secondary: var(--secondary);
+$accent: var(--accent);
+$notice: var(--notice);
+$negative: var(--negative);
+$positive: var(--positive);
+$shadow: var(--shadow);
+$mask: var(--mask);
+$backgroundPrimary: var(--backgroundPrimary);
+$backgroundSecondary: var(--backgroundSecondary);
+$backgroundTertiary: var(--backgroundTertiary);
+$backgroundInversePrimary: var(--backgroundInversePrimary);
+$backgroundInverseSecondary: var(--backgroundInverseSecondary);
+$contentPrimary: var(--contentPrimary);
+$contentSecondry: var(--contentSecondry);
+$contentTertiary: var(--contentTertiary);
+$contentInversePrimary: var(--contentInversePrimary);
+$contentInverseSecondary: var(--contentInverseSecondary);
+$contentInverseTertiary: var(--contentInverseTertiary);
+$borderOpaque: var(--borderOpaque);
+$borderTransparent: var(--borderTransparent);
+$borderSelected: var(--borderSelected);
+$borderInverseOpaque: var(--borderInverseOpaque);
+$bordeInverserTransparent: var(--borderInverseOpaque);
+$borderInverseSelected: var(--borderInverseSelected);
+$backgroundStateDisabled: var(--backgroundStateDisabled);
+$backgroundOverlayDark: var(--backgroundOverlayDark);
+$backgroundOverlayLight: var(--backgroundOverlayLight);
+$backgroundAccent: var(--backgroundAccent);
+$backgroundNotice: var(--backgroundNotice);
+$backgroundNegative: var(--backgroundNegative);
+$backgroundPositive: var(--backgroundPositive);
+$backgroundLightAccent: var(--backgroundLightAccent);
+$backgroundLightNotice: var(--backgroundLightNotice);
+$backgroundLightNegative: var(--backgroundLightNegative);
+$backgroundLightPositive: var(--backgroundLightPositive);
+$backgroundAlwaysDark: var(--backgroundAlwaysDark);
+$backgroundAlwaysLight: var(--backgroundAlwaysLight);
+$contentStateDisabled: var(--contentStateDisabled);
+$contentAlwaysDark: var(--contentAlwaysDark);
+$contentAlwaysLight: var(--contentAlwaysLight);
+$contentAccent: var(--contentAccent);
+$contentNotice: var(--contentNotice);
+$contentNegative: var(--contentNegative);
+$contentPositive: var(--contentPositive);
+$borderAccent: var(--borderAccent);
+$borderLightAccent: var(--borderLightAccent);
+$borderNotice: var(--borderNotice);
+$borderNegative: var(--borderNegative);
+$borderPositive: var(--borderPositive);
+
+:export {
+  name: 'scss';
+  primary: $primary;
+  secondary: $secondary;
+  accent: $accent;
+  notice: $notice;
+  negative: $negative;
+  positive: $positive;
+  shadow: $shadow;
+  mask: $mask;
+  backgroundPrimary: $backgroundPrimary;
+  backgroundSecondary: $backgroundSecondary;
+  backgroundTertiary: $backgroundTertiary;
+  backgroundInversePrimary: $backgroundInversePrimary;
+  backgroundInverseSecondary: $backgroundInverseSecondary;
+  contentPrimary: $contentPrimary;
+  contentSecondry: $contentSecondry;
+  contentTertiary: $contentTertiary;
+  contentInversePrimary: $contentInversePrimary;
+  contentInverseSecondary: $contentInverseSecondary;
+  contentInverseTertiary: $contentInverseTertiary;
+  borderOpaque: $borderOpaque;
+  borderTransparent: $borderTransparent;
+  borderSelected: $borderSelected;
+  borderInverseOpaque: $borderInverseOpaque;
+  bordeInverserTransparent: $borderInverseOpaque;
+  borderInverseSelected: $borderInverseSelected;
+  backgroundStateDisabled: $backgroundStateDisabled;
+  backgroundOverlayDark: $backgroundOverlayDark;
+  backgroundOverlayLight: $backgroundOverlayLight;
+  backgroundAccent: $backgroundAccent;
+  backgroundNotice: $backgroundNotice;
+  backgroundNegative: $backgroundNegative;
+  backgroundPositive: $backgroundPositive;
+  backgroundLightAccent: $backgroundLightAccent;
+  backgroundLightNotice: $backgroundLightNotice;
+  backgroundLightNegative: $backgroundLightNegative;
+  backgroundLightPositive: $backgroundLightPositive;
+  backgroundAlwaysDark: $backgroundAlwaysDark;
+  backgroundAlwaysLight: $backgroundAlwaysLight;
+  contentStateDisabled: $contentStateDisabled;
+  contentAlwaysDark: $contentAlwaysDark;
+  contentAlwaysLight: $contentAlwaysLight;
+  contentAccent: $contentAccent;
+  contentNotice: $contentNotice;
+  contentNegative: $contentNegative;
+  contentPositive: $contentPositive;
+  borderAccent: $borderAccent;
+  borderLightAccent: $borderLightAccent;
+  borderNotice: $borderNotice;
+  borderNegative: $borderNegative;
+  borderPositive: $borderPositive;
+}

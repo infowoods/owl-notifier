@@ -1,0 +1,170 @@
+.main {
+  max-width: 840px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 16px 18px;
+  border: 1px solid $borderOpaque;
+}
+
+.avatar, .login {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+  cursor: pointer;
+  img {
+    border-radius: 50%;
+  }
+}
+
+.login {
+  span {
+    line-height: 32px;
+    color: $notice;
+    padding: 4px 10px;
+    background: $backgroundSecondary;
+    border-radius: 8px;
+    &:hover {
+      color: $accent;
+    }
+  }
+}
+
+.search {
+  margin-top: 35px;
+  @include responsive(lg) {
+    margin-top: 15%;
+  }
+  display: flex;
+}
+
+.searchIcon {
+  color: $borderSelected;
+  font-size: 18px;
+  margin-right: 18px;
+}
+
+.input {
+  margin: 0 auto;
+  flex: 1;
+  max-width: 520px;
+}
+
+.options {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: $contentPrimary;
+  margin-top: 65px;
+  >span {
+    margin-right: 12px;
+  }
+  div {
+    padding: 4px 12px;
+    height: 45px;
+    border: 2px solid $borderOpaque;
+    border-radius: 8px;
+    line-height: 33px;
+    cursor: pointer;
+    font-size: 14px;
+    color: $accent;
+    .curIcon {
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .triangle {
+      vertical-align: middle;
+      font-size: 12px;
+      margin-left: 18px;
+      transform: rotate(180deg);
+      color: $contentSecondry;
+    }
+  }
+}
+
+.optionsActive {
+  border: 2px solid $borderSelected !important;
+}
+
+.triangleActive {
+  transform: rotate(0deg) !important;
+  color: $borderSelected !important;
+}
+
+.sheet {
+  padding: 4px 6px;
+  margin-bottom: 20px;
+  margin-top: 2px;
+  div {
+    height: 48px;
+    line-height: 48px;
+    padding: 0 14px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:hover {
+      background-color: $backgroundSecondary;
+      border-radius: 6px;
+    }
+    span {
+      font-size: 10px;
+      background: $backgroundLightPositive;
+      padding: 2px 4px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .feedIcon {
+      color: $contentPrimary;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .selected {
+      color: $positive;
+    }
+  }
+  .optionsTitle {
+    padding: 0 14px;
+    border-bottom: 1px solid $borderOpaque;
+  }
+}
+
+.optionSelected {
+  background-color: $backgroundSecondary;
+  border-radius: 6px;
+}
+
+.feedInfo {
+  max-width: 520px;
+  margin: 24px auto;
+  padding: 16px;
+  border-radius: 8px;
+  background: $backgroundSecondary;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .loading {
+    margin-left: 28px;
+  }
+  span {
+    width: 80%;
+  }
+  p {
+    font-weight: bold;
+    margin: 4px 0;
+    &:nth-child(2) {
+      font-weight: normal;
+      font-size: 14px;
+    }
+  }
+  button {
+    background: $accent;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: $backgroundPrimary;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
