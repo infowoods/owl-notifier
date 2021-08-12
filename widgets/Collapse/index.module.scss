@@ -1,30 +1,37 @@
 .collapse {
-
+  margin: 12px 0;
+  .title {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: bold;
+  }
   .card {
     background: $backgroundPrimary;
     border-radius: 8px;
-    padding: 14px 18px;
+    padding: 20px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0;
+    cursor: pointer;
   }
-
+  .cardActive {
+    border-radius: 8px 8px 0 0;
+  }
   .arrow {
     transform: rotate(90deg);
   }
-  // span {
-  //   font-size: 16px;
-  //   line-height: 16px;
-  //   font-weight: bold;
-  // }
-  // button {
-  //   background: $backgroundSecondary;
-  //   border: none;
-  //   padding: 6px 8px;
-  //   border-radius: 8px;
-  //   color: $contentPrimary;
-  //   font-size: 14px;
-  //   cursor: pointer;
-  // }
+  .arrowActive {
+    transform: rotate(-90deg);
+  }
+  .children {
+    background: $backgroundPrimary;
+    padding: 0 18px;
+    border-radius: 0 0 8px 8px;
+    color: $contentSecondry;
+    .child {
+      border-top: 1px solid $borderOpaque;
+      padding: 10px 0 14px 0;
+      font-size: 14px;
+    }
+  }
 }

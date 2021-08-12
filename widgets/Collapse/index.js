@@ -6,7 +6,6 @@ function Collapse(props) {
   const {
     className,
     title,
-    // active,
     children,
   } = props
 
@@ -14,17 +13,22 @@ function Collapse(props) {
 
   return (
     <div className={`${styles.collapse} ${className}`}>
-      <div className={styles.card} onClick={() => setActive(!active)}>
-        <div>{title}</div>
+      <div
+        className={`${styles.card} ${active && styles.cardActive}`}
+        onClick={() => setActive(!active)}
+      >
+        <div className={styles.title}>{title}</div>
         <Icon
           type="arrow-right"
-          className={styles.arrow}
+          className={`${styles.arrow} ${active && styles.arrowActive}`}
         />
       </div>
       {
         active &&
-        <div>
-          {children}
+        <div className={styles.children}>
+          <div className={styles.child}>
+            {children}
+          </div>
         </div>
       }
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { ProfileContext } from '../../stores/useProfile'
 import Image from 'next/image'
@@ -9,9 +10,11 @@ import Loading from '../../widgets/Loading'
 import { getFollows, unfollowFeeds } from '../../services/api/owl'
 import { logout } from '../../utils/loginUtil'
 import storageUtil from '../../utils/storageUtil'
+import { convertTimestamp } from '../../utils/timeUtil'
 import styles from './index.module.scss'
 
 function User(props) {
+  const { t } = useTranslation('common')
   const [ state, dispatch ]  = useContext(ProfileContext)
   const router = useRouter()
   const [ userInfo, setUserInfo ] = useState('')
@@ -72,12 +75,26 @@ function User(props) {
             tids: [`${feed.tid}`]
           }
           return (
-            <div className={styles.feed} key={feed.tid}>
-              <span>{feed.title}</span>
-              <button onClick={() => handleUnfollow(params)}>
-                {buttonStatus}
-              </button>
-            </div>
+            <Collapse title={feed.title}>
+              <>
+                {
+                  feed.desc &&
+                  <p>
+                    <span>{t('desc')}</span>
+                    {feed.desc}
+                  </p>
+                }
+                <div className={styles.detail}>
+                  <p>
+                    <span>{t('expire_date')}</span>
+                    {convertTimestamp(feed.expire_ts, 8)}
+                  </p>
+                  <button className={styles.button} onClick={() => handleUnfollow(params)}>
+                    {buttonStatus}
+                  </button>
+                </div>
+              </>
+            </Collapse>
           )
         })
       }
@@ -89,26 +106,29 @@ function User(props) {
             tids: [`${feed.tid}`]
           }
           return (
-            <div className={styles.feed} key={feed.tid}>
-              <span>{feed.title}</span>
-              <button onClick={() => handleUnfollow(params)}>
-                {buttonStatus}
-              </button>
-            </div>
+            <Collapse title={feed.title}>
+              <>
+                {
+                  feed.desc &&
+                  <p>
+                    <span>{t('desc')}</span>
+                    {feed.desc}
+                  </p>
+                }
+                <div className={styles.detail}>
+                  <p>
+                    {feed.reason}
+                  </p>
+                  <button className={styles.button} onClick={() => handleUnfollow(params)}>
+                    {buttonStatus}
+                  </button>
+                </div>
+              </>
+            </Collapse>
           )
         })
       }
-      {/* <div className={styles.feed}>
-        <span>Cedric Fung’s blog</span>
-        <button>unfollow</button>
-      </div> */}
-      <Collapse
-        title="Title"
-      >
-        <div>
-          details
-        </div>
-      </Collapse>
+
       <div
         className={styles.logout}
         onClick={() => {
