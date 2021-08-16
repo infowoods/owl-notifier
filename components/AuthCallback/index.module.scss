@@ -1,0 +1,72 @@
+@keyframes loader {
+  0% {
+    width: 0;
+  }
+
+  20% {
+    width: 10%;
+  }
+
+  25% {
+    width: 24%;
+  }
+
+  43% {
+    width: 41%;
+  }
+
+  56% {
+    width: 50%;
+  }
+
+  66% {
+    width: 52%;
+  }
+
+  71% {
+    width: 60%;
+  }
+
+  75% {
+    width: 76%;
+
+  }
+
+  94% {
+    width: 86%;
+  }
+
+  100% {
+    width: 100%;
+  }
+
+}
+
+.loading {
+  border-radius: 60px;
+  overflow: hidden;
+  width: 100%;
+  span {
+    display: block;
+  }
+}
+
+.bar {
+  background: $backgroundSecondary;
+}
+
+.progress {
+  animation: loader 4s ease infinite;
+  background: $accent;
+  color: $backgroundPrimary;
+  padding: 4px;
+  width: 0;
+}
+
+.loading {
+  left: 50%;
+  max-width: 50%;
+  position: absolute;
+  top: 40%;
+  transform: translate3d(-50%, -50%, 0);
+}

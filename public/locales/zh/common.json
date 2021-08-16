@@ -1,3 +1,22 @@
 {
-  "test": "测试"
+  "colon": "：",
+  "test": "测试",
+  "login": "请登录",
+  "desc": "简介",
+  "expire_date": "过期时间",
+  "current_type": "当前搜索类型",
+  "oak_ph": "请输入 Oak Hub 主题名",
+  "rss_ph": "请输入 RSS 源地址",
+  "weibo_ph": "请输入微博用户 ID",
+  "twitter_ph": "请输入 Twitter 用户名",
+  "youtube_ph": "请输入 YouTube 频道 ID",
+  "oak": "Oak Hub 主题",
+  "rss": "RSS 源地址",
+  "weibo": "微博",
+  "twitter": "Twitter",
+  "youtube": "YouTube",
+  "loading_hint": "请耐心等待，解析可能需要较长时间",
+  "select_plan": "请选择订阅时长",
+  "follow": "订 阅",
+  "unfollow": "取消订阅"
 }

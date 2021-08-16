@@ -2,13 +2,13 @@ import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { ProfileContext } from '../../stores/useProfile'
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import Icon from '../../widgets/Icon'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
 import { getFollows, unfollowFeeds } from '../../services/api/owl'
-import { logout } from '../../utils/loginUtil'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
 import styles from './index.module.scss'
@@ -20,7 +20,7 @@ function User(props) {
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
   const [ loading, setLoading ] = useState(true)
-  const [ buttonStatus, setButtonStatus ] = useState('unfollow')
+  // const [ buttonStatus, setButtonStatus ] = useState('unfollow')
   const localAvatar = userInfo.user_icon && userInfo.user_icon
 
   const handleUnfollow = (params) => {
@@ -32,9 +32,13 @@ function User(props) {
 
   const getUserFollows = async () => {
     const followsList = await getFollows()
-    setFeedList(followsList.follows)
-    setLoading(false)
-    console.log('followsList:', followsList)
+    if (followsList.utc_offset) {
+      setFeedList(followsList.follows)
+      setLoading(false)
+    } else {
+      console.log('error')
+      setLoading(false)
+    }
   }
 
   useEffect(async () => {
@@ -49,95 +53,109 @@ function User(props) {
 
   return (
     <div className={styles.main}>
+      <Head>
+        <title>Owl Deliver</title>
+        <meta name="description" content="猫头鹰订阅器" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+
       <div className={styles.avatar}>
         <Icon
           type="arrow-right"
           onClick={() => {
-            console.log('back to home')
             router.push('/')
           }}
         />
-        <Image
-          src={state.profile.user_icon || localAvatar || '/xxx'}
-          alt="avatar"
-          width={35}
-          height={35}
-        />
+        <div>
+          <Icon
+            type="settings-fill"
+            onClick={() => {
+              router.push('/settings')
+            }}
+          />
+          <Image
+            src={state.profile.user_icon || localAvatar || '/xxx'}
+            alt="avatar"
+            width={35}
+            height={35}
+          />
+        </div>
       </div>
-      <p>Following</p>
+
       {
         loading ?
-        <Loading size={40} />
-        :
-        feedList.ing && feedList.ing.map((feed) => {
-          const params = {
-            action: 'unfollows',
-            tids: [`${feed.tid}`]
+          <Loading size={40} className={styles.loading} />
+          :
+        <>
+          {
+            feedList.ing && <p>Following</p>
           }
-          return (
-            <Collapse title={feed.title}>
-              <>
-                {
-                  feed.desc &&
-                  <p>
-                    <span>{t('desc')}</span>
-                    {feed.desc}
-                  </p>
-                }
-                <div className={styles.detail}>
-                  <p>
-                    <span>{t('expire_date')}</span>
-                    {convertTimestamp(feed.expire_ts, 8)}
-                  </p>
-                  <button className={styles.button} onClick={() => handleUnfollow(params)}>
-                    {buttonStatus}
-                  </button>
-                </div>
-              </>
-            </Collapse>
-          )
-        })
-      }
-      <p>History</p>
-      {
-        feedList.history && feedList.history.map((feed) => {
-          const params = {
-            action: 'unfollows',
-            tids: [`${feed.tid}`]
+          {
+            feedList.ing && feedList.ing.map((feed) => {
+              const params = {
+                action: 'unfollows',
+                tids: [`${feed.tid}`]
+              }
+              return (
+                <Collapse title={feed.title} key={feed.tid}>
+                  <>
+                    {
+                      feed.desc &&
+                      <p>
+                        <span>{t('desc')}{t('colon')}</span>
+                        {feed.desc}
+                      </p>
+                    }
+                    <div className={styles.detail}>
+                      <p>
+                        <span>{t('expire_date')}{t('colon')}</span>
+                        {convertTimestamp(feed.expire_ts, 8)}
+                      </p>
+                      <button className={styles.button} onClick={() => handleUnfollow(params)}>
+                        {t('unfollow')}
+                      </button>
+                    </div>
+                  </>
+                </Collapse>
+              )
+            })
           }
-          return (
-            <Collapse title={feed.title}>
-              <>
-                {
-                  feed.desc &&
-                  <p>
-                    <span>{t('desc')}</span>
-                    {feed.desc}
-                  </p>
-                }
-                <div className={styles.detail}>
-                  <p>
-                    {feed.reason}
-                  </p>
-                  <button className={styles.button} onClick={() => handleUnfollow(params)}>
-                    {buttonStatus}
-                  </button>
-                </div>
-              </>
-            </Collapse>
-          )
-        })
-      }
 
-      <div
-        className={styles.logout}
-        onClick={() => {
-          logout(dispatch)
-          router.push('/')
-        }}
-      >
-        Logout
-      </div>
+          {
+            feedList.history && <p>History</p>
+          }
+          {
+            feedList.history && feedList.history.map((feed) => {
+              const params = {
+                action: 'unfollows',
+                tids: [`${feed.tid}`]
+              }
+              return (
+                <Collapse title={feed.title} key={feed.tid}>
+                  <>
+                    {
+                      feed.desc &&
+                      <p>
+                        <span>{t('desc')}{t('colon')}</span>
+                        {feed.desc}
+                      </p>
+                    }
+                    <div className={styles.detail}>
+                      <p>
+                        <span>{t('desc')}{t('colon')}</span>
+                        {feed.reason}
+                      </p>
+                      <button className={styles.button} onClick={() => handleUnfollow(params)}>
+                        {t('follow')}
+                      </button>
+                    </div>
+                  </>
+                </Collapse>
+              )
+            })
+          }
+        </>
+      }
     </div>
   )
 }

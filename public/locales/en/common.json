@@ -1,3 +1,22 @@
 {
-  "test": "this is test"
+  "test": "this is test",
+  "colon": ": ",
+  "login": "Please Login",
+  "desc": "Description",
+  "expire_date": "Expiration Date",
+  "current_type": "Current Search Type",
+  "oak_ph": "Oak Topic name here",
+  "rss_ph": "RSS feed url here",
+  "weibo_ph": "Weibo id here",
+  "twitter_ph": "Twitter username here",
+  "youtube_ph": "YouTube id here",
+  "oak": "Oak Hub Topic",
+  "rss": "Feed URL",
+  "weibo": "Weibo",
+  "twitter": "Twitter",
+  "youtube": "YouTube",
+  "loading_hint": "Please wait, this may need some time.",
+  "select_plan": "Please select one of the plans:",
+  "follow": "Follow",
+  "unfollow": "Unfollow"
 }

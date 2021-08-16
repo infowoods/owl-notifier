@@ -2,6 +2,7 @@ import http from '../../services/http/owl'
 import { MIXIN_CLIENT_ID, StorageKeys } from '../../constants'
 import StorageUtil from '../../utils/storageUtil'
 
+
 /**
  *
  * @param {code} code 授权机器人后mixin返回的code
@@ -15,10 +16,12 @@ export function owlSignIn (data) {
   return http.post('/mixin/signin', { data })
 }
 
+
 // 获取用户订阅列表
 export function getFollows (data) {
   return http.get('/user/follows', { data })
 }
+
 
 /**
  *
@@ -31,6 +34,7 @@ export function unfollowFeeds (data) {
   return http.post('/user/follows', { data })
 }
 
+
 /**
  *
  * @param {action} 'parse_uri'
@@ -41,6 +45,7 @@ export function unfollowFeeds (data) {
 export function parseFeed (data) {
   return http.post('/topic', { data })
 }
+
 
 /**
  *
@@ -54,6 +59,7 @@ export function parseTopic (data) {
   return http.post('/topic', { data })
 }
 
+
 /**
  *
  * @param {action} 'follow'
@@ -64,4 +70,21 @@ export function parseTopic (data) {
  */
 export function subscribeTopic (data) {
   return http.post('/topic', { data })
+}
+
+
+// 获取用户设置
+export function getUserSettings (data) {
+  return http.get('/user/settings', { data })
+}
+
+
+/**
+ *
+ * @param {setting_name} 'utc_offset'
+ * @returns
+ * 更改用户设置
+ */
+ export function updateUserSettings (data) {
+  return http.post('/user/settings', { data })
 }

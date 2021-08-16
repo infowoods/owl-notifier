@@ -3,10 +3,12 @@ import { useRouter } from 'next/router'
 import { ProfileContext } from '../../stores/useProfile'
 import { owlSignIn } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
+import Head from 'next/head'
+import styles from './index.module.scss'
 
 function AuthCallback() {
   const [ error, setError ] = useState(false)
-  const [ loading, setLoading ] = useState(false)
+  const [ loading, setLoading ] = useState(true)
   const [ , dispatch ]  = useContext(ProfileContext)
   const { push } = useRouter()
   const router = useRouter()
@@ -31,7 +33,6 @@ function AuthCallback() {
         // code_challenge: verifier
       }
       const profile = await owlSignIn(data)
-      console.log('me res:', profile)
       dispatch({
         type: 'profile',
         profile,
@@ -49,6 +50,12 @@ function AuthCallback() {
 
   return (
     <div>
+      <Head>
+        <title>Owl Deliver</title>
+        <meta name="description" content="猫头鹰订阅器" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+
       {
         error ?
         <p>
@@ -62,7 +69,11 @@ function AuthCallback() {
       }
       {
         loading ?
-        <p>Loading...</p>
+        <div className={styles.loading}>
+          <span className={styles.bar}>
+            <span className={styles.progress}></span>
+          </span>
+        </div>
         :
         null
       }

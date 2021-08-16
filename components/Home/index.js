@@ -30,8 +30,8 @@ function Home(props) {
   const defaultType = {
     type: 'topic',
     icon: 'oak-leaf',
-    name: 'Oak Topic',
-    placeholder: 'Oak Topic name here...',
+    name: t('oak'),
+    placeholder: t('oak_ph'),
   }
   const [ feedType, setFeedType ] = useState(defaultType)
   const [ feedInfo, setFeedInfo ] = useState({})
@@ -41,34 +41,33 @@ function Home(props) {
     {
       type: 'topic',
       icon: 'oak-leaf',
-      name: 'Oak Topic',
-      // placeholder: 'Oak Topic name here...',
-      placeholder: t('TEST'),
+      name: t('oak'),
+      placeholder: t('oak_ph'),
     },
     {
       type: 'rss',
       icon: 'rss',
-      name: 'Feed URL',
+      name: t('rss'),
       remark: 'Atom / RSS',
-      placeholder: 'RSS feed url here...',
+      placeholder: t('rss_ph'),
     },
     {
       type: 'weibo',
       icon: 'weibo-fill',
-      name: 'Weibo',
-      placeholder: 'Weibo id here...',
+      name: t('weibo'),
+      placeholder: t('weibo_ph'),
     },
     {
       type: 'twitter',
       icon: 'twitter-fill',
-      name: 'Twitter',
-      placeholder: 'Twitter username here...',
+      name: t('twitter'),
+      placeholder: t('twitter_ph'),
     },
     {
       type: 'youtube',
       icon: 'youtube-fill',
-      name: 'YouTube',
-      placeholder: 'YouTube id here...',
+      name: t('youtube'),
+      placeholder: t('youtube_ph'),
     }
   ]
 
@@ -181,13 +180,13 @@ function Home(props) {
           onClick={() => authLogin()}
         >
           <span>
-            Please Login
+            {t('login')}
           </span>
         </div>
       }
 
       <div className={styles.options}>
-        <span>Current Type:</span>
+        <span>{t('current_type')}{t('colon')}</span>
         <div
           className={`${show && styles.optionsActive}`}
           onClick={() => setShow(true)}
@@ -204,6 +203,7 @@ function Home(props) {
       <div className={styles.search}>
         <Input
           className={styles.input}
+          type="search"
           prefix={prefix}
           placeholder={feedType.placeholder}
           value={feed}
@@ -216,8 +216,8 @@ function Home(props) {
         loading ?
         <div className={styles.feedInfo}>
           <Loading size={30} className={styles.loading} />
-          <span>
-            Please wait, this may need some time...
+          <span className={styles.loadingHint}>
+            {t('loading_hint')}
           </span>
         </div>
         :
@@ -238,7 +238,7 @@ function Home(props) {
               setShowSubscribe(true)
             }}
           >
-            Follow
+            {t('follow')}
           </button>
         </div>
       }
@@ -286,7 +286,7 @@ function Home(props) {
           className={styles.sheet}
         >
           <p className={styles.optionsTitle}>
-            Please select one of the plans:
+            {t('select_plan')}{t('colon')}
           </p>
           {
             subscribeOptions.map((item) => {
@@ -311,11 +311,4 @@ function Home(props) {
   )
 }
 
-// export const getStaticProps = async ({ locale }) => ({
-//   props: {
-//     ...await serverSideTranslations(locale, ['common']),
-//   },
-// })
-
 export default Home
-// export default withTranslation("common")(Home)
