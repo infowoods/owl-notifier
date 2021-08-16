@@ -49,7 +49,7 @@ function AuthCallback() {
   }, [query])
 
   return (
-    <div>
+    <div className={styles.main}>
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
