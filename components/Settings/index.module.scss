@@ -3,7 +3,8 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: 16px 18px;
-  border: 1px solid $borderOpaque;
+  border-left: 1px solid $borderOpaque;
+  border-right: 1px solid $borderOpaque;
   background: $backgroundSecondary;
 }
 

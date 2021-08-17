@@ -101,12 +101,12 @@ function User(props) {
                   <>
                     {
                       feed.desc &&
-                      <p>
+                      <p className={styles.feedDesc}>
                         <span>{t('desc')}{t('colon')}</span>
                         {feed.desc}
                       </p>
                     }
-                    <div className={styles.detail}>
+                    <div className={`${styles.detail} ${feed.desc && styles.increaseMargin}`}>
                       <p>
                         <span>{t('expire_date')}{t('colon')}</span>
                         {convertTimestamp(feed.expire_ts, 8)}
@@ -142,11 +142,11 @@ function User(props) {
                     }
                     <div className={styles.detail}>
                       <p>
-                        <span>{t('desc')}{t('colon')}</span>
+                        <span>{t('unfollow_reason')}{t('colon')}</span>
                         {feed.reason}
                       </p>
                       <button className={styles.button} onClick={() => handleUnfollow(params)}>
-                        {t('follow')}
+                        {t('refollow')}
                       </button>
                     </div>
                   </>

@@ -15,18 +15,15 @@ import styles from './index.module.scss'
 
 function Home(props) {
   const { t } = useTranslation('common')
-  console.log('t:', t)
-  console.log('t(test):', t('test'))
   const [ state ]  = useContext(ProfileContext)
   console.log('state at homepage:', state.profile)
   const [ userInfo, setUserInfo ] = useState('')
-  const isLogin = state.profile.user_name !== undefined || userInfo.user_name
+  const isLogin = state.profile.user_name !== undefined || (userInfo && userInfo.user_name)
   console.log('user_info:', userInfo)
 
   const [ feed, setFeed ] = useState('')
   const [ show, setShow ] = useState(false)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
-  const [ subscribeTid, setSubscribeTid ] = useState('')
   const defaultType = {
     type: 'topic',
     icon: 'oak-leaf',
@@ -35,7 +32,11 @@ function Home(props) {
   }
   const [ feedType, setFeedType ] = useState(defaultType)
   const [ feedInfo, setFeedInfo ] = useState({})
+  const [ monthlyPrice, setMonthlyPrice ] = useState(0)
+  const [ yearlyPrice, setYearlyPrice ] = useState(0)
+  const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ loading, setLoading ] = useState(false)
+  console.log('feedInfo:', feedInfo)
 
   const feedOptions = [
     {
@@ -74,11 +75,11 @@ function Home(props) {
   const subscribeOptions = [
     {
       period: 'month',
-      price: '0.00000001'
+      price: monthlyPrice
     },
     {
       period: 'year',
-      price: '0.000001'
+      price: yearlyPrice
     }
   ]
 
@@ -101,7 +102,6 @@ function Home(props) {
     const res = await parseFeed(params)
     res?.tid && setFeedInfo(res)
     setLoading(false)
-    console.log('parse rss res:', res)
   }
 
   const parseInternalTopic = async (feed) => {
@@ -111,20 +111,26 @@ function Home(props) {
       uri: uri,
     }
     const res = await parseTopic(params) || {}
-    res?.tid && setFeedInfo(res)
-    console.log('parse topic res:', res)
+    if (res.tid) {
+      setFeedInfo(res)
+      const monPrice = Number(res.price.monthly) + Number(res.service_charge.monthly)
+      const yearPrice = Number(res.price.yearly) + Number(res.service_charge.yearly)
+      setMonthlyPrice(monPrice)
+      setYearlyPrice(yearPrice)
+      setChargeCrypto(res.service_charge.currency)
+    }
   }
 
   const handleSubscribe = async (period) => {
     const params = {
       action: 'follow',
-      tid: subscribeTid,
+      tid: feedInfo.tid,
       period: period
     }
     const res = await subscribeTopic(params) || {}
-    // res?.tid && setFeedInfo(res)
-    window.open(res.payment_uri)
-    console.log('sub topic res:', res)
+    if (res.payment_uri) {
+      window.open(res.payment_uri)
+    }
   }
 
   const handleParse = async (feed) => {
@@ -166,7 +172,7 @@ function Home(props) {
           <Link href="/user" >
             <a>
               <Image
-                src={state.profile.user_icon || userInfo.user_icon}
+                src={state.profile.user_icon || (userInfo && userInfo.user_icon)}
                 alt="avatar"
                 width={35}
                 height={35}
@@ -234,7 +240,6 @@ function Home(props) {
           </div>
           <button
             onClick={() => {
-              setSubscribeTid(feedInfo.tid)
               setShowSubscribe(true)
             }}
           >
@@ -278,6 +283,7 @@ function Home(props) {
         </div>
       </BottomSheet>
 
+      {/* 订阅选项 */}
       <BottomSheet
         show={showSubscribe}
         onClose={() => setShowSubscribe(false)}
@@ -298,8 +304,15 @@ function Home(props) {
                     handleSubscribe(item.period)
                   }}
                 >
-                  <p>
-                    {item.price} BTC / {item.period}
+                  <p className={styles.price}>
+                    <img
+                      src={chargeCrypto.icon_url}
+                      // src="https://mixin-images.zeromesh.net/HvYGJsV5TGeZ-X9Ek3FEQohQZ3fE9LBEBGcOcn4c4BNHovP4fW4YB97Dg5LcXoQ1hUjMEgjbl1DPlKg1TW7kK6XP=s128"
+                      alt="crypto"
+                      // width={15}
+                      // height={15}
+                    />
+                    {item.price} {chargeCrypto.symbol} / {item.period}
                   </p>
                 </div>
               )

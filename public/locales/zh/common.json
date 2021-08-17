@@ -18,5 +18,7 @@
   "loading_hint": "请耐心等待，解析可能需要较长时间",
   "select_plan": "请选择订阅时长",
   "follow": "订 阅",
-  "unfollow": "取消订阅"
+  "unfollow": "取消订阅",
+  "unfollow_reason": "订阅结束原因",
+  "refollow": "再次订阅"
 }

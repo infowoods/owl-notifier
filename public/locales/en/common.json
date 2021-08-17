@@ -18,5 +18,7 @@
   "loading_hint": "Please wait, this may need some time.",
   "select_plan": "Please select one of the plans:",
   "follow": "Follow",
-  "unfollow": "Unfollow"
+  "unfollow": "Unfollow",
+  "unfollow_reason": "Unfollow Reason",
+  "refollow": "Refollow"
 }

@@ -4,7 +4,10 @@ export default {
   },
   get (key) {
     const value = localStorage.getItem(key)
-    return value && JSON.parse(value)
+    if (value !== 'undefined') {
+      return JSON.parse(value)
+    }
+    return
   },
   del (key) {
     localStorage.removeItem(key)

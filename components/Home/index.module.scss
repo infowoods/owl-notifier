@@ -3,7 +3,8 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: 16px 18px;
-  border: 1px solid $borderOpaque;
+  border-left: 1px solid $borderOpaque;
+  border-right: 1px solid $borderOpaque;
 }
 
 .avatar, .login {
@@ -19,7 +20,7 @@
 .login {
   span {
     line-height: 32px;
-    color: $notice;
+    color: $contentPrimary;
     padding: 4px 10px;
     background: $backgroundSecondary;
     border-radius: 8px;
@@ -71,6 +72,9 @@
     .curIcon {
       vertical-align: middle;
       margin-right: 8px;
+      margin-left: 4px;
+      line-height: 33px;
+      font-size: 16px;
     }
     .triangle {
       vertical-align: middle;
@@ -119,6 +123,7 @@
       color: $contentPrimary;
       margin-right: 8px;
       vertical-align: middle;
+      line-height: 48px;
     }
     .selected {
       color: $positive;
@@ -130,6 +135,18 @@
     border-bottom: 1px solid $borderOpaque;
     font-weight: bold;
     padding-bottom: 14px;
+  }
+}
+
+.price {
+  // border: 1px solid red;
+  display: flex;
+  align-items: center;
+  >img {
+    // border: 1px solid blue;
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
   }
 }
 
