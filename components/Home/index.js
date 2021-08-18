@@ -191,6 +191,7 @@ function Home(props) {
         </div>
       }
 
+      {/* 类型选择框 */}
       <div className={styles.options}>
         <span>{t('current_type')}{t('colon')}</span>
         <div
@@ -206,6 +207,7 @@ function Home(props) {
         </div>
       </div>
 
+      {/* 搜索框 */}
       <div className={styles.search}>
         <Input
           className={styles.input}
@@ -218,6 +220,7 @@ function Home(props) {
         />
       </div>
 
+      {/* 解析后源信息卡片 */}
       {
         loading ?
         <div className={styles.feedInfo}>
@@ -248,13 +251,12 @@ function Home(props) {
         </div>
       }
 
+      {/* 搜索源选项 */}
       <BottomSheet
         show={show}
         onClose={() => setShow(false)}
       >
-        <div
-          className={styles.sheet}
-        >
+        <div className={styles.sheet}>
           {
             feedOptions.map((item) => {
               const isSelected = item.name === feedType.name
@@ -288,11 +290,9 @@ function Home(props) {
         show={showSubscribe}
         onClose={() => setShowSubscribe(false)}
       >
-        <div
-          className={styles.sheet}
-        >
+        <div className={styles.sheet}>
           <p className={styles.optionsTitle}>
-            {t('select_plan')}{t('colon')}
+            {t('select_plan')}
           </p>
           {
             subscribeOptions.map((item) => {

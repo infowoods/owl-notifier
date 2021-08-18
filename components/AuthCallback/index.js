@@ -22,31 +22,31 @@ function AuthCallback() {
   }
 
   const query = useQuery()
-  // useEffect( async () => {
-  //   setLoading(true)
-  //   // const verifier = localStorage.getItem('code-verifier')
-  //   try {
-  //     console.log('try code:', query.code)
-  //     const data = {
-  //       code: query.code,
-  //       conversation_id: '',
-  //       // code_challenge: verifier
-  //     }
-  //     const profile = await owlSignIn(data)
-  //     dispatch({
-  //       type: 'profile',
-  //       profile,
-  //     })
-  //     storageUtil.set('user_info', profile)
-  //     push('/')
-  //   } catch (error) {
-  //     const errMsg = error.code || 'default error'
-  //     error.code && setError(errMsg)
-  //     console.log('errMsg:', errMsg)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }, [query])
+  useEffect( async () => {
+    setLoading(true)
+    // const verifier = localStorage.getItem('code-verifier')
+    try {
+      console.log('try code:', query.code)
+      const data = {
+        code: query.code,
+        conversation_id: '',
+        // code_challenge: verifier
+      }
+      const profile = await owlSignIn(data)
+      dispatch({
+        type: 'profile',
+        profile,
+      })
+      storageUtil.set('user_info', profile)
+      push('/')
+    } catch (error) {
+      const errMsg = error.code || 'default error'
+      error.code && setError(errMsg)
+      console.log('errMsg:', errMsg)
+    } finally {
+      setLoading(false)
+    }
+  }, [query])
 
   return (
     <div className={styles.main}>

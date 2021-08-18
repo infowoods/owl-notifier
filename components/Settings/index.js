@@ -4,6 +4,7 @@ import Icon from '../../widgets/Icon'
 import Image from 'next/image'
 import Head from 'next/head'
 import Collapse from '../../widgets/Collapse'
+import BottomSheet from '../../widgets/BottomSheet'
 import { useRouter } from 'next/router'
 import storageUtil from '../../utils/storageUtil'
 import { logout } from '../../utils/loginUtil'
@@ -15,19 +16,22 @@ function Settings(props) {
   const [ state, dispatch ]  = useContext(ProfileContext)
   const [ userInfo, setUserInfo ] = useState('')
   const [ userUtc, setUserUtc ] = useState(8)
+  const [ tempUtc, setTempUtc ] = useState(8)
+  const [ utcShow, setUtcShow ] = useState(false)
+  const [ select, setSelect ] = useState(false)
   const localAvatar = userInfo.user_icon && userInfo.user_icon
 
   const handleUserSettings = async () => {
     const data = await getUserSettings()
     if (data) {
-      data.utc && setUserUtc(data.utc)
+      data.utc && setUserUtc(data.utc) && setTempUtc(data.utc)
     } else {
       console.log('error')
     }
   }
 
-  const handleUpdateSettings = async (val) => {
-    const params = { utc: val }
+  const handleUpdateSettings = async () => {
+    const params = { utc: tempUtc }
     const data = await updateUserSettings(params)
     if (data) {
 
@@ -65,22 +69,65 @@ function Settings(props) {
       </div>
 
       <div>
-        Settings
+        <p className={styles.title}>
+          Settings
+        </p>
 
-        <Collapse title="UTC time" remark={`Current is UTC-${userUtc}`}>
-          {
-            [...Array(24).keys()].map((item) => {
-              return (
-                <button
-                  key={item}
-                  className={`${styles.button} ${item - 11 === userUtc && styles.buttonSelected}`}
-                  onClick={() => handleUpdateSettings(item - 11)}>
-                  {item - 11}
-                </button>
-              )
-            })
-          }
-        </Collapse>
+        <div className={styles.card}>
+          <p>
+            <span>UTC Time:</span>
+            <span>
+              Current is UTC-{userUtc}
+            </span>
+          </p>
+          <button className={styles.button} onClick={() => setUtcShow(true)}>
+            change
+          </button>
+        </div>
+
+        <BottomSheet show={utcShow} onClose={() => {
+          setUtcShow(false)
+          setTempUtc(userUtc)
+        }}>
+          <div className={styles.sheet}>
+            <div>
+              <div className={styles.sheetTitle}>
+                <div onClick={() => {
+                  setUtcShow(false)
+                  setTempUtc(userUtc)
+                }}>
+                  取 消
+                </div>
+                <div>选择 UTC 时区</div>
+                <div onClick={() => {
+                  setUtcShow(false)
+                  handleUpdateSettings()
+                }}>
+                  确 认
+                </div>
+              </div>
+              <div className={styles.itemsGroup}>
+                {
+                  [...Array(24).keys()].map((item) => {
+                    return (
+                      <div
+                        className={`${styles.item} ${item - 11 === tempUtc && styles.itemSelected}`}
+                        key={item}
+                        onClick={() => {
+                          setTempUtc(item - 11)
+                        }}
+                      >
+                        <div>UTC</div>
+                        <div>{item - 11}</div>
+                        <div></div>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          </div>
+        </BottomSheet>
 
         <div
           className={styles.logout}

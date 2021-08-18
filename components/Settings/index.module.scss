@@ -2,7 +2,7 @@
   max-width: 840px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 16px 18px;
+  padding: 12px;
   border-left: 1px solid $borderOpaque;
   border-right: 1px solid $borderOpaque;
   background: $backgroundSecondary;
@@ -22,28 +22,125 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   img {
     border-radius: 50%;
   }
 }
 
-.button {
-  margin-right: 12px;
-  margin-bottom: 12px;
-  background: $backgroundSecondary;
-  border: none;
-  padding: 6px 18px;
-  border-radius: 8px;
+.title {
   color: $contentPrimary;
-  font-size: 14px;
+  font-weight: bold;
+}
+
+.card {
+  background: $backgroundPrimary;
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin: 16px 0;
+  p {
+    span {
+      &:first-child {
+        font-size: 16px;
+        margin-right: 8px;
+        color: $contentPrimary;
+      }
+      &:last-child {
+        font-size: 14px;
+        color: $contentSecondry;
+      }
+    }
+  }
+}
+
+.button {
+  background: $accent;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: $contentInversePrimary;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .buttonSelected {
   background: $backgroundLightAccent;
   border: 1px solid $accent;
+}
+
+.sheet {
+  padding: 4px 6px;
+  margin-bottom: 20px;
+  margin-top: 6px;
+  .sheetTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    align-items: center;
+    div {
+      font-size: 14px;
+      margin: 4px 0;
+      &:first-child {
+        margin-left: 10px;
+      }
+      &:nth-child(2) {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      &:last-child {
+        margin-right: 10px;
+        color: $accent;
+      }
+    }
+  }
+  .itemsGroup {
+    overflow-y: auto;
+    display: flex;
+    padding-bottom: 12px;
+    .item {
+      border: 1px solid $borderOpaque;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-right: 12px;
+      &:last-of-type {
+        margin-right: 0;
+      }
+      div {
+        &:first-child {
+          color: $contentSecondry;
+          font-size: 12px;
+        }
+        &:nth-child(2) {
+          color: $contentPrimary;
+          font-size: 16px;
+          margin: 6px 0;
+        }
+        &:last-child {
+          width: 4px;
+          height: 4px;
+          background: $backgroundPrimary;
+          border-radius: 50%;
+        }
+      }
+    }
+    .itemSelected {
+      background: $backgroundInversePrimary;
+      border: none;
+      div {
+        &:nth-child(2) {
+          color: $contentInversePrimary;
+        }
+      }
+    }
+  }
 }
 
 .logout {

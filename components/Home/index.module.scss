@@ -2,7 +2,7 @@
   max-width: 840px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 16px 18px;
+  padding: 12px;
   border-left: 1px solid $borderOpaque;
   border-right: 1px solid $borderOpaque;
 }
@@ -10,7 +10,6 @@
 .avatar, .login {
   display: flex;
   justify-content: flex-end;
-  margin-top: 14px;
   cursor: pointer;
   img {
     border-radius: 50%;
@@ -59,6 +58,8 @@
   margin-top: 65px;
   >span {
     margin-right: 12px;
+    font-size: 16px;
+    color: $contentPrimary;
   }
   div {
     padding: 4px 12px;
@@ -130,7 +131,7 @@
     }
   }
   .optionsTitle {
-    font-size: 18px;
+    font-size: 16px;
     padding: 8px 14px;
     border-bottom: 1px solid $borderOpaque;
     font-weight: bold;
