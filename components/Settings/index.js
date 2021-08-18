@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import Icon from '../../widgets/Icon'
 import Image from 'next/image'
 import Head from 'next/head'
+import TopBar from '../TopBar'
 import Collapse from '../../widgets/Collapse'
 import BottomSheet from '../../widgets/BottomSheet'
 import { useRouter } from 'next/router'
@@ -52,6 +53,8 @@ function Settings(props) {
         <meta name="description" content="猫头鹰订阅器" />
         <link rel="icon" href="/favicon.png" />
       </Head>
+
+      <TopBar />
 
       <div className={styles.avatar}>
         <Icon

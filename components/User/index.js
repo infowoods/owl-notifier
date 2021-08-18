@@ -5,6 +5,7 @@ import { ProfileContext } from '../../stores/useProfile'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import TopBar from '../TopBar'
 import Icon from '../../widgets/Icon'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
@@ -58,6 +59,8 @@ function User(props) {
         <meta name="description" content="猫头鹰订阅器" />
         <link rel="icon" href="/favicon.png" />
       </Head>
+
+      <TopBar />
 
       <div className={styles.avatar}>
         <Icon

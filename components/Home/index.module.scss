@@ -2,12 +2,13 @@
   max-width: 840px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 12px;
+  padding: 0 10px 12px 10px;
   border-left: 1px solid $borderOpaque;
   border-right: 1px solid $borderOpaque;
 }
 
 .avatar, .login {
+  // border-top: 1px solid $borderOpaque;
   display: flex;
   justify-content: flex-end;
   cursor: pointer;

@@ -4,6 +4,7 @@ import { ProfileContext } from '../../stores/useProfile'
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
+import TopBar from '../TopBar'
 import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
 import Loading from '../../widgets/Loading'
@@ -165,6 +166,8 @@ function Home(props) {
         <meta name="description" content="猫头鹰订阅器" />
         <link rel="icon" href="/favicon.png" />
       </Head>
+
+      <TopBar />
 
       {
         isLogin ?
