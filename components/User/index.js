@@ -21,7 +21,6 @@ function User(props) {
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
   const [ loading, setLoading ] = useState(true)
-  // const [ buttonStatus, setButtonStatus ] = useState('unfollow')
   const localAvatar = userInfo.user_icon && userInfo.user_icon
 
   const handleUnfollow = (params) => {
@@ -44,31 +43,21 @@ function User(props) {
 
   useEffect(async () => {
     storageUtil.get('user_info') && setUserInfo(storageUtil.get('user_info'))
-    console.log(storageUtil.get('user_info'))
     getUserFollows()
   }, [])
-
-  // useEffect(() => {
-  //   getUserFollows()
-  // }, [feedList])
 
   return (
     <div className={styles.main}>
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
+        <meta name="theme-color" content="#F4F6F7" />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <TopBar />
+      <TopBar url="/" />
 
       <div className={styles.avatar}>
-        <Icon
-          type="arrow-right"
-          onClick={() => {
-            router.push('/')
-          }}
-        />
         <div>
           <Icon
             type="settings-fill"

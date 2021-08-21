@@ -20,7 +20,6 @@ function Home(props) {
   console.log('state at homepage:', state.profile)
   const [ userInfo, setUserInfo ] = useState('')
   const isLogin = state.profile.user_name !== undefined || (userInfo && userInfo.user_name)
-  console.log('user_info:', userInfo)
 
   const [ feed, setFeed ] = useState('')
   const [ show, setShow ] = useState(false)
@@ -37,7 +36,6 @@ function Home(props) {
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ loading, setLoading ] = useState(false)
-  console.log('feedInfo:', feedInfo)
 
   const feedOptions = [
     {
@@ -164,6 +162,7 @@ function Home(props) {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
+        <meta name="theme-color" content="#FFFFFF" />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
@@ -310,10 +309,7 @@ function Home(props) {
                   <p className={styles.price}>
                     <img
                       src={chargeCrypto.icon_url}
-                      // src="https://mixin-images.zeromesh.net/HvYGJsV5TGeZ-X9Ek3FEQohQZ3fE9LBEBGcOcn4c4BNHovP4fW4YB97Dg5LcXoQ1hUjMEgjbl1DPlKg1TW7kK6XP=s128"
                       alt="crypto"
-                      // width={15}
-                      // height={15}
                     />
                     {item.price} {chargeCrypto.symbol} / {item.period}
                   </p>

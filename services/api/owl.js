@@ -11,8 +11,6 @@ import StorageUtil from '../../utils/storageUtil'
  * 登录获取owl令牌和用户信息
  */
 export function owlSignIn (data) {
-  console.log('invoke signin')
-  console.log('signin params:', data)
   return http.post('/mixin/signin', { data })
 }
 

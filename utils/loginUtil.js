@@ -25,7 +25,6 @@ export function logout (dispatch) {
 
 export async function loadAccountInfo(dispatch) {
   const profile = await getProfile()
-  console.log('me res:', profile)
   dispatch({
     type: 'profile',
     profile,
@@ -42,6 +41,5 @@ export function getToken() {
     return process.env.TOKEN
   }
   const token = StorageUtil.get(OWL_USER)?.access_token
-  console.log('acc token:', token)
   return token
 }

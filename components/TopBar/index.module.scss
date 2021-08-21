@@ -1,6 +1,17 @@
 .bar {
   padding-top: 12px;
   padding-bottom: 6px;
+  .back {
+    transform: rotate(180deg);
+    font-size: 24px;
+    padding: 4px;
+    float: left;
+    cursor: pointer;
+    &:hover {
+      background: $borderOpaque;
+      border-radius: 50%;
+    }
+  }
   .icon {
     display: flex;
     justify-content: center;
@@ -15,5 +26,8 @@
       font-weight: bold;
       font-size: 15px;
     }
+  }
+  .iconPadding {
+    padding-right: 32px;
   }
 }

@@ -9,7 +9,6 @@ export async function getAccessToken (code) {
     code,
     code_verifier: verifier
   }
-  console.log('params:', data)
   const res = await http.post('/oauth/token', { data })
   return res.access_token
 }

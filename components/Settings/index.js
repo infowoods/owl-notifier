@@ -51,18 +51,13 @@ function Settings(props) {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
+        <meta name="theme-color" content="#F4F6F7" />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <TopBar />
+      <TopBar url="/user" />
 
       <div className={styles.avatar}>
-        <Icon
-          type="arrow-right"
-          onClick={() => {
-            router.push('/user')
-          }}
-        />
         <Image
           src={state.profile.user_icon || localAvatar || '/xxx'}
           alt="avatar"
