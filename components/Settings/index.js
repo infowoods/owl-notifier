@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useTranslation } from 'next-i18next'
 import styles from './index.module.scss'
 import Icon from '../../widgets/Icon'
 import Image from 'next/image'
@@ -14,6 +15,7 @@ import { getUserSettings, updateUserSettings } from '../../services/api/owl'
 
 function Settings(props) {
   const router = useRouter()
+  const { t } = useTranslation('common')
   const [ state, dispatch ]  = useContext(ProfileContext)
   const [ userInfo, setUserInfo ] = useState('')
   const [ userUtc, setUserUtc ] = useState(8)
@@ -68,28 +70,41 @@ function Settings(props) {
 
       <div>
         <p className={styles.title}>
-          Settings
+          {t('settings')}
         </p>
 
         <div className={styles.card}>
           <p>
-            <span>UTC Time:</span>
+            <span>UTC {t('time')}{t('colon')}</span>
             <span>
-              Current is UTC-{userUtc}
+              {t('current_utc')}-{userUtc}
             </span>
           </p>
           <button className={styles.button} onClick={() => setUtcShow(true)}>
-            change
+            {t('change')}
           </button>
         </div>
 
-        <BottomSheet show={utcShow} onClose={() => {
-          setUtcShow(false)
-          setTempUtc(userUtc)
-        }}>
+        <BottomSheet
+          show={utcShow}
+          onClose={() => {
+            setUtcShow(false)
+            setTempUtc(userUtc)
+          }}
+          withConfirm={true}
+          confirmTitle={'请选择 UTC 时区'}
+          onCancel={() => {
+            setUtcShow(false)
+            setTempUtc(userUtc)
+          }}
+          onConfirm={() => {
+            setUtcShow(false)
+            handleUpdateSettings()
+          }}
+        >
           <div className={styles.sheet}>
             <div>
-              <div className={styles.sheetTitle}>
+              {/* <div className={styles.sheetTitle}>
                 <div onClick={() => {
                   setUtcShow(false)
                   setTempUtc(userUtc)
@@ -103,7 +118,7 @@ function Settings(props) {
                 }}>
                   确 认
                 </div>
-              </div>
+              </div> */}
               <div className={styles.itemsGroup}>
                 {
                   [...Array(24).keys()].map((item) => {

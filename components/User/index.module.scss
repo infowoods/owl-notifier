@@ -39,6 +39,12 @@
   margin-top: 25%;
 }
 
+.sectionTitle {
+  color: $contentPrimary;
+  font-weight: bold;
+  font-size: 16px;
+}
+
 .detail {
   display: flex;
   justify-content: space-between;

@@ -6,6 +6,11 @@ function BottomSheet(props) {
   const {
     className,
     show,
+    withConfirm,
+    onCancel,
+    onConfirm,
+    confirmTitle,
+    confirmText,
     onClose,
     children
   } = props
@@ -32,6 +37,18 @@ function BottomSheet(props) {
         className={styles.sheet}
         onClick={(e) => { e.stopPropagation() }}
       >
+        {
+          withConfirm &&
+          <div className={styles.sheetTitle}>
+            <div onClick={() => onCancel()}>
+              取 消
+            </div>
+            <div>{confirmTitle}</div>
+            <div onClick={() => onConfirm()}>
+              {confirmText ? confirmText : '确 认'}
+            </div>
+          </div>
+        }
         {children}
       </div>
     </div>
@@ -41,7 +58,6 @@ function BottomSheet(props) {
 BottomSheet.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
-  content: PropTypes.element,
 }
 
 BottomSheet.defaultProps = {

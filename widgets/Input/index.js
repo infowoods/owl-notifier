@@ -16,6 +16,7 @@ function Input(props) {
     onChange,
     onFocus,
     onBlur,
+    onClear,
     onKeyDown,
     ...inputProps
   } = props
@@ -50,7 +51,10 @@ function Input(props) {
     onKeyDown && onKeyDown(e)
   }
 
-  const onClear = () => onChange('')
+  const handleOnClear = (e) => {
+    onChange('')
+    onClear && onClear(e)
+  }
 
   return (
     <div className={`${styles.input} ${className} ${specialClass}`}>
@@ -81,7 +85,7 @@ function Input(props) {
             type="close-fill"
             className={styles.clear}
             onMouseDown={e => e.preventDefault()}
-            onClick={onClear}
+            onClick={handleOnClear}
           />
         )}
 
@@ -106,6 +110,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
+  onClear: PropTypes.func,
   disabled: PropTypes.bool,
   extra: PropTypes.element, // label右侧额外元素，如密码强度标识
   suffix: PropTypes.element, // 输入框右侧，清除按钮后的额外元素

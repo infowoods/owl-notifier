@@ -80,7 +80,7 @@ function User(props) {
           :
         <>
           {
-            feedList.ing && <p>Following</p>
+            feedList.ing && <p className={styles.sectionTitle}>{t('following')}</p>
           }
           {
             feedList.ing && feedList.ing.map((feed) => {
@@ -114,7 +114,7 @@ function User(props) {
           }
 
           {
-            feedList.history && <p>History</p>
+            feedList.history && <p className={styles.sectionTitle}>{t('history')}</p>
           }
           {
             feedList.history && feedList.history.map((feed) => {

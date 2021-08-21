@@ -16,9 +16,17 @@
   "twitter": "Twitter",
   "youtube": "YouTube",
   "loading_hint": "Please wait, this may need some time.",
-  "select_plan": "Please select one of the plans:",
+  "select_plan": "Please select one of the plans",
+  "month": "month",
+  "year": "year",
   "follow": "Follow",
   "unfollow": "Unfollow",
   "unfollow_reason": "Unfollow Reason",
-  "refollow": "Refollow"
+  "refollow": "Refollow",
+  "following": "Following",
+  "history": "History",
+  "settings": "Settings",
+  "time": "Time",
+  "current_utc": "Current is UTC",
+  "change": "Change"
 }

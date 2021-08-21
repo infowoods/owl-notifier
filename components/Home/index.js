@@ -35,6 +35,7 @@ function Home(props) {
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
+  const [ selectPeriod, setSelectPeriod ] = useState('')
   const [ loading, setLoading ] = useState(false)
 
   const feedOptions = [
@@ -93,12 +94,26 @@ function Home(props) {
     setFeed(val)
   }
 
+  const handleClear = () => {
+    setFeedInfo({})
+    setSelectPeriod('')
+  }
+
   const parseExternalFeed = async (feed) => {
     const params = {
       action: 'parse_uri',
       uri: feed
     }
     const res = await parseFeed(params)
+    // if (res.tid) {
+    //   setFeedInfo(res)
+    //   const monPrice = Number(res.price.monthly) + Number(res.service_charge.monthly)
+    //   const yearPrice = Number(res.price.yearly) + Number(res.service_charge.yearly)
+    //   setMonthlyPrice(monPrice)
+    //   setYearlyPrice(yearPrice)
+    //   setChargeCrypto(res.service_charge.currency)
+    //   setLoading(false)
+    // }
     res?.tid && setFeedInfo(res)
     setLoading(false)
   }
@@ -117,6 +132,23 @@ function Home(props) {
       setMonthlyPrice(monPrice)
       setYearlyPrice(yearPrice)
       setChargeCrypto(res.service_charge.currency)
+      setLoading(false)
+    } else if (res.message = 'Does not exist.') {
+      let parseUrl = ''
+      switch (feedType.type) {
+        case 'oak':
+          parseUrl = uri
+          break
+        case 'weibo':
+          parseUrl = 'https://weibo.com/' + feed
+          break
+        case 'twitter':
+          parseUrl = 'https://twitter.com/' + feed
+          break
+        default:
+          break
+      }
+      parseExternalFeed(parseUrl)
     }
   }
 
@@ -129,12 +161,13 @@ function Home(props) {
     const res = await subscribeTopic(params) || {}
     if (res.payment_uri) {
       window.open(res.payment_uri)
+      setShowSubscribe(false)
     }
   }
 
   const handleParse = async (feed) => {
+    setLoading(true)
     if (feedType.type === 'rss') {
-      setLoading(true)
       parseExternalFeed(feed)
     } else {
       parseInternalTopic(feed)
@@ -218,6 +251,7 @@ function Home(props) {
           placeholder={feedType.placeholder}
           value={feed}
           onChange={handleSearch}
+          onClear={handleClear}
           onKeyDown={(e) => handleKeyDown(e)}
         />
       </div>
@@ -225,7 +259,7 @@ function Home(props) {
       {/* 解析后源信息卡片 */}
       {
         loading ?
-        <div className={styles.feedInfo}>
+        <div className={styles.loadingWrap}>
           <Loading size={30} className={styles.loading} />
           <span className={styles.loadingHint}>
             {t('loading_hint')}
@@ -233,24 +267,40 @@ function Home(props) {
         </div>
         :
         feedInfo?.tid &&
-        <div className={styles.feedInfo}>
-          <div>
-            <p>
-              {feedInfo.title}
-            </p>
-            {
-              feedInfo.desc &&
-              <p>{feedInfo.desc}</p>
-            }
+        <>
+          <div className={styles.feedInfo}>
+            <div className={styles.feedDesc}>
+              <div>
+                <p>
+                  {feedInfo.title}
+                </p>
+                {
+                  feedInfo.desc &&
+                  <p>{t('desc')}{t('colon')}{feedInfo.desc}</p>
+                }
+              </div>
+              <button
+                onClick={() => {
+                  setShowSubscribe(true)
+                }}
+              >
+                {t('follow')}
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => {
-              setShowSubscribe(true)
-            }}
-          >
-            {t('follow')}
-          </button>
-        </div>
+          <div className={styles.feedPrice}>
+            <p>订阅价格：</p>
+            <div>
+              <p>
+                {monthlyPrice} {chargeCrypto.symbol} / month
+              </p>
+              <div className={styles.divider}></div>
+              <p>
+                {yearlyPrice} {chargeCrypto.symbol} / year
+              </p>
+            </div>
+          </div>
+        </>
       }
 
       {/* 搜索源选项 */}
@@ -290,29 +340,43 @@ function Home(props) {
       {/* 订阅选项 */}
       <BottomSheet
         show={showSubscribe}
-        onClose={() => setShowSubscribe(false)}
+        withConfirm={true}
+        confirmTitle={t('select_plan')}
+        confirmText={'支 付'}
+        onClose={() => {
+          setSelectPeriod('')
+          setShowSubscribe(false)
+        }}
+        onCancel={() => {
+          setSelectPeriod('')
+          setShowSubscribe(false)
+        }}
+        onConfirm={() => handleSubscribe(selectPeriod)}
       >
         <div className={styles.sheet}>
-          <p className={styles.optionsTitle}>
-            {t('select_plan')}
-          </p>
           {
             subscribeOptions.map((item) => {
               return (
                 <div
                   key={item.period}
+                  className={`${item.period === selectPeriod && styles.optionSelected}`}
                   onClick={() => {
-                    setShowSubscribe(false)
-                    handleSubscribe(item.period)
+                    setSelectPeriod(item.period)
                   }}
                 >
-                  <p className={styles.price}>
-                    <img
-                      src={chargeCrypto.icon_url}
-                      alt="crypto"
-                    />
-                    {item.price} {chargeCrypto.symbol} / {item.period}
+                  <p className={styles.subcribePrice}>
+                    <div>
+                      <img
+                        src={chargeCrypto.icon_url}
+                        alt="crypto"
+                      />
+                      {item.price} {chargeCrypto.symbol} / {t(item.period)}
+                    </div>
                   </p>
+                  {
+                    item.period === selectPeriod &&
+                    <Icon type="check-line" className={styles.selected} />
+                  }
                 </div>
               )
             })

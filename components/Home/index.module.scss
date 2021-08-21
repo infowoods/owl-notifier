@@ -8,7 +8,6 @@
 }
 
 .avatar, .login {
-  // border-top: 1px solid $borderOpaque;
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
@@ -101,7 +100,7 @@
   padding: 4px 6px;
   margin-bottom: 20px;
   margin-top: 2px;
-  div {
+  >div {
     height: 48px;
     line-height: 48px;
     padding: 0 14px;
@@ -131,24 +130,34 @@
       color: $positive;
     }
   }
-  .optionsTitle {
-    font-size: 16px;
-    padding: 8px 14px;
-    border-bottom: 1px solid $borderOpaque;
-    font-weight: bold;
-    padding-bottom: 14px;
-  }
+  // .optionsTitle {
+  //   font-size: 16px;
+  //   padding: 8px 14px;
+  //   border-bottom: 1px solid $borderOpaque;
+  //   font-weight: bold;
+  //   padding-bottom: 14px;
+  // }
 }
 
-.price {
-  // border: 1px solid red;
+// .subcribeSheet {
+//   padding: 4px 6px;
+//   margin-bottom: 20px;
+//   margin-top: 2px;
+// }
+.subcribePrice {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  >img {
-    // border: 1px solid blue;
-    width: 25px;
-    height: 25px;
-    margin-right: 8px;
+  color: $contentPrimary;
+  font-size: 15px;
+  >div {
+    display: flex;
+    align-items: center;
+    img {
+      width: 25px;
+      height: 25px;
+      margin-right: 8px;
+    }
   }
 }
 
@@ -157,7 +166,7 @@
   border-radius: 6px;
 }
 
-.feedInfo {
+.loadingWrap {
   max-width: 520px;
   margin: 24px auto;
   padding: 16px;
@@ -169,29 +178,71 @@
   .loading {
     margin-left: 12px;
   }
+  span {
+    width: 80%;
+  }
   .loadingHint {
     font-size: 14px;
     color: $contentSecondry;
   }
-  span {
-    width: 80%;
-  }
-  p {
-    font-weight: bold;
-    margin: 4px 0;
-    &:nth-child(2) {
-      font-weight: normal;
-      font-size: 14px;
+}
+
+.feedInfo {
+  max-width: 520px;
+  margin: 24px auto 8px auto;
+  padding: 16px;
+  border-radius: 8px;
+  background: $backgroundSecondary;
+  .feedDesc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    p {
+      font-weight: bold;
+      margin: 4px 0;
+      color: $contentPrimary;
+      &:nth-child(2) {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 18px;
+      }
     }
   }
   button {
     background: $accent;
     border: none;
     padding: 8px 16px;
+    margin-left: 8px;
     border-radius: 8px;
     color: $backgroundPrimary;
     font-size: 14px;
     cursor: pointer;
+    white-space: nowrap;
+  }
+}
+
+.feedPrice {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px;
+  >p {
+    color: $contentSecondry;
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  div {
+    display: flex;
+    align-items: center;
+    p {
+      font-size: 12px;
+      color: $contentSecondry;
+    }
+    .divider {
+      border-left: 1px solid $contentPrimary;
+      height: 14px;
+      margin: 0 10px;
+    }
   }
 }
 
