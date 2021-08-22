@@ -205,6 +205,11 @@
         font-weight: normal;
         font-size: 14px;
         line-height: 18px;
+        border-left: 2px solid $borderSelected;
+        padding: 6px 8px;
+        background: $backgroundTertiary;
+        border-radius: 0 6px 6px 0;
+        margin-top: 10px;
       }
     }
   }
@@ -212,7 +217,7 @@
     background: $accent;
     border: none;
     padding: 8px 16px;
-    margin-left: 8px;
+    margin-left: 14px;
     border-radius: 8px;
     color: $backgroundPrimary;
     font-size: 14px;

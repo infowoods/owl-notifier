@@ -60,6 +60,7 @@
 }
 
 .feedDesc {
+  line-height: 18px;
   span {
     color: $contentPrimary;
     font-size: 14px;
@@ -74,4 +75,8 @@
   color: $contentPrimary;
   font-size: 14px;
   cursor: pointer;
+}
+
+.buttonAccent {
+  background: $backgroundLightAccent;
 }

@@ -127,7 +127,7 @@ function User(props) {
                   <>
                     {
                       feed.desc &&
-                      <p>
+                      <p className={styles.feedDesc}>
                         <span>{t('desc')}{t('colon')}</span>
                         {feed.desc}
                       </p>
@@ -137,7 +137,7 @@ function User(props) {
                         <span>{t('unfollow_reason')}{t('colon')}</span>
                         {feed.reason}
                       </p>
-                      <button className={styles.button} onClick={() => handleUnfollow(params)}>
+                      <button className={`${styles.button} ${styles.buttonAccent}`} onClick={() => handleUnfollow(params)}>
                         {t('refollow')}
                       </button>
                     </div>

@@ -48,13 +48,16 @@
 }
 
 .button {
-  background: $accent;
+  background: transparent;
   border: none;
   padding: 6px 12px;
   border-radius: 8px;
-  color: $contentInversePrimary;
+  color: $accent;
   font-size: 15px;
   cursor: pointer;
+  &:hover {
+    background: $backgroundSecondary;
+  }
 }
 
 .buttonSelected {
