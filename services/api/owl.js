@@ -86,3 +86,14 @@ export function getUserSettings (data) {
  export function updateUserSettings (data) {
   return http.post('/user/settings', { data })
 }
+
+
+/**
+ *
+ * @param {conversation_id} String
+ * @returns
+ * 判断是否群组
+ */
+ export function checkGroup (data) {
+  return http.post('/mixin/group', { data })
+}

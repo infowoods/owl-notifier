@@ -28,5 +28,6 @@
   "settings": "Settings",
   "time": "Time",
   "current_utc": "Current is UTC",
-  "change": "Change"
+  "change": "Change",
+  "owner_login": "Owner's Auth is Required"
 }

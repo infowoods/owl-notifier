@@ -27,10 +27,9 @@ class OAuth {
   }
 
   requestCodePkce (state) {
-    const randomCode = crypto.randomBytes(32)
-    const verifier = this.base64URLEncode(randomCode)
-    const challenge = this.base64URLEncode(this.sha256(randomCode))
-    localStorage.setItem('code-verifier', verifier)
+    // const randomCode = crypto.randomBytes(32)
+    // const verifier = this.base64URLEncode(randomCode)
+    // const challenge = this.base64URLEncode(this.sha256(randomCode))
     // let url = `${MIXIN_OAUTH_HOST}/oauth/authorize?client_id=${MIXIN_CLIENT_ID}&scope=PROFILE%3AREAD&code_challenge=${challenge}`
     let url = `${MIXIN_OAUTH_HOST}/oauth/authorize?client_id=${MIXIN_CLIENT_ID}&scope=PROFILE%3AREAD`
     if (state) {

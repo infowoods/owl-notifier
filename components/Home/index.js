@@ -7,10 +7,12 @@ import Image from 'next/image'
 import TopBar from '../TopBar'
 import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
+import Avatar from '../../widgets/Avatar'
 import Loading from '../../widgets/Loading'
 import BottomSheet from '../../widgets/BottomSheet'
 import { authLogin } from '../../utils/loginUtil'
-import { parseFeed, parseTopic, subscribeTopic } from '../../services/api/owl'
+import { checkGroup, parseFeed, parseTopic, subscribeTopic } from '../../services/api/owl'
+import { getMixinContext } from '../../services/api/mixin'
 import storageUtil from '../../utils/storageUtil'
 import styles from './index.module.scss'
 
@@ -32,6 +34,8 @@ function Home(props) {
   }
   const [ feedType, setFeedType ] = useState(defaultType)
   const [ feedInfo, setFeedInfo ] = useState({})
+  const [ ctx, setCtx ] = useState({})
+  const [ groupInfo, setGroupInfo ] = useState(false)
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
@@ -187,7 +191,49 @@ function Home(props) {
   }
 
   useEffect(() => {
-    storageUtil.get('user_info') && setUserInfo(storageUtil.get('user_info'))
+    // storageUtil.get(`user_info_${ctx?.conversation_id}`) && setUserInfo(storageUtil.get('user_info'))
+    // key = localStorage.key(1)
+    // console.log('key:', key)
+  }, [])
+
+  useEffect(async () => {
+    const res = getMixinContext()
+    setCtx(res)
+    if (!res?.app_version) {
+      storageUtil.set('platform', 'browser')
+    }
+    const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
+    console.log('u key:', `user_info_${res?.conversation_id}`)
+    storageUtil.get(`user_info_${res?.conversation_id || ''}`) && setUserInfo(storageUtil.get(`user_info_${res?.conversation_id || ''}`))
+    storageUtil.set('current_conversation_id', res?.conversation_id || null)
+    if (res?.conversation_id) {
+      const data = await checkGroup({conversation_id: res.conversation_id})
+      if (!res?.err_code) {
+        setGroupInfo(data)
+      }
+    }
+    // storageUtil.get(`user_info_${conversation_id}`) && setUserInfo(storageUtil.get(`user_info_${conversation_id}`))
+    res.appearance && document.documentElement.setAttribute('data-theme', res.appearance)
+  }, [])
+
+  // useEffect(async () => {
+  //   const data = {
+  //     // conversation_id: ctx.conversation_id,
+  //     conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e',
+  //     code: ''
+  //   }
+  //   const res = await owlSignIn(data)
+  //   setGroupData(res)
+  // }, [ctx])
+
+  useEffect(async () => {
+    // const res = await checkGroup({conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e'})
+    // if (ctx?.conversation_id) {
+    //   const res = await checkGroup({conversation_id: ctx.conversation_id})
+    //   if (!res?.err_code) {
+    //     setGroupInfo(res)
+    //   }
+    // }
   }, [])
 
   return (
@@ -195,23 +241,19 @@ function Home(props) {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content="#FFFFFF" />
+        <meta name="theme-color" content={ ctx.appearance === 'dark' ? "#080808" : "#FFFFFF"} />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
       <TopBar />
 
+      {/* 登录状态 */}
       {
         isLogin ?
         <div className={styles.avatar}>
           <Link href="/user" >
             <a>
-              <Image
-                src={state.profile.user_icon || (userInfo && userInfo.user_icon)}
-                alt="avatar"
-                width={35}
-                height={35}
-              />
+              <Avatar group={groupInfo?.is_group} imgSrc={userInfo?.user_icon} />
             </a>
           </Link>
         </div>
@@ -221,7 +263,7 @@ function Home(props) {
           onClick={() => authLogin()}
         >
           <span>
-            {t('login')}
+            {groupInfo?.is_group ? t('owner_login') : t('login')}
           </span>
         </div>
       }

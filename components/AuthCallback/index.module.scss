@@ -3,6 +3,9 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: 0 10px 12px 10px;
+  border-left: 1px solid $borderOpaque;
+  border-right: 1px solid $borderOpaque;
+  background: $backgroundPrimary;
 }
 
 @keyframes loader {
@@ -62,7 +65,7 @@
 }
 
 .progress {
-  animation: loader 4s ease infinite;
+  animation: loader 6s ease infinite;
   background: $accent;
   color: $backgroundPrimary;
   padding: 4px;
@@ -71,8 +74,32 @@
 
 .loading {
   left: 50%;
-  max-width: 50%;
+  max-width: 460px;
+  @include responsive(xs) {
+    max-width: 64%;
+  }
   position: absolute;
   top: 40%;
   transform: translate3d(-50%, -50%, 0);
+}
+
+.error {
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 65%;
+  p {
+    &:last-child {
+      color: $accent;
+      cursor: pointer;
+      display: inline-block;
+      padding: 4px 8px;
+      margin-top: 12px;
+      font-size: 21px;
+      font-weight: bold;
+      &:hover {
+        background: $backgroundSecondary;
+        border-radius: 4px;
+      }
+    }
+  }
 }

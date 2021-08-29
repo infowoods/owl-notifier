@@ -3,12 +3,14 @@ import { useRouter } from 'next/router'
 import { ProfileContext } from '../../stores/useProfile'
 import { owlSignIn } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
+import { getMixinContext } from '../../services/api/mixin'
 import Head from 'next/head'
 import styles from './index.module.scss'
 
 function AuthCallback() {
-  const [ error, setError ] = useState(false)
+  const [ error, setError ] = useState('')
   const [ loading, setLoading ] = useState(true)
+  const [ ctx, setCtx ] = useState({})
   const [ , dispatch ]  = useContext(ProfileContext)
   const { push } = useRouter()
   const router = useRouter()
@@ -25,28 +27,38 @@ function AuthCallback() {
   useEffect( async () => {
     setLoading(true)
     // const verifier = localStorage.getItem('code-verifier')
+    const conversation_id = ctx.conversation_id || ''
+    // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e' // 测试群组1
+    // const conversation_id = ctx.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc' // 测试群组2
     try {
       console.log('try code:', query.code)
-      const data = {
+      const params = {
         code: query.code,
-        conversation_id: '',
+        conversation_id: conversation_id,
         // code_challenge: verifier
       }
-      const profile = await owlSignIn(data)
-      dispatch({
-        type: 'profile',
-        profile,
-      })
-      storageUtil.set('user_info', profile)
-      push('/')
+      const data = await owlSignIn(params) || {}
+      console.log('auth data:', data)
+      if (data?.access_token) {
+        dispatch({
+          type: 'profile',
+          profile: data,
+        })
+        storageUtil.set(`user_info_${conversation_id}`, data)
+        push('/')
+      }
     } catch (error) {
-      const errMsg = error.code || 'default error'
-      error.code && setError(errMsg)
-      console.log('errMsg:', errMsg)
+      setLoading(false)
+      error?.data?.message && setError(error?.data?.message)
     } finally {
       setLoading(false)
     }
   }, [query])
+
+  useEffect(() => {
+    const res = getMixinContext()
+    setCtx(res)
+  }, [])
 
   return (
     <div className={styles.main}>
@@ -57,25 +69,24 @@ function AuthCallback() {
       </Head>
 
       {
-        error ?
-        <p>
-          授权失败 {error}
-          <span onClick={() => push('/')}>
-            : Back to homepage
-          </span>
-        </p>
-        :
-        null
+        error &&
+        <div className={styles.error}>
+          <p>
+            授权失败：{error}
+          </p>
+          <p onClick={() => push('/')}>
+            👉  返回首页
+          </p>
+        </div>
       }
+
       {
-        loading ?
+        loading &&
         <div className={styles.loading}>
           <span className={styles.bar}>
             <span className={styles.progress}></span>
           </span>
         </div>
-        :
-        null
       }
     </div>
   )

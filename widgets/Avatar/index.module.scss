@@ -1,0 +1,17 @@
+.name {
+  // -webkit-text-stroke: 1px $borderAccent;
+  // -webkit-text-fill-color: $backgroundPrimary;
+  // font-weight: bold;
+  color: $backgroundPrimary;
+  font-size: 24px;
+  padding: 4px;
+  background: $backgroundLightAccent;
+  background: $backgroundAccent;
+  border-radius: 50%;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

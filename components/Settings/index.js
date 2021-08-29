@@ -5,6 +5,7 @@ import Icon from '../../widgets/Icon'
 import Image from 'next/image'
 import Head from 'next/head'
 import TopBar from '../TopBar'
+import Avatar from '../../widgets/Avatar'
 import Collapse from '../../widgets/Collapse'
 import BottomSheet from '../../widgets/BottomSheet'
 import { useRouter } from 'next/router'
@@ -44,7 +45,9 @@ function Settings(props) {
   }
 
   useEffect(async () => {
-    storageUtil.get('user_info') && setUserInfo(storageUtil.get('user_info'))
+    const conversationId = storageUtil.get('current_conversation_id')
+    const id = conversationId === null ? '' : conversationId
+    storageUtil.get(`user_info_${id}`) && setUserInfo(storageUtil.get(`user_info_${id}`))
     handleUserSettings()
   }, [])
 
@@ -60,12 +63,7 @@ function Settings(props) {
       <TopBar url="/user" />
 
       <div className={styles.avatar}>
-        <Image
-          src={state.profile.user_icon || localAvatar || '/xxx'}
-          alt="avatar"
-          width={35}
-          height={35}
-        />
+        <Avatar group={userInfo?.user_type === 'MIXIN_GROUP'} imgSrc={userInfo?.user_icon} />
       </div>
 
       <div>

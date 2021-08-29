@@ -28,5 +28,6 @@
   "settings": "设 置",
   "time": "时间",
   "current_utc": "当前设置为 UTC",
-  "change": "更 改"
+  "change": "更 改",
+  "owner_login": "需群主授权"
 }

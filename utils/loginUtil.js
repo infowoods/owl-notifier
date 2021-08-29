@@ -5,7 +5,8 @@ import { getProfile } from '../services/api/mixin'
 import { ProfileContext } from '../stores/useProfile'
 
 const MIXIN_TOKEN = 'mixin_token'
-const OWL_USER = 'user_info'
+const OWL_USER = 'user_info_'
+
 // const profile = useContext(ProfileContext)
 // console.log('ppProfile:', profile)
 
@@ -13,13 +14,15 @@ export function authLogin() {
   AuthMixin.requestCode(true)
 }
 
-export function logout (dispatch) {
+export function logout (dispatch, conversation_id) {
+  const conversationId = StorageUtil.get('current_conversation_id')
+  const id = conversationId === null ? '' : conversationId
   dispatch({
     type: 'profile',
     profile: {},
   })
   console.log('logout')
-  StorageUtil.del('user_info')
+  StorageUtil.del(OWL_USER + id)
   StorageUtil.del('mixin_token')
 }
 
@@ -40,6 +43,9 @@ export function getToken() {
     console.log('dev env')
     return process.env.TOKEN
   }
-  const token = StorageUtil.get(OWL_USER)?.access_token
+  const conversationId = StorageUtil.get('current_conversation_id')
+  // console.log('cc id:', conversationId)
+  const id = conversationId === null ? '' : conversationId
+  const token = StorageUtil.get(OWL_USER + id)?.access_token
   return token
 }

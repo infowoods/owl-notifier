@@ -14,7 +14,7 @@ const owlrss = axios.create({
 
 owlrss.interceptors.request.use(
   async (configs) => {
-    const token = await getToken()
+    const token = await getToken(configs)
     if (token) {
       configs.headers.Authorization = `Bearer ${token}`
     }
@@ -23,8 +23,11 @@ owlrss.interceptors.request.use(
   (_) => {}
 )
 
+// err handler
 owlrss.interceptors.response.use(
   (res) => {
+    // res: config, data, headers, status, statusText
+    // res.data: message
     if (!res.data) {
       return Promise.reject({ code: -1 })
     }
@@ -34,7 +37,11 @@ owlrss.interceptors.response.use(
         return Promise.reject({ code: error.code })
       }
       return Promise.reject({ code: error.code, message: error.description })
-    } else {
+    }
+    if (res.status === 403 || res.status === 202) {
+      return Promise.reject({ status: res.status, data: res.data })
+    }
+    else {
       return Promise.resolve(res.data)
     }
   },
