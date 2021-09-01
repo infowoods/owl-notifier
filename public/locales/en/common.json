@@ -36,5 +36,8 @@
   "pay": "Pay",
   "manual_cancel": "Unfollow",
   "feed_expired": "Subscription Expires",
-  "select_utc": "Please Select UTC"
+  "select_utc": "Please Select UTC",
+  "parse_error": "Parsing failed: Please check that the input matches the current search type",
+  "auth_failed": "Authorization Failed",
+  "back_homepage": "Back to Homepage"
 }

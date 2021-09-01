@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 import { ProfileContext } from '../../stores/useProfile'
 import { owlSignIn } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
@@ -8,6 +9,7 @@ import Head from 'next/head'
 import styles from './index.module.scss'
 
 function AuthCallback() {
+  const { t } = useTranslation('common')
   const [ error, setError ] = useState('')
   const [ loading, setLoading ] = useState(true)
   const [ ctx, setCtx ] = useState({})
@@ -72,10 +74,10 @@ function AuthCallback() {
         error &&
         <div className={styles.error}>
           <p>
-            授权失败：{error}
+            {t('auth_failed')}{t('colon')}{error}
           </p>
           <p onClick={() => push('/')}>
-            👉  返回首页
+            👉  {t('back_homepage')}
           </p>
         </div>
       }

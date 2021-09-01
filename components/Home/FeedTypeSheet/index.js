@@ -11,6 +11,7 @@ function FeedTypeSheet(props) {
     feedType,
     setFeedType,
     setFeedInfo,
+    setFeedError,
     setShow,
   } = props
 
@@ -32,6 +33,7 @@ function FeedTypeSheet(props) {
                     setFeedType(item)
                     if (feedType.type !== item.type) {
                       setFeedInfo({})
+                      setFeedError('')
                     }
                     setShow(false)
                   }}

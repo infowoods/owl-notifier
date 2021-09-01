@@ -59,6 +59,7 @@ function Home(props) {
   const handleClear = () => {
     setFeedInfo({})
     setSelectPeriod('')
+    setFeedError('')
   }
 
   const parseExternalFeed = async (feed) => {
@@ -155,6 +156,7 @@ function Home(props) {
   }
 
   const handleParse = async (feed) => {
+    setFeedError('')
     setLoading(true)
     parseExternalFeed(feed)
   }
@@ -305,8 +307,10 @@ function Home(props) {
       {
         feedError &&
         <div className={styles.feedInfo}>
-          <Icon type="info-fill" />
-          解析失败：请检查输入内容与当前搜索类型是否匹配
+          <Icon type="info-fill" className={styles.errorIcon} />
+          <span className={styles.errorDesc}>
+            {t('parse_error')}
+          </span>
         </div>
       }
 
@@ -317,8 +321,9 @@ function Home(props) {
         onClose={() => setShow(false)}
         feedOptions={feedOptions(t)}
         feedType={feedType}
-        setFeedType = {setFeedType}
-        setFeedInfo = {setFeedInfo}
+        setFeedType={setFeedType}
+        setFeedInfo={setFeedInfo}
+        setFeedError={setFeedError}
         setShow = {setShow}
       />
 
