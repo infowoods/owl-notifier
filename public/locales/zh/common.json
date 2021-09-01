@@ -1,7 +1,7 @@
 {
   "colon": "：",
-  "test": "测试",
   "login": "请登录",
+  "logout": "退出登录",
   "desc": "简介",
   "expire_date": "过期时间",
   "current_type": "当前搜索类型",
@@ -29,5 +29,12 @@
   "time": "时间",
   "current_utc": "当前设置为 UTC",
   "change": "更 改",
-  "owner_login": "需群主授权"
+  "owner_login": "需群主授权",
+  "subcribe_price": "订阅价格",
+  "cancel": "取 消",
+  "confirm": "确 认",
+  "pay": "支 付",
+  "manual_cancel": "取消订阅",
+  "feed_expired": "订阅到期",
+  "select_utc": "请选择 UTC 时区"
 }

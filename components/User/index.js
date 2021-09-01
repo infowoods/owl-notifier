@@ -6,11 +6,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import TopBar from '../TopBar'
+import PriceSheet from '../Home/PriceSheet'
+import { subscribeOptions } from '../Home/config'
 import Icon from '../../widgets/Icon'
 import Avatar from '../../widgets/Avatar'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
-import { getFollows, unfollowFeeds } from '../../services/api/owl'
+import { getFollows, unfollowFeeds, parseTopic, subscribeTopic } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
 import styles from './index.module.scss'
@@ -23,12 +25,29 @@ function User(props) {
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
   const [ loading, setLoading ] = useState(true)
+  const [ showSubscribe, setShowSubscribe ] = useState(false)
+  const [ chargeCrypto, setChargeCrypto ] = useState({})
+  const [ selectPeriod, setSelectPeriod ] = useState('')
+  const [ monthlyPrice, setMonthlyPrice ] = useState(0)
+  const [ yearlyPrice, setYearlyPrice ] = useState(0)
+  const [ refollowId, setRefollowId ] = useState('')
   const localAvatar = userInfo.user_icon && userInfo.user_icon
 
-  const handleUnfollow = (params) => {
-    const res = unfollowFeeds(params)
-    if (res.data) {
-      getUserFollows()
+  const renderReason = (val) => {
+    if (val === 'cancel') {
+      return t('manual_cancel')
+    }
+    else if (val === 'expired') {
+      return t('feed_expired')
+    }
+  }
+
+  const handleUnfollow = async (params) => {
+    const res = await unfollowFeeds(params)
+    if (res === 'The unfollow process was successfully initiated.') {
+      setTimeout(() => {
+        getUserFollows()
+      }, 15000);
     }
   }
 
@@ -52,6 +71,40 @@ function User(props) {
     }
   }
 
+  const handleRefollow = async (tid) => {
+    const params = {
+      action: 'query',
+      tid: tid,
+    }
+    try {
+      const res = await parseTopic(params) || {}
+      if (res?.price) {
+        const monPrice = (Number(res.price.monthly) + Number(res.service_charge.monthly)).toFixed(8).replace(/\.?0+$/,"")
+        const yearPrice = (Number(res.price.yearly) + Number(res.service_charge.yearly)).toFixed(8).replace(/\.?0+$/,"")
+        setMonthlyPrice(monPrice)
+        setYearlyPrice(yearPrice)
+        setChargeCrypto(res.service_charge.currency)
+        setShowSubscribe(true)
+      }
+    } catch (error) {}
+  }
+
+  const handleSubscribe = async (period) => {
+    const params = {
+      action: 'follow',
+      tid: refollowId,
+      period: period
+    }
+    const res = await subscribeTopic(params) || {}
+    if (res.payment_uri) {
+      window.open(res.payment_uri)
+      setShowSubscribe(false)
+      setTimeout(() => {
+        getUserFollows()
+      }, 30000);
+    }
+  }
+
   useEffect(async () => {
     const conversationId = storageUtil.get('current_conversation_id')
     const id = conversationId === null ? '' : conversationId
@@ -64,7 +117,7 @@ function User(props) {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content="#F4F6F7" />
+        {/* <meta name="theme-color" content={ ctx.appearance === 'dark' ? "#1E1E1E" : "#F4F6F7"} /> */}
         <link rel="icon" href="/favicon.png" />
       </Head>
 
@@ -99,13 +152,13 @@ function User(props) {
             feedList?.ing && feedList?.ing.length > 0 && <p className={styles.sectionTitle}>{t('following')}</p>
           }
           {
-            feedList?.ing && feedList.ing.map((feed) => {
+            feedList?.ing && feedList.ing.map((feed, index) => {
               const params = {
                 action: 'unfollows',
                 tids: [`${feed.tid}`]
               }
               return (
-                <Collapse title={feed.title} key={feed.tid}>
+                <Collapse title={feed.title} key={feed.tid + index}>
                   <>
                     {
                       feed.desc &&
@@ -133,13 +186,9 @@ function User(props) {
             feedList?.history && feedList?.history.length > 0 && <p className={styles.sectionTitle}>{t('history')}</p>
           }
           {
-            feedList?.history && feedList.history.map((feed) => {
-              const params = {
-                action: 'unfollows',
-                tids: [`${feed.tid}`]
-              }
+            feedList?.history && feedList?.history.map((feed, index) => {
               return (
-                <Collapse title={feed.title} key={feed.tid}>
+                <Collapse title={feed.title} key={feed.tid + index}>
                   <>
                     {
                       feed.desc &&
@@ -151,9 +200,12 @@ function User(props) {
                     <div className={styles.detail}>
                       <p>
                         <span>{t('unfollow_reason')}{t('colon')}</span>
-                        {feed.reason}
+                        {renderReason(feed.reason)}
                       </p>
-                      <button className={`${styles.button} ${styles.buttonAccent}`} onClick={() => handleUnfollow(params)}>
+                      <button className={`${styles.button} ${styles.buttonAccent}`} onClick={() => {
+                        handleRefollow(feed.tid)
+                        setRefollowId(feed.tid)
+                      }}>
                         {t('refollow')}
                       </button>
                     </div>
@@ -164,6 +216,27 @@ function User(props) {
           }
         </>
       }
+
+      <PriceSheet
+        t={t}
+        show={showSubscribe}
+        withConfirm={true}
+        confirmTitle={t('select_plan')}
+        confirmText={t('pay')}
+        onClose={() => {
+          setSelectPeriod('')
+          setShowSubscribe(false)
+        }}
+        onCancel={() => {
+          setSelectPeriod('')
+          setShowSubscribe(false)
+        }}
+        onConfirm={() => handleSubscribe(selectPeriod)}
+        options={subscribeOptions(monthlyPrice, yearlyPrice)}
+        selectPeriod={selectPeriod}
+        chargeCrypto={chargeCrypto}
+        setSelectPeriod={setSelectPeriod}
+      />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import styles from './index.module.scss'
 
 function BottomSheet(props) {
   const {
+    t,
     className,
     show,
     withConfirm,
@@ -41,11 +42,11 @@ function BottomSheet(props) {
           withConfirm &&
           <div className={styles.sheetTitle}>
             <div onClick={() => onCancel()}>
-              取 消
+              {t('cancel')}
             </div>
             <div>{confirmTitle}</div>
             <div onClick={() => onConfirm()}>
-              {confirmText ? confirmText : '确 认'}
+              {confirmText ? confirmText : t('confirm')}
             </div>
           </div>
         }

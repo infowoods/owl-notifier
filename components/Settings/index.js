@@ -84,13 +84,14 @@ function Settings(props) {
         </div>
 
         <BottomSheet
+          t={t}
           show={utcShow}
           onClose={() => {
             setUtcShow(false)
             setTempUtc(userUtc)
           }}
           withConfirm={true}
-          confirmTitle={'请选择 UTC 时区'}
+          confirmTitle={t('select_utc')}
           onCancel={() => {
             setUtcShow(false)
             setTempUtc(userUtc)
@@ -102,21 +103,6 @@ function Settings(props) {
         >
           <div className={styles.sheet}>
             <div>
-              {/* <div className={styles.sheetTitle}>
-                <div onClick={() => {
-                  setUtcShow(false)
-                  setTempUtc(userUtc)
-                }}>
-                  取 消
-                </div>
-                <div>选择 UTC 时区</div>
-                <div onClick={() => {
-                  setUtcShow(false)
-                  handleUpdateSettings()
-                }}>
-                  确 认
-                </div>
-              </div> */}
               <div className={styles.itemsGroup}>
                 {
                   [...Array(24).keys()].map((item) => {
@@ -147,7 +133,7 @@ function Settings(props) {
             router.push('/')
           }}
         >
-          Logout
+          {t('logout')}
         </div>
       </div>
     </div>

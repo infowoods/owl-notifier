@@ -9,7 +9,9 @@ import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
 import Avatar from '../../widgets/Avatar'
 import Loading from '../../widgets/Loading'
-import BottomSheet from '../../widgets/BottomSheet'
+import PriceSheet from './PriceSheet'
+import FeedTypeSheet from './FeedTypeSheet'
+import { feedOptions, subscribeOptions } from './config'
 import { authLogin } from '../../utils/loginUtil'
 import { checkGroup, parseFeed, parseTopic, subscribeTopic } from '../../services/api/owl'
 import { getMixinContext } from '../../services/api/mixin'
@@ -34,6 +36,7 @@ function Home(props) {
   }
   const [ feedType, setFeedType ] = useState(defaultType)
   const [ feedInfo, setFeedInfo ] = useState({})
+  const [ feedError, setFeedError ] = useState('')
   const [ ctx, setCtx ] = useState({})
   const [ groupInfo, setGroupInfo ] = useState(false)
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
@@ -41,51 +44,6 @@ function Home(props) {
   const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ selectPeriod, setSelectPeriod ] = useState('')
   const [ loading, setLoading ] = useState(false)
-
-  const feedOptions = [
-    {
-      type: 'topic',
-      icon: 'oak-leaf',
-      name: t('oak'),
-      placeholder: t('oak_ph'),
-    },
-    {
-      type: 'rss',
-      icon: 'rss',
-      name: t('rss'),
-      remark: 'Atom / RSS',
-      placeholder: t('rss_ph'),
-    },
-    {
-      type: 'weibo',
-      icon: 'weibo-fill',
-      name: t('weibo'),
-      placeholder: t('weibo_ph'),
-    },
-    {
-      type: 'twitter',
-      icon: 'twitter-fill',
-      name: t('twitter'),
-      placeholder: t('twitter_ph'),
-    },
-    {
-      type: 'youtube',
-      icon: 'youtube-fill',
-      name: t('youtube'),
-      placeholder: t('youtube_ph'),
-    }
-  ]
-
-  const subscribeOptions = [
-    {
-      period: 'month',
-      price: monthlyPrice
-    },
-    {
-      period: 'year',
-      price: yearlyPrice
-    }
-  ]
 
   const prefix = (
     <Icon
@@ -104,22 +62,43 @@ function Home(props) {
   }
 
   const parseExternalFeed = async (feed) => {
+    const uri = 'oth:' + feedType.type + '/user/' + feed
+    let parseUrl
+    switch (feedType.type) {
+      case 'rss':
+        parseUrl = feed
+        break
+      case 'oak':
+        parseUrl = uri
+        break
+      case 'weibo':
+        parseUrl = 'https://weibo.com/' + feed
+        break
+      case 'twitter':
+        parseUrl = 'https://twitter.com/' + feed
+        break
+      default:
+        break
+    }
     const params = {
       action: 'parse_uri',
-      uri: feed
+      uri: parseUrl
     }
-    const res = await parseFeed(params)
-    // if (res.tid) {
-    //   setFeedInfo(res)
-    //   const monPrice = Number(res.price.monthly) + Number(res.service_charge.monthly)
-    //   const yearPrice = Number(res.price.yearly) + Number(res.service_charge.yearly)
-    //   setMonthlyPrice(monPrice)
-    //   setYearlyPrice(yearPrice)
-    //   setChargeCrypto(res.service_charge.currency)
-    //   setLoading(false)
-    // }
-    res?.tid && setFeedInfo(res)
-    setLoading(false)
+    try {
+      const res = await parseFeed(params)
+      if (res?.price) {
+        setFeedInfo(res)
+        const monPrice = (Number(res.price.monthly) + Number(res.service_charge.monthly)).toFixed(8).replace(/\.?0+$/,"")
+        const yearPrice = (Number(res.price.yearly) + Number(res.service_charge.yearly)).toFixed(8).replace(/\.?0+$/,"")
+        setMonthlyPrice(monPrice)
+        setYearlyPrice(yearPrice)
+        setChargeCrypto(res.service_charge.currency)
+        setLoading(false)
+      }
+    } catch (error) {
+      setFeedError(error?.data.message)
+      setLoading(false)
+    }
   }
 
   const parseInternalTopic = async (feed) => {
@@ -128,31 +107,37 @@ function Home(props) {
       action: 'query',
       uri: uri,
     }
-    const res = await parseTopic(params) || {}
-    if (res.tid) {
-      setFeedInfo(res)
-      const monPrice = Number(res.price.monthly) + Number(res.service_charge.monthly)
-      const yearPrice = Number(res.price.yearly) + Number(res.service_charge.yearly)
-      setMonthlyPrice(monPrice)
-      setYearlyPrice(yearPrice)
-      setChargeCrypto(res.service_charge.currency)
-      setLoading(false)
-    } else if (res.message = 'Does not exist.') {
-      let parseUrl = ''
-      switch (feedType.type) {
-        case 'oak':
-          parseUrl = uri
-          break
-        case 'weibo':
-          parseUrl = 'https://weibo.com/' + feed
-          break
-        case 'twitter':
-          parseUrl = 'https://twitter.com/' + feed
-          break
-        default:
-          break
+    try {
+      const res = await parseTopic(params) || {}
+      if (res.tid) {
+        setFeedInfo(res)
+        const monPrice = Number(res.price.monthly) + Number(res.service_charge.monthly)
+        const yearPrice = Number(res.price.yearly) + Number(res.service_charge.yearly)
+        setMonthlyPrice(monPrice)
+        setYearlyPrice(yearPrice)
+        setChargeCrypto(res.service_charge.currency)
+        setLoading(false)
+      } else {
+        setFeedError(res)
       }
-      parseExternalFeed(parseUrl)
+    } catch (error) {
+      if (error?.data.message === 'Does not exist.') {
+        let parseUrl = ''
+        switch (feedType.type) {
+          case 'oak':
+            parseUrl = uri
+            break
+          case 'weibo':
+            parseUrl = 'https://weibo.com/' + feed
+            break
+          case 'twitter':
+            parseUrl = 'https://twitter.com/' + feed
+            break
+          default:
+            break
+        }
+        parseExternalFeed(parseUrl)
+      }
     }
   }
 
@@ -171,11 +156,7 @@ function Home(props) {
 
   const handleParse = async (feed) => {
     setLoading(true)
-    if (feedType.type === 'rss') {
-      parseExternalFeed(feed)
-    } else {
-      parseInternalTopic(feed)
-    }
+    parseExternalFeed(feed)
   }
 
   const handleKeyDown = (e) => {
@@ -190,12 +171,6 @@ function Home(props) {
     }
   }
 
-  useEffect(() => {
-    // storageUtil.get(`user_info_${ctx?.conversation_id}`) && setUserInfo(storageUtil.get('user_info'))
-    // key = localStorage.key(1)
-    // console.log('key:', key)
-  }, [])
-
   useEffect(async () => {
     const res = getMixinContext()
     setCtx(res)
@@ -209,31 +184,12 @@ function Home(props) {
     if (res?.conversation_id) {
       const data = await checkGroup({conversation_id: res.conversation_id})
       if (!res?.err_code) {
+        setLoading(false)
         setGroupInfo(data)
       }
     }
     // storageUtil.get(`user_info_${conversation_id}`) && setUserInfo(storageUtil.get(`user_info_${conversation_id}`))
     res.appearance && document.documentElement.setAttribute('data-theme', res.appearance)
-  }, [])
-
-  // useEffect(async () => {
-  //   const data = {
-  //     // conversation_id: ctx.conversation_id,
-  //     conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e',
-  //     code: ''
-  //   }
-  //   const res = await owlSignIn(data)
-  //   setGroupData(res)
-  // }, [ctx])
-
-  useEffect(async () => {
-    // const res = await checkGroup({conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e'})
-    // if (ctx?.conversation_id) {
-    //   const res = await checkGroup({conversation_id: ctx.conversation_id})
-    //   if (!res?.err_code) {
-    //     setGroupInfo(res)
-    //   }
-    // }
   }, [])
 
   return (
@@ -268,7 +224,7 @@ function Home(props) {
         </div>
       }
 
-      {/* 类型选择框 */}
+      {/* 搜索类型选择 */}
       <div className={styles.options}>
         <span>{t('current_type')}{t('colon')}</span>
         <div
@@ -331,60 +287,48 @@ function Home(props) {
             </div>
           </div>
           <div className={styles.feedPrice}>
-            <p>订阅价格：</p>
+            <p>{t('subcribe_price')}{t('colon')}</p>
             <div>
               <p>
-                {monthlyPrice} {chargeCrypto.symbol} / month
+                {monthlyPrice} {chargeCrypto.symbol} / {t('month')}
               </p>
               <div className={styles.divider}></div>
               <p>
-                {yearlyPrice} {chargeCrypto.symbol} / year
+                {yearlyPrice} {chargeCrypto.symbol} / {t('year')}
               </p>
             </div>
           </div>
         </>
       }
 
+      {/* 解析错误 */}
+      {
+        feedError &&
+        <div className={styles.feedInfo}>
+          <Icon type="info-fill" />
+          解析失败：请检查输入内容与当前搜索类型是否匹配
+        </div>
+      }
+
       {/* 搜索源选项 */}
-      <BottomSheet
+      <FeedTypeSheet
+        t={t}
         show={show}
         onClose={() => setShow(false)}
-      >
-        <div className={styles.sheet}>
-          {
-            feedOptions.map((item) => {
-              const isSelected = item.name === feedType.name
-              return (
-                <div
-                  key={item.type}
-                  className={`${isSelected && styles.optionSelected}`}
-                  onClick={() => {
-                    setFeedType(item)
-                    setShow(false)
-                  }}
-                >
-                  <p>
-                    <Icon type={item.icon} className={styles.feedIcon} />
-                    {item.name}
-                    {item.remark && <span>{item.remark}</span>}
-                  </p>
-                  {
-                    isSelected &&
-                    <Icon type="check-line" className={styles.selected} />
-                  }
-                </div>
-              )
-            })
-          }
-        </div>
-      </BottomSheet>
+        feedOptions={feedOptions(t)}
+        feedType={feedType}
+        setFeedType = {setFeedType}
+        setFeedInfo = {setFeedInfo}
+        setShow = {setShow}
+      />
 
-      {/* 订阅选项 */}
-      <BottomSheet
+      {/* 订阅价格选项 */}
+      <PriceSheet
+        t={t}
         show={showSubscribe}
         withConfirm={true}
         confirmTitle={t('select_plan')}
-        confirmText={'支 付'}
+        confirmText={t('pay')}
         onClose={() => {
           setSelectPeriod('')
           setShowSubscribe(false)
@@ -394,37 +338,11 @@ function Home(props) {
           setShowSubscribe(false)
         }}
         onConfirm={() => handleSubscribe(selectPeriod)}
-      >
-        <div className={styles.sheet}>
-          {
-            subscribeOptions.map((item) => {
-              return (
-                <div
-                  key={item.period}
-                  className={`${item.period === selectPeriod && styles.optionSelected}`}
-                  onClick={() => {
-                    setSelectPeriod(item.period)
-                  }}
-                >
-                  <p className={styles.subcribePrice}>
-                    <div>
-                      <img
-                        src={chargeCrypto.icon_url}
-                        alt="crypto"
-                      />
-                      {item.price} {chargeCrypto.symbol} / {t(item.period)}
-                    </div>
-                  </p>
-                  {
-                    item.period === selectPeriod &&
-                    <Icon type="check-line" className={styles.selected} />
-                  }
-                </div>
-              )
-            })
-          }
-        </div>
-      </BottomSheet>
+        options={subscribeOptions(monthlyPrice, yearlyPrice)}
+        selectPeriod={selectPeriod}
+        chargeCrypto={chargeCrypto}
+        setSelectPeriod={setSelectPeriod}
+      />
     </div>
   )
 }

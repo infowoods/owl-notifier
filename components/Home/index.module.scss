@@ -12,6 +12,8 @@
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
+  // border: 1px solid red;
+  padding: 4px 0;
   margin-top: 6px;
   img {
     border-radius: 50%;
@@ -97,77 +99,6 @@
 .triangleActive {
   transform: rotate(0deg) !important;
   color: $borderSelected !important;
-}
-
-.sheet {
-  padding: 4px 6px;
-  margin-bottom: 20px;
-  margin-top: 2px;
-  >div {
-    height: 48px;
-    line-height: 48px;
-    padding: 0 14px;
-    margin-bottom: 6px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: $contentPrimary;
-    &:hover {
-      background-color: $backgroundSecondary;
-      border-radius: 6px;
-    }
-    span {
-      font-size: 10px;
-      background: $backgroundLightPositive;
-      padding: 2px 4px;
-      border-radius: 4px;
-      margin-left: 8px;
-    }
-    .feedIcon {
-      color: $contentPrimary;
-      margin-right: 8px;
-      vertical-align: middle;
-      line-height: 48px;
-    }
-    .selected {
-      color: $positive;
-    }
-  }
-  // .optionsTitle {
-  //   font-size: 16px;
-  //   padding: 8px 14px;
-  //   border-bottom: 1px solid $borderOpaque;
-  //   font-weight: bold;
-  //   padding-bottom: 14px;
-  // }
-}
-
-// .subcribeSheet {
-//   padding: 4px 6px;
-//   margin-bottom: 20px;
-//   margin-top: 2px;
-// }
-.subcribePrice {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: $contentPrimary;
-  font-size: 15px;
-  >div {
-    display: flex;
-    align-items: center;
-    img {
-      width: 25px;
-      height: 25px;
-      margin-right: 8px;
-    }
-  }
-}
-
-.optionSelected {
-  background-color: $backgroundSecondary;
-  border-radius: 6px;
 }
 
 .loadingWrap {

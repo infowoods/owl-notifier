@@ -1,7 +1,7 @@
 {
-  "test": "this is test",
   "colon": ": ",
   "login": "Please Login",
+  "logout": "Logout",
   "desc": "Description",
   "expire_date": "Expiration Date",
   "current_type": "Current Search Type",
@@ -16,7 +16,7 @@
   "twitter": "Twitter",
   "youtube": "YouTube",
   "loading_hint": "Please wait, this may need some time.",
-  "select_plan": "Please select one of the plans",
+  "select_plan": "Please select",
   "month": "month",
   "year": "year",
   "follow": "Follow",
@@ -29,5 +29,12 @@
   "time": "Time",
   "current_utc": "Current is UTC",
   "change": "Change",
-  "owner_login": "Owner's Auth is Required"
+  "owner_login": "Owner's Auth is Required",
+  "subcribe_price": "Subscription Price",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "pay": "Pay",
+  "manual_cancel": "Unfollow",
+  "feed_expired": "Subscription Expires",
+  "select_utc": "Please Select UTC"
 }
