@@ -25,6 +25,7 @@ function User(props) {
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
   const [ loading, setLoading ] = useState(true)
+  const [ btnLoading, setBtnLoading ] = useState(false)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ selectPeriod, setSelectPeriod ] = useState('')
@@ -84,6 +85,7 @@ function User(props) {
         setMonthlyPrice(monPrice)
         setYearlyPrice(yearPrice)
         setChargeCrypto(res.service_charge.currency)
+        setBtnLoading(false)
         setShowSubscribe(true)
       }
     } catch (error) {}
@@ -202,11 +204,20 @@ function User(props) {
                         <span>{t('unfollow_reason')}{t('colon')}</span>
                         {renderReason(feed.reason)}
                       </p>
-                      <button className={`${styles.button} ${styles.buttonAccent}`} onClick={() => {
-                        handleRefollow(feed.tid)
-                        setRefollowId(feed.tid)
-                      }}>
-                        {t('refollow')}
+                      <button
+                        className={`${styles.button} ${styles.buttonAccent}`}
+                        onClick={() => {
+                          setBtnLoading(true)
+                          handleRefollow(feed.tid)
+                          setRefollowId(feed.tid)
+                        }}
+                      >
+                        {
+                          btnLoading ?
+                          <Loading size={18} className={styles.btnLoading} />
+                          :
+                          t('refollow')
+                        }
                       </button>
                     </div>
                   </>
