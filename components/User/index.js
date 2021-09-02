@@ -20,11 +20,11 @@ function User(props) {
   const [ state, dispatch ]  = useContext(ProfileContext)
   const router = useRouter()
   const [ empty, setEmpty ] = useState(false)
+  const [ btnSelect, setBtnSelect ] = useState('')
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
   const [ historyList, setHistoryList ] = useState([])
   const [ loading, setLoading ] = useState(true)
-  const [ btnLoading, setBtnLoading ] = useState(false)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ selectPeriod, setSelectPeriod ] = useState('')
@@ -106,7 +106,7 @@ function User(props) {
         setMonthlyPrice(monPrice)
         setYearlyPrice(yearPrice)
         setChargeCrypto(res.service_charge.currency)
-        setBtnLoading(false)
+        setBtnSelect('')
         setShowSubscribe(true)
       }
     } catch (error) {}
@@ -221,7 +221,7 @@ function User(props) {
                         {feed.desc}
                       </p>
                     }
-                    <div className={styles.detail}>
+                    <div className={`${styles.detail} ${feed.desc && styles.increaseMargin}`}>
                       <p>
                         <span>{t('unfollow_reason')}{t('colon')}</span>
                         {renderReason(feed.reason)}
@@ -229,13 +229,13 @@ function User(props) {
                       <button
                         className={`${styles.button} ${styles.buttonAccent}`}
                         onClick={() => {
-                          setBtnLoading(true)
+                          setBtnSelect(index)
                           handleRefollow(feed.tid)
                           setRefollowId(feed.tid)
                         }}
                       >
                         {
-                          btnLoading ?
+                          btnSelect === index ?
                           <Loading size={18} className={styles.btnLoading} />
                           :
                           t('refollow')

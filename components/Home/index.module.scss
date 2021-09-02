@@ -161,15 +161,23 @@
   }
 }
 
-.errorIcon {
-  color: $notice;
-  font-size: 16px;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-.errorDesc {
-  color: $contentPrimary;
-  font-size: 14px;
+.errorInfo {
+  max-width: 520px;
+  margin: 24px auto 8px auto;
+  padding: 16px;
+  border-radius: 8px;
+  background: $backgroundSecondary;
+  display: flex;
+  align-items: center;
+  >i {
+    color: $notice;
+    font-size: 21px;
+    margin-right: 8px;
+  }
+  >p {
+    color: $contentPrimary;
+    font-size: 14px;
+  }
 }
 
 .feedPrice {

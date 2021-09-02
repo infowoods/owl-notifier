@@ -3,7 +3,6 @@ import { useTranslation } from 'next-i18next'
 import { ProfileContext } from '../../stores/useProfile'
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
 import TopBar from '../TopBar'
 import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
@@ -53,6 +52,10 @@ function Home(props) {
   )
 
   const handleSearch = (val) => {
+    if (!val) {
+      setFeedInfo({})
+      setFeedError('')
+    }
     setFeed(val)
   }
 
@@ -102,46 +105,6 @@ function Home(props) {
     }
   }
 
-  const parseInternalTopic = async (feed) => {
-    const uri = 'oth:' + feedType.type + '/user/' + feed
-    const params = {
-      action: 'query',
-      uri: uri,
-    }
-    try {
-      const res = await parseTopic(params) || {}
-      if (res.tid) {
-        setFeedInfo(res)
-        const monPrice = Number(res.price.monthly) + Number(res.service_charge.monthly)
-        const yearPrice = Number(res.price.yearly) + Number(res.service_charge.yearly)
-        setMonthlyPrice(monPrice)
-        setYearlyPrice(yearPrice)
-        setChargeCrypto(res.service_charge.currency)
-        setLoading(false)
-      } else {
-        setFeedError(res)
-      }
-    } catch (error) {
-      if (error?.data.message === 'Does not exist.') {
-        let parseUrl = ''
-        switch (feedType.type) {
-          case 'oak':
-            parseUrl = uri
-            break
-          case 'weibo':
-            parseUrl = 'https://weibo.com/' + feed
-            break
-          case 'twitter':
-            parseUrl = 'https://twitter.com/' + feed
-            break
-          default:
-            break
-        }
-        parseExternalFeed(parseUrl)
-      }
-    }
-  }
-
   const handleSubscribe = async (period) => {
     const params = {
       action: 'follow',
@@ -156,6 +119,7 @@ function Home(props) {
   }
 
   const handleParse = async (feed) => {
+    setFeedInfo({})
     setFeedError('')
     setLoading(true)
     parseExternalFeed(feed)
@@ -306,11 +270,11 @@ function Home(props) {
       {/* 解析错误 */}
       {
         feedError &&
-        <div className={styles.feedInfo}>
-          <Icon type="info-fill" className={styles.errorIcon} />
-          <span className={styles.errorDesc}>
+        <div className={styles.errorInfo}>
+          <Icon type="info-fill" />
+          <p>
             {t('parse_error')}
-          </span>
+          </p>
         </div>
       }
 
