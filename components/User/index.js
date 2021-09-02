@@ -3,8 +3,6 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { ProfileContext } from '../../stores/useProfile'
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
 import TopBar from '../TopBar'
 import PriceSheet from '../Home/PriceSheet'
 import { subscribeOptions } from '../Home/config'
@@ -24,6 +22,7 @@ function User(props) {
   const [ empty, setEmpty ] = useState(false)
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
+  const [ historyList, setHistoryList ] = useState([])
   const [ loading, setLoading ] = useState(true)
   const [ btnLoading, setBtnLoading ] = useState(false)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
@@ -32,7 +31,6 @@ function User(props) {
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ refollowId, setRefollowId ] = useState('')
-  const localAvatar = userInfo.user_icon && userInfo.user_icon
 
   const renderReason = (val) => {
     if (val === 'cancel') {
@@ -57,6 +55,29 @@ function User(props) {
       const followsList = await getFollows()
       if (followsList.utc_offset) {
         setFeedList(followsList.follows)
+
+        //-----------temp-filter------------------------
+        const ing = followsList.follows.ing
+        const ingId = ing.map((item) => {
+          return item.tid
+        })
+        const history = followsList.follows.history
+        let historyId = []
+        const historySet = new Set()
+        const fHistory = history.reduce((acc, item) => {
+          historyId.push(item.tid)
+          if (!historySet.has(item.tid)) {
+            historySet.add(item.tid, item)
+            acc.push(item)
+          }
+          return acc;
+        }, [])
+        const fdHistory = fHistory.filter((item) => {
+          return !ingId.includes(item.tid)
+        })
+        setHistoryList(fdHistory)
+        //-----------temp-filter------------------------
+
         setLoading(false)
       } else {
         console.log('error')
@@ -141,7 +162,7 @@ function User(props) {
         empty &&
         <div className={styles.empty}>
           <Icon type="ufo" />
-          <p>无订阅记录</p>
+          <p>{t('no_records')}</p>
         </div>
       }
 
@@ -188,7 +209,8 @@ function User(props) {
             feedList?.history && feedList?.history.length > 0 && <p className={styles.sectionTitle}>{t('history')}</p>
           }
           {
-            feedList?.history && feedList?.history.map((feed, index) => {
+            feedList?.history && historyList.map((feed, index) => {
+            // feedList?.history && feedList?.history.map((feed, index) => {
               return (
                 <Collapse title={feed.title} key={feed.tid + index}>
                   <>

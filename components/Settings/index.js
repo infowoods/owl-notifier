@@ -20,7 +20,7 @@ function Settings(props) {
   const [ state, dispatch ]  = useContext(ProfileContext)
   const [ userInfo, setUserInfo ] = useState('')
   const [ userUtc, setUserUtc ] = useState(8)
-  const [ tempUtc, setTempUtc ] = useState(8)
+  const [ tempUtc, setTempUtc ] = useState(null)
   const [ utcShow, setUtcShow ] = useState(false)
   const [ select, setSelect ] = useState(false)
   const localAvatar = userInfo.user_icon && userInfo.user_icon
@@ -37,8 +37,8 @@ function Settings(props) {
   const handleUpdateSettings = async () => {
     const params = { utc: tempUtc }
     const data = await updateUserSettings(params)
-    if (data) {
-
+    if (data?.success?.includes('utc')) {
+      setUserUtc(tempUtc)
     } else {
       console.log('error')
     }
@@ -75,7 +75,7 @@ function Settings(props) {
           <p>
             <span>UTC {t('time')}{t('colon')}</span>
             <span>
-              {t('current_utc')}-{userUtc}
+              {t('current_utc')} - ({userUtc})
             </span>
           </p>
           <button className={styles.button} onClick={() => setUtcShow(true)}>
@@ -108,7 +108,7 @@ function Settings(props) {
                   [...Array(24).keys()].map((item) => {
                     return (
                       <div
-                        className={`${styles.item} ${item - 11 === tempUtc && styles.itemSelected}`}
+                        className={`${styles.item} ${(tempUtc ? item - 11 === tempUtc : item - 11 === userUtc) && styles.itemSelected}`}
                         key={item}
                         onClick={() => {
                           setTempUtc(item - 11)
