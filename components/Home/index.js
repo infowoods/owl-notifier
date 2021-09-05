@@ -10,14 +10,15 @@ import Avatar from '../../widgets/Avatar'
 import Loading from '../../widgets/Loading'
 import PriceSheet from './PriceSheet'
 import FeedTypeSheet from './FeedTypeSheet'
+import Overlay from '../../widgets/Overlay'
 import { feedOptions, subscribeOptions } from './config'
 import { authLogin } from '../../utils/loginUtil'
-import { checkGroup, parseFeed, parseTopic, subscribeTopic } from '../../services/api/owl'
+import { checkGroup, parseFeed, subscribeTopic, checkOrder } from '../../services/api/owl'
 import { getMixinContext } from '../../services/api/mixin'
 import storageUtil from '../../utils/storageUtil'
 import styles from './index.module.scss'
 
-function Home(props) {
+function Home() {
   const { t } = useTranslation('common')
   const [ state ]  = useContext(ProfileContext)
   console.log('state at homepage:', state.profile)
@@ -27,6 +28,7 @@ function Home(props) {
   const [ feed, setFeed ] = useState('')
   const [ show, setShow ] = useState(false)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
+  const [ check, setCheck ] = useState(false)
   const defaultType = {
     type: 'topic',
     icon: 'oak-leaf',
@@ -43,6 +45,9 @@ function Home(props) {
   const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ selectPeriod, setSelectPeriod ] = useState('')
   const [ loading, setLoading ] = useState(false)
+  const [ orderId, setOrderId ] = useState('')
+  const [ intervalId, setIntervalId ] = useState(null)
+  const [ followBtnText, setFollowBtnText ] = useState(t('follow'))
 
   const prefix = (
     <Icon
@@ -55,6 +60,7 @@ function Home(props) {
     if (!val) {
       setFeedInfo({})
       setFeedError('')
+      setFollowBtnText(t('follow'))
     }
     setFeed(val)
   }
@@ -63,6 +69,7 @@ function Home(props) {
     setFeedInfo({})
     setSelectPeriod('')
     setFeedError('')
+    setFollowBtnText(t('follow'))
   }
 
   const parseExternalFeed = async (feed) => {
@@ -112,15 +119,18 @@ function Home(props) {
       period: period
     }
     const res = await subscribeTopic(params) || {}
-    if (res.payment_uri) {
+    if (res?.payment_uri) {
       window.open(res.payment_uri)
       setShowSubscribe(false)
+      res?.order_id && setOrderId(res.order_id)
+      setCheck(true)
     }
   }
 
   const handleParse = async (feed) => {
     setFeedInfo({})
     setFeedError('')
+    setFollowBtnText(t('follow'))
     setLoading(true)
     parseExternalFeed(feed)
   }
@@ -137,14 +147,30 @@ function Home(props) {
     }
   }
 
+  useEffect(() => {
+    if (check) {
+      const orderInterval = setInterval(async () => {
+        const res = await checkOrder({ id: orderId })
+        if (res?.paid) {
+          setCheck(false)
+          setOrderId('')
+          setFollowBtnText(t('following'))
+        }
+      }, 5000)
+      setIntervalId(orderInterval)
+    } else {
+      setOrderId('')
+      intervalId && clearInterval(intervalId)
+    }
+  }, [check])
+
   useEffect(async () => {
     const res = getMixinContext()
     setCtx(res)
     if (!res?.app_version) {
       storageUtil.set('platform', 'browser')
     }
-    const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
-    console.log('u key:', `user_info_${res?.conversation_id}`)
+    // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
     storageUtil.get(`user_info_${res?.conversation_id || ''}`) && setUserInfo(storageUtil.get(`user_info_${res?.conversation_id || ''}`))
     storageUtil.set('current_conversation_id', res?.conversation_id || null)
     if (res?.conversation_id) {
@@ -248,7 +274,7 @@ function Home(props) {
                   setShowSubscribe(true)
                 }}
               >
-                {t('follow')}
+                {followBtnText}
               </button>
             </div>
           </div>
@@ -312,6 +338,14 @@ function Home(props) {
         chargeCrypto={chargeCrypto}
         setSelectPeriod={setSelectPeriod}
       />
+
+      <Overlay
+        t={t}
+        desc={t('checking_pay')}
+        visible={check}
+        onCancel={() => setCheck(false)}
+      />
+
     </div>
   )
 }

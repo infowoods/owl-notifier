@@ -66,7 +66,7 @@ function Settings(props) {
 
       <div>
         <p className={styles.title}>
-          {t('settings')}
+          # {t('settings')}
         </p>
 
         <div className={styles.card}>

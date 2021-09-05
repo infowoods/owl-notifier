@@ -11,12 +11,12 @@ import Avatar from '../../widgets/Avatar'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
 import Overlay from '../../widgets/Overlay'
-import { getFollows, unfollowFeeds, parseTopic, subscribeTopic } from '../../services/api/owl'
+import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
 import styles from './index.module.scss'
 
-function User(props) {
+function User() {
   const { t } = useTranslation('common')
   const [ state, dispatch ]  = useContext(ProfileContext)
   const router = useRouter()
@@ -46,8 +46,8 @@ function User(props) {
   const handleUnfollow = async (params) => {
     const res = await unfollowFeeds(params)
     if (res === 'The unfollow process was successfully initiated.') {
+      setBtnSelect('')
       setTimeout(() => {
-        setBtnSelect('')
         getUserFollows()
       }, 15000)
     }
@@ -125,11 +125,18 @@ function User(props) {
     if (res.payment_uri) {
       window.open(res.payment_uri)
       setShowSubscribe(false)
+      // setCheck(true)
       setTimeout(() => {
         getUserFollows()
       }, 30000);
     }
   }
+
+  // useEffect(async () => {
+  //   if (check) {
+  //     const res = await checkOrder(orderId)
+  //   }
+  // }, [check])
 
   useEffect(async () => {
     const conversationId = storageUtil.get('current_conversation_id')
@@ -175,7 +182,7 @@ function User(props) {
           :
         <>
           {
-            feedList?.ing && feedList?.ing.length > 0 && <p className={styles.sectionTitle}>{t('following')}</p>
+            feedList?.ing && feedList?.ing.length > 0 && <p className={styles.sectionTitle}># {t('following')}</p>
           }
           {
             feedList?.ing && feedList.ing.map((feed, index) => {
@@ -220,7 +227,7 @@ function User(props) {
           }
 
           {
-            feedList?.history && feedList?.history.length > 0 && <p className={styles.sectionTitle}>{t('history')}</p>
+            feedList?.history && feedList?.history.length > 0 && <p className={styles.sectionTitle}># {t('history')}</p>
           }
           {
             feedList?.history && historyList.map((feed, index) => {
@@ -287,7 +294,7 @@ function User(props) {
 
       <Overlay
         t={t}
-        desc={t('checking')}
+        desc={t('checking_unfollow')}
         visible={check}
         onCancel={() => setCheck(false)}
       />

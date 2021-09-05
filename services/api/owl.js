@@ -1,6 +1,4 @@
 import http from '../../services/http/owl'
-import { MIXIN_CLIENT_ID, StorageKeys } from '../../constants'
-import StorageUtil from '../../utils/storageUtil'
 
 
 /**
@@ -97,3 +95,15 @@ export function getUserSettings (data) {
  export function checkGroup (data) {
   return http.post('/mixin/group', { data })
 }
+
+
+/**
+ *
+ * @param {order_id} String
+ * @returns
+ * 查询订单状态
+ */
+ export function checkOrder (data) {
+  return http.get('/order', { params: data })
+}
+
