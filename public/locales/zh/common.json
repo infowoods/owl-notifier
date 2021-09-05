@@ -39,5 +39,6 @@
   "select_utc": "请选择 UTC 时区",
   "parse_error": "解析失败：请检查输入内容与当前搜索类型是否匹配",
   "auth_failed": "授权失败",
-  "back_homepage": "返回首页"
+  "back_homepage": "返回首页",
+  "no_records": "无订阅记录"
 }

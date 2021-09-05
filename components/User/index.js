@@ -10,6 +10,7 @@ import Icon from '../../widgets/Icon'
 import Avatar from '../../widgets/Avatar'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
+import Overlay from '../../widgets/Overlay'
 import { getFollows, unfollowFeeds, parseTopic, subscribeTopic } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
@@ -31,6 +32,7 @@ function User(props) {
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ refollowId, setRefollowId ] = useState('')
+  const [ check, setCheck ] = useState(false)
 
   const renderReason = (val) => {
     if (val === 'cancel') {
@@ -45,8 +47,9 @@ function User(props) {
     const res = await unfollowFeeds(params)
     if (res === 'The unfollow process was successfully initiated.') {
       setTimeout(() => {
+        setBtnSelect('')
         getUserFollows()
-      }, 15000);
+      }, 15000)
     }
   }
 
@@ -85,7 +88,7 @@ function User(props) {
       }
     } catch (error) {
       setLoading(false)
-      if (error?.data.message === 'no user data') {
+      if (error?.data?.message === 'no user data') {
         setEmpty(true)
       }
     } finally {
@@ -195,8 +198,19 @@ function User(props) {
                         <span>{t('expire_date')}{t('colon')}</span>
                         {convertTimestamp(feed.expire_ts, 8)}
                       </p>
-                      <button className={styles.button} onClick={() => handleUnfollow(params)}>
-                        {t('unfollow')}
+                      <button
+                        className={styles.button}
+                        onClick={() => {
+                          setBtnSelect(index + 'unfollow')
+                          handleUnfollow(params)
+                        }}
+                      >
+                        {
+                          btnSelect === index + 'unfollow' ?
+                          <Loading size={18} className={styles.btnLoading} />
+                          :
+                          t('unfollow')
+                        }
                       </button>
                     </div>
                   </>
@@ -229,13 +243,13 @@ function User(props) {
                       <button
                         className={`${styles.button} ${styles.buttonAccent}`}
                         onClick={() => {
-                          setBtnSelect(index)
+                          setBtnSelect(index + 'refollow')
                           handleRefollow(feed.tid)
                           setRefollowId(feed.tid)
                         }}
                       >
                         {
-                          btnSelect === index ?
+                          btnSelect === index + 'refollow' ?
                           <Loading size={18} className={styles.btnLoading} />
                           :
                           t('refollow')
@@ -270,6 +284,14 @@ function User(props) {
         chargeCrypto={chargeCrypto}
         setSelectPeriod={setSelectPeriod}
       />
+
+      <Overlay
+        t={t}
+        desc={t('checking')}
+        visible={check}
+        onCancel={() => setCheck(false)}
+      />
+
     </div>
   )
 }

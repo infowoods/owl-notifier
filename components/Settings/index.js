@@ -22,8 +22,6 @@ function Settings(props) {
   const [ userUtc, setUserUtc ] = useState(8)
   const [ tempUtc, setTempUtc ] = useState(null)
   const [ utcShow, setUtcShow ] = useState(false)
-  const [ select, setSelect ] = useState(false)
-  const localAvatar = userInfo.user_icon && userInfo.user_icon
 
   const handleUserSettings = async () => {
     const data = await getUserSettings()
@@ -37,7 +35,7 @@ function Settings(props) {
   const handleUpdateSettings = async () => {
     const params = { utc: tempUtc }
     const data = await updateUserSettings(params)
-    if (data?.success?.includes('utc')) {
+    if (data?.utc.ok) {
       setUserUtc(tempUtc)
     } else {
       console.log('error')

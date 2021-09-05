@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import styles from './index.module.scss'
 
 function BottomSheet(props) {

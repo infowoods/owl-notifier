@@ -1,0 +1,42 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 840px;
+  height: 100%;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, .17);
+  overflow-x: auto;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  >p {
+    margin-top: 18px;
+    margin-bottom: 48px;
+    font-size: 16px;
+    color: $contentInversePrimary;
+  }
+  >button {
+    background: transparent;
+    border: 1px solid $contentInversePrimary;
+    padding: 6px 24px;
+    border-radius: 8px;
+    color: $contentInversePrimary;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, .07);
+    }
+  }
+}
+
+.loading {
+  div {
+    border-color: $contentInversePrimary;
+    border-left-color: rgba(0, 0, 0, 0);
+  }
+}
