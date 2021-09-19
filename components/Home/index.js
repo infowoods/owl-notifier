@@ -150,13 +150,14 @@ function Home() {
   useEffect(() => {
     if (check) {
       const orderInterval = setInterval(async () => {
-        const res = await checkOrder({ id: orderId })
-        if (res?.paid) {
+        const res = await checkOrder(orderId)
+        if (res?.paid?.amount) {
           setCheck(false)
           setOrderId('')
+          setSelectPeriod('')
           setFollowBtnText(t('following'))
         }
-      }, 5000)
+      }, 3000)
       setIntervalId(orderInterval)
     } else {
       setOrderId('')
@@ -164,7 +165,7 @@ function Home() {
     }
   }, [check])
 
-  useEffect(async () => {
+  useEffect(() => {
     const res = getMixinContext()
     setCtx(res)
     if (!res?.app_version) {
@@ -173,12 +174,17 @@ function Home() {
     // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
     storageUtil.get(`user_info_${res?.conversation_id || ''}`) && setUserInfo(storageUtil.get(`user_info_${res?.conversation_id || ''}`))
     storageUtil.set('current_conversation_id', res?.conversation_id || null)
+    // storageUtil.set('current_conversation_id', res?.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc')
+
     if (res?.conversation_id) {
-      const data = await checkGroup({conversation_id: res.conversation_id})
-      if (!res?.err_code) {
-        setLoading(false)
-        setGroupInfo(data)
+      const initialFunc = async () => {
+        const data = await checkGroup({conversation_id: res.conversation_id})
+        if (!res?.err_code) {
+          setLoading(false)
+          setGroupInfo(data)
+        }
       }
+      initialFunc()
     }
     // storageUtil.get(`user_info_${conversation_id}`) && setUserInfo(storageUtil.get(`user_info_${conversation_id}`))
     res.appearance && document.documentElement.setAttribute('data-theme', res.appearance)

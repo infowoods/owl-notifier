@@ -1,4 +1,5 @@
 import BottomSheet from "../../../widgets/BottomSheet"
+import Image from "next/image"
 import Icon from "../../../widgets/Icon"
 import styles from './index.module.scss'
 
@@ -40,15 +41,20 @@ function PriceSheet(props) {
                   setSelectPeriod(item.period)
                 }}
               >
-                <p className={styles.subcribePrice}>
+                <div className={styles.subcribePrice}>
                   <div>
-                    <img
+                    <Image
                       src={chargeCrypto.icon_url}
                       alt="crypto"
+                      width={25}
+                      height={25}
+                      quality={100}
                     />
-                    {item.price} {chargeCrypto.symbol} / {t(item.period)}
+                    <span>
+                      {item.price} {chargeCrypto.symbol} / {t(item.period)}
+                    </span>
                   </div>
-                </p>
+                </div>
                 {
                   item.period === selectPeriod &&
                   <Icon type="check-line" className={styles.selected} />

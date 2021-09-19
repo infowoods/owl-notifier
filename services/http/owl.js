@@ -38,7 +38,10 @@ owlrss.interceptors.response.use(
       }
       return Promise.reject({ code: error.code, message: error.description })
     }
-    if (res.status === 403 || res.status === 202) {
+    if (res.status === 403 || res.status === 401) {
+      return Promise.reject({ action: 'logout', status: res.status, data: res.data })
+    }
+    if (res.status === 202) {
       return Promise.reject({ status: res.status, data: res.data })
     }
     else {
@@ -59,8 +62,8 @@ async function request (options) {
   return Promise.resolve(res.data)
 }
 
-export default {
-  post (url, options = {}) {
+const http = {
+  post: (url, options = {}) => {
     const config = {
       url,
       method: 'post',
@@ -69,7 +72,7 @@ export default {
     return request(config)
   },
 
-  get (url, options = {}) {
+  get: (url, options = {}) => {
     const config = {
       url,
       method: 'get',
@@ -78,7 +81,7 @@ export default {
     return request(config)
   },
 
-  delete (url, options = {}) {
+  delete: (url, options = {}) => {
     const config = {
       url,
       method: 'delete',
@@ -87,3 +90,5 @@ export default {
     return request(config)
   }
 }
+
+export default http

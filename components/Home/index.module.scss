@@ -12,8 +12,6 @@
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
-  // border: 1px solid red;
-  // padding: 4px 0;
   margin-top: 6px;
   img {
     border-radius: 50%;
@@ -111,13 +109,10 @@
   border-radius: 8px;
   background: $backgroundSecondary;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   .loading {
     margin-left: 12px;
-  }
-  span {
-    width: 80%;
+    margin-right: 18px;
   }
   .loadingHint {
     font-size: 14px;

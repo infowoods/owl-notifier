@@ -21,13 +21,12 @@ export function getFollows (data) {
 
 /**
  *
- * @param {action} 'unfollows'
- * @param {tids} List
+ * @param {topic_id} String
  * @returns
- * 取消关注Feeds
+ * 取消关注Feed
  */
 export function unfollowFeeds (data) {
-  return http.post('/user/follows', { data })
+  return http.post('/user/follows/unfo', { data })
 }
 
 
@@ -103,7 +102,7 @@ export function getUserSettings (data) {
  * @returns
  * 查询订单状态
  */
- export function checkOrder (data) {
-  return http.get('/order', { params: data })
+ export function checkOrder (order_id) {
+  return http.get(`/user/order/${order_id}`)
 }
 

@@ -14,17 +14,18 @@ import Overlay from '../../widgets/Overlay'
 import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
+import { logout } from '../../utils/loginUtil'
 import styles from './index.module.scss'
 
 function User() {
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
+  const [ , dispatch ]  = useContext(ProfileContext)
   const router = useRouter()
   const [ empty, setEmpty ] = useState(false)
   const [ btnSelect, setBtnSelect ] = useState('')
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
-  const [ historyList, setHistoryList ] = useState([])
+  // const [ historyList, setHistoryList ] = useState([])
   const [ loading, setLoading ] = useState(true)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
@@ -32,7 +33,9 @@ function User() {
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ refollowId, setRefollowId ] = useState('')
+  const [ orderId, setOrderId ] = useState('')
   const [ check, setCheck ] = useState(false)
+  const [ intervalId, setIntervalId ] = useState(null)
 
   const renderReason = (val) => {
     if (val === 'cancel') {
@@ -44,12 +47,17 @@ function User() {
   }
 
   const handleUnfollow = async (params) => {
-    const res = await unfollowFeeds(params)
-    if (res === 'The unfollow process was successfully initiated.') {
-      setBtnSelect('')
-      setTimeout(() => {
+    try {
+      const res = await unfollowFeeds(params)
+      if (res.topic_id) {
+        setBtnSelect('')
         getUserFollows()
-      }, 15000)
+      }
+    } catch (error) {
+      if (error?.data?.action === 'logout') {
+        logout(dispatch)
+        router.push('/')
+      }
     }
   }
 
@@ -58,29 +66,6 @@ function User() {
       const followsList = await getFollows()
       if (followsList.utc_offset) {
         setFeedList(followsList.follows)
-
-        //-----------temp-filter------------------------
-        const ing = followsList.follows.ing
-        const ingId = ing.map((item) => {
-          return item.tid
-        })
-        const history = followsList.follows.history
-        let historyId = []
-        const historySet = new Set()
-        const fHistory = history.reduce((acc, item) => {
-          historyId.push(item.tid)
-          if (!historySet.has(item.tid)) {
-            historySet.add(item.tid, item)
-            acc.push(item)
-          }
-          return acc;
-        }, [])
-        const fdHistory = fHistory.filter((item) => {
-          return !ingId.includes(item.tid)
-        })
-        setHistoryList(fdHistory)
-        //-----------temp-filter------------------------
-
         setLoading(false)
       } else {
         console.log('error')
@@ -122,23 +107,33 @@ function User() {
       period: period
     }
     const res = await subscribeTopic(params) || {}
-    if (res.payment_uri) {
+    if (res?.payment_uri) {
       window.open(res.payment_uri)
       setShowSubscribe(false)
-      // setCheck(true)
-      setTimeout(() => {
-        getUserFollows()
-      }, 30000);
+      res?.order_id && setOrderId(res.order_id)
+      setCheck(true)
     }
   }
 
-  // useEffect(async () => {
-  //   if (check) {
-  //     const res = await checkOrder(orderId)
-  //   }
-  // }, [check])
+  useEffect(() => {
+    if (check) {
+      const orderInterval = setInterval(async () => {
+        const res = await checkOrder(orderId)
+        if (res?.paid?.amount) {
+          setCheck(false)
+          setOrderId('')
+          setSelectPeriod('')
+          getUserFollows()
+        }
+      }, 3000)
+      setIntervalId(orderInterval)
+    } else {
+      setOrderId('')
+      intervalId && clearInterval(intervalId)
+    }
+  }, [check])
 
-  useEffect(async () => {
+  useEffect(() => {
     const conversationId = storageUtil.get('current_conversation_id')
     const id = conversationId === null ? '' : conversationId
     storageUtil.get(`user_info_${id}`) && setUserInfo(storageUtil.get(`user_info_${id}`))
@@ -187,8 +182,7 @@ function User() {
           {
             feedList?.ing && feedList.ing.map((feed, index) => {
               const params = {
-                action: 'unfollows',
-                tids: [`${feed.tid}`]
+                topic_id: feed.tid
               }
               return (
                 <Collapse title={feed.title} key={feed.tid + index}>
@@ -230,8 +224,7 @@ function User() {
             feedList?.history && feedList?.history.length > 0 && <p className={styles.sectionTitle}># {t('history')}</p>
           }
           {
-            feedList?.history && historyList.map((feed, index) => {
-            // feedList?.history && feedList?.history.map((feed, index) => {
+            feedList?.history && feedList?.history.map((feed, index) => {
               return (
                 <Collapse title={feed.title} key={feed.tid + index}>
                   <>
@@ -294,7 +287,7 @@ function User() {
 
       <Overlay
         t={t}
-        desc={t('checking_unfollow')}
+        desc={t('checking_pay')}
         visible={check}
         onCancel={() => setCheck(false)}
       />

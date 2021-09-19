@@ -1,12 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import styles from './index.module.scss'
-import Icon from '../../widgets/Icon'
-import Image from 'next/image'
 import Head from 'next/head'
 import TopBar from '../TopBar'
 import Avatar from '../../widgets/Avatar'
-import Collapse from '../../widgets/Collapse'
 import BottomSheet from '../../widgets/BottomSheet'
 import { useRouter } from 'next/router'
 import storageUtil from '../../utils/storageUtil'
@@ -17,7 +14,7 @@ import { getUserSettings, updateUserSettings } from '../../services/api/owl'
 function Settings(props) {
   const router = useRouter()
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
+  const [ , dispatch ]  = useContext(ProfileContext)
   const [ userInfo, setUserInfo ] = useState('')
   const [ userUtc, setUserUtc ] = useState(8)
   const [ tempUtc, setTempUtc ] = useState(null)
@@ -42,7 +39,7 @@ function Settings(props) {
     }
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     const conversationId = storageUtil.get('current_conversation_id')
     const id = conversationId === null ? '' : conversationId
     storageUtil.get(`user_info_${id}`) && setUserInfo(storageUtil.get(`user_info_${id}`))
@@ -73,7 +70,7 @@ function Settings(props) {
           <p>
             <span>UTC {t('time')}{t('colon')}</span>
             <span>
-              {t('current_utc')} - ({userUtc})
+              {t('current_utc')} - (<span>{userUtc}</span>)
             </span>
           </p>
           <button className={styles.button} onClick={() => setUtcShow(true)}>

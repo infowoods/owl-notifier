@@ -1,20 +1,32 @@
-import Icon from '../Icon'
-import './index.scss'
+import Loading from '../Loading'
+import PropTypes from 'prop-types'
+import styles from './index.module.scss'
 
 function Button(props) {
-  const { className, style, children, type, size, disabled, loading, withArrow, prefix, suffix, ...others } = props
+  const {
+    className,
+    children,
+    type,
+    size,
+    disabled,
+    loading,
+    withArrow,
+    prefix,
+    suffix,
+    ...others
+  } = props
+
   return (
-    <button className={`Button ${type} ${size} ${loading ? 'loading' : ''} ${className}`} style={style} disabled={disabled} {...others}>
-      { prefix && <div className="prefix">{prefix}</div> }
+    <button
+      className={`${styles.button} ${styles.type} ${styles.size} ${styles.loading && styles.loading} ${className}`}
+      disabled={disabled}
+      {...others}
+    >
       {children}
+
       {
-        loading && <Icon type={type === 'primary' ? 'loading' : 'loading-blue'} className="loading_icon"/>
-      }
-      {
-        !loading && withArrow && <Icon type="arrow-line" className="arrow_icon" />
-      }
-      {
-        !loading && !withArrow && suffix && <div className="suffix">{suffix}</div>
+        loading &&
+        <Loading />
       }
     </button>
   )
@@ -22,7 +34,7 @@ function Button(props) {
 
 Button.defaultProps = {
   type: 'primary',
-  size: 'small',  // small
+  size: 'small',
   loading: false,
   disabled: false,
   withArrow: false,
@@ -30,7 +42,7 @@ Button.defaultProps = {
 
 Button.propTypes = {
   type: PropTypes.oneOf(['primary', 'floating', 'secondary', 'text']),
-  size: PropTypes.oneOf(['large', 'small']),
+  size: PropTypes.oneOf(['large', 'medium', 'small']),
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
   withArrow: PropTypes.bool,

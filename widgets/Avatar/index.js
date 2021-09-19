@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import styles from './index.module.scss'
 
 function Avatar(props) {
   const { group=false, imgSrc } = props
