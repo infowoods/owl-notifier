@@ -19,7 +19,7 @@ import styles from './index.module.scss'
 
 function User() {
   const { t } = useTranslation('common')
-  const [ , dispatch ]  = useContext(ProfileContext)
+  const [ state, dispatch ]  = useContext(ProfileContext)
   const router = useRouter()
   const [ empty, setEmpty ] = useState(false)
   const [ btnSelect, setBtnSelect ] = useState('')
@@ -145,7 +145,7 @@ function User() {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        {/* <meta name="theme-color" content={ ctx.appearance === 'dark' ? "#1E1E1E" : "#F4F6F7"} /> */}
+        <meta name="theme-color" content={ state.ctx?.appearance === 'dark' ? "#1E1E1E" : "#F4F6F7"} />
         <link rel="icon" href="/favicon.png" />
       </Head>
 

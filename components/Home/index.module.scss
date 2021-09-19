@@ -34,9 +34,9 @@
 }
 
 .search {
-  margin-top: 35px;
+  margin-top: 46px;
   @include responsive(lg) {
-    margin-top: 15%;
+    margin-top: 64px;
   }
   display: flex;
 }
@@ -58,7 +58,7 @@
   justify-content: flex-end;
   align-items: center;
   color: $contentPrimary;
-  margin-top: 48px;
+  margin-top: 46px;
   @include responsive(xs) {
     margin-top: 32px;
   }

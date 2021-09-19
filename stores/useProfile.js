@@ -3,7 +3,8 @@ import React from 'react'
 export const ProfileContext = React.createContext({})
 
 export const state = {
-  profile: {}
+  profile: {},
+  ctx: {}
 }
 
 export function reducer(preState, action) {
@@ -15,6 +16,11 @@ export function reducer(preState, action) {
       return {
         ...preState,
         profile: action.profile
+      }
+    case 'ctx':
+      return {
+        ...preState,
+        ctx: action.ctx
       }
     default:
       return preState

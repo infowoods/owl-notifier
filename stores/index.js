@@ -9,8 +9,9 @@ const StateProvider = ( { children } ) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch(action.type) {
       case 'action description':
-        const newState =
-        return newState
+        // const newState =
+        // return newState
+        break
       default:
         throw new Error()
     }

@@ -18,14 +18,14 @@
     margin-top: 18px;
     margin-bottom: 48px;
     font-size: 16px;
-    color: $contentInversePrimary;
+    color: $contentAlwaysLight;
   }
   >button {
     background: transparent;
-    border: 1px solid $contentInversePrimary;
+    border: 1px solid $contentAlwaysLight;
     padding: 6px 24px;
     border-radius: 8px;
-    color: $contentInversePrimary;
+    color: $contentAlwaysLight;
     font-size: 14px;
     cursor: pointer;
     &:hover {
@@ -36,7 +36,7 @@
 
 .loading {
   div {
-    border-color: $contentInversePrimary;
+    border-color: $contentAlwaysLight;
     border-left-color: rgba(0, 0, 0, 0);
   }
 }

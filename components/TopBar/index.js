@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import Icon from '../../widgets/Icon'
 import styles from './index.module.scss'
 
@@ -19,7 +20,12 @@ function TopBar(props) {
         />
       }
       <div className={`${styles.icon} ${url && styles.iconPadding}`}>
-        <img src="/favicon.png" />
+        <Image
+          src="/favicon.png"
+          alt="favico"
+          width={28}
+          height={28}
+        />
         <span>Owl Deliver</span>
       </div>
     </div>

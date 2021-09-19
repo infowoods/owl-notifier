@@ -62,7 +62,13 @@ function AuthCallback() {
 
   useEffect(() => {
     const res = getMixinContext()
-    setCtx(res)
+    if (res) {
+      dispatch({
+        type: 'ctx',
+        ctx: res
+      })
+      setCtx(res)
+    }
   }, [])
 
   return (

@@ -14,7 +14,7 @@ import { getUserSettings, updateUserSettings } from '../../services/api/owl'
 function Settings(props) {
   const router = useRouter()
   const { t } = useTranslation('common')
-  const [ , dispatch ]  = useContext(ProfileContext)
+  const [ state, dispatch ]  = useContext(ProfileContext)
   const [ userInfo, setUserInfo ] = useState('')
   const [ userUtc, setUserUtc ] = useState(8)
   const [ tempUtc, setTempUtc ] = useState(null)
@@ -51,7 +51,7 @@ function Settings(props) {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content="#F4F6F7" />
+        <meta name="theme-color" content={ state.ctx?.appearance === 'dark' ? "#1E1E1E" : "#F4F6F7"} />
         <link rel="icon" href="/favicon.png" />
       </Head>
 

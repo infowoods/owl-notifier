@@ -195,7 +195,7 @@ function Home() {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content={ ctx.appearance === 'dark' ? "#080808" : "#FFFFFF"} />
+        <meta name="theme-color" content={ ctx?.appearance === 'dark' ? "#080808" : "#FFFFFF"} />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
