@@ -30,6 +30,11 @@ function QrCodeSheet(props) {
         <QRCode
           value={id}
           size={240}
+          imageSettings={{
+            src: "/mixin-logo.png",
+            width: 50,
+            height: 50,
+          }}
         />
       </div>
     </BottomSheet>
