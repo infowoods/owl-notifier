@@ -1,16 +1,20 @@
 import { useEffect, useContext, useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import dynamic from 'next/dynamic'
 import { ProfileContext } from '../../stores/useProfile'
 import Head from 'next/head'
 import Link from 'next/link'
 import TopBar from '../TopBar'
+import toast from 'react-hot-toast'
+const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
+const Overlay = dynamic(() => import('../../widgets/Overlay'))
+const QrCodeSheet = dynamic(() => import('./QrCodeSheet'))
+const PriceSheet = dynamic(() => import('./PriceSheet'))
+const FeedTypeSheet = dynamic(() => import('./FeedTypeSheet'))
 import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
 import Avatar from '../../widgets/Avatar'
 import Loading from '../../widgets/Loading'
-import PriceSheet from './PriceSheet'
-import FeedTypeSheet from './FeedTypeSheet'
-import Overlay from '../../widgets/Overlay'
 import { feedOptions, subscribeOptions } from './config'
 import { authLogin } from '../../utils/loginUtil'
 import { checkGroup, parseFeed, subscribeTopic, checkOrder } from '../../services/api/owl'
@@ -48,6 +52,7 @@ function Home() {
   const [ orderId, setOrderId ] = useState('')
   const [ intervalId, setIntervalId ] = useState(null)
   const [ followBtnText, setFollowBtnText ] = useState(t('follow'))
+  const [ payUrl, setPayUrl ] = useState('')
 
   const prefix = (
     <Icon
@@ -120,7 +125,11 @@ function Home() {
     }
     const res = await subscribeTopic(params) || {}
     if (res?.payment_uri) {
-      window.open(res.payment_uri)
+      if (storageUtil.get('platform') === 'browser') {
+        setPayUrl(res.payment_uri)
+      } else {
+        window.open(res.payment_uri)
+      }
       setShowSubscribe(false)
       res?.order_id && setOrderId(res.order_id)
       setCheck(true)
@@ -152,6 +161,7 @@ function Home() {
       const orderInterval = setInterval(async () => {
         const res = await checkOrder(orderId)
         if (res?.paid?.amount) {
+          toast.success(t('subcribe_success'))
           setCheck(false)
           setOrderId('')
           setSelectPeriod('')
@@ -239,7 +249,7 @@ function Home() {
       </div>
 
       {/* 搜索框 */}
-      <div className={styles.search}>
+      <form className={styles.search} action=".">
         <Input
           className={styles.input}
           type="search"
@@ -250,7 +260,7 @@ function Home() {
           onClear={handleClear}
           onKeyDown={(e) => handleKeyDown(e)}
         />
-      </div>
+      </form>
 
       {/* 解析后源信息卡片 */}
       {
@@ -351,6 +361,17 @@ function Home() {
         visible={check}
         onCancel={() => setCheck(false)}
       />
+
+      <QrCodeSheet
+        t={t}
+        show={payUrl}
+        id={payUrl}
+        onClose={() => {setPayUrl('')}}
+        onCancel={() => {setPayUrl('')}}
+        onConfirm={() => {setPayUrl('')}}
+      />
+
+      <OwlToast />
 
     </div>
   )

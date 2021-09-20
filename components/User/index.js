@@ -1,16 +1,20 @@
 import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import { ProfileContext } from '../../stores/useProfile'
 import Head from 'next/head'
 import TopBar from '../TopBar'
-import PriceSheet from '../Home/PriceSheet'
+import toast from 'react-hot-toast'
+const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
+const PriceSheet = dynamic(() => import('../Home/PriceSheet'))
+const QrCodeSheet = dynamic(() => import('../Home/QrCodeSheet'))
+const Overlay = dynamic(() => import('../../widgets/Overlay'))
 import { subscribeOptions } from '../Home/config'
 import Icon from '../../widgets/Icon'
 import Avatar from '../../widgets/Avatar'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
-import Overlay from '../../widgets/Overlay'
 import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
@@ -25,7 +29,6 @@ function User() {
   const [ btnSelect, setBtnSelect ] = useState('')
   const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
-  // const [ historyList, setHistoryList ] = useState([])
   const [ loading, setLoading ] = useState(true)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
@@ -36,6 +39,7 @@ function User() {
   const [ orderId, setOrderId ] = useState('')
   const [ check, setCheck ] = useState(false)
   const [ intervalId, setIntervalId ] = useState(null)
+  const [ payUrl, setPayUrl ] = useState('')
 
   const renderReason = (val) => {
     if (val === 'cancel') {
@@ -50,6 +54,7 @@ function User() {
     try {
       const res = await unfollowFeeds(params)
       if (res.topic_id) {
+        toast.success(t('unfollow_success'))
         setBtnSelect('')
         getUserFollows()
       }
@@ -64,7 +69,7 @@ function User() {
   const getUserFollows = async () => {
     try {
       const followsList = await getFollows()
-      if (followsList.utc_offset) {
+      if (followsList.utc_offset?.toString()) {
         setFeedList(followsList.follows)
         setLoading(false)
       } else {
@@ -108,7 +113,11 @@ function User() {
     }
     const res = await subscribeTopic(params) || {}
     if (res?.payment_uri) {
-      window.open(res.payment_uri)
+      if (storageUtil.get('platform') === 'browser') {
+        setPayUrl(res.payment_uri)
+      } else {
+        window.open(res.payment_uri)
+      }
       setShowSubscribe(false)
       res?.order_id && setOrderId(res.order_id)
       setCheck(true)
@@ -120,6 +129,7 @@ function User() {
       const orderInterval = setInterval(async () => {
         const res = await checkOrder(orderId)
         if (res?.paid?.amount) {
+          toast.success(t('subcribe_success'))
           setCheck(false)
           setOrderId('')
           setSelectPeriod('')
@@ -291,6 +301,17 @@ function User() {
         visible={check}
         onCancel={() => setCheck(false)}
       />
+
+      <QrCodeSheet
+        t={t}
+        show={payUrl}
+        id={payUrl}
+        onClose={() => {setPayUrl('')}}
+        onCancel={() => {setPayUrl('')}}
+        onConfirm={() => {setPayUrl('')}}
+      />
+
+      <OwlToast />
 
     </div>
   )

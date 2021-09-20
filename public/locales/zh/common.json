@@ -42,5 +42,10 @@
   "back_homepage": "返回首页",
   "no_records": "无订阅记录",
   "checking_unfollow": "正在检查取关结果...",
-  "checking_pay": "正在检查支付结果..."
+  "checking_pay": "正在检查支付结果...",
+  "subcribe_success": "订阅成功！",
+  "unfollow_success": "取关成功！",
+  "setting_update": "设置成功！",
+  "pay_with_phone": "请用手机扫码",
+  "has_paid": "已支付"
 }

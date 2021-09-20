@@ -67,6 +67,7 @@ function AuthCallback() {
         type: 'ctx',
         ctx: res
       })
+      storageUtil.set('ctx', res)
       setCtx(res)
     }
   }, [])

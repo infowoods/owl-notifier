@@ -1,10 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
+import dynamic from 'next/dynamic'
 import styles from './index.module.scss'
 import Head from 'next/head'
 import TopBar from '../TopBar'
+import toast from 'react-hot-toast'
+const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
+const BottomSheet = dynamic(() => import('../../widgets/BottomSheet'))
 import Avatar from '../../widgets/Avatar'
-import BottomSheet from '../../widgets/BottomSheet'
 import { useRouter } from 'next/router'
 import storageUtil from '../../utils/storageUtil'
 import { logout } from '../../utils/loginUtil'
@@ -16,16 +19,16 @@ function Settings(props) {
   const { t } = useTranslation('common')
   const [ state, dispatch ]  = useContext(ProfileContext)
   const [ userInfo, setUserInfo ] = useState('')
-  const [ userUtc, setUserUtc ] = useState(8)
+  const [ userUtc, setUserUtc ] = useState(null)
   const [ tempUtc, setTempUtc ] = useState(null)
   const [ utcShow, setUtcShow ] = useState(false)
 
   const handleUserSettings = async () => {
     const data = await getUserSettings()
     if (data) {
-      data.utc && setUserUtc(data.utc) && setTempUtc(data.utc)
+      data.utc.toString() && setUserUtc(data.utc) && setTempUtc(data.utc)
     } else {
-      console.log('error')
+      toast.error(t('get_settings_error'))
     }
   }
 
@@ -33,9 +36,10 @@ function Settings(props) {
     const params = { utc: tempUtc }
     const data = await updateUserSettings(params)
     if (data?.utc.ok) {
+      toast.success(t('setting_update'))
       setUserUtc(tempUtc)
     } else {
-      console.log('error')
+      toast.error(t('update_error'))
     }
   }
 
@@ -103,11 +107,9 @@ function Settings(props) {
                   [...Array(24).keys()].map((item) => {
                     return (
                       <div
-                        className={`${styles.item} ${(tempUtc ? item - 11 === tempUtc : item - 11 === userUtc) && styles.itemSelected}`}
+                        className={`${styles.item} ${(tempUtc?.toString() ? item - 11 === tempUtc : item - 11 === userUtc) && styles.itemSelected}`}
                         key={item}
-                        onClick={() => {
-                          setTempUtc(item - 11)
-                        }}
+                        onClick={() => setTempUtc(item - 11)}
                       >
                         <div>UTC</div>
                         <div>{item - 11}</div>
@@ -131,6 +133,10 @@ function Settings(props) {
           {t('logout')}
         </div>
       </div>
+
+      {/* <Toaster /> */}
+      <OwlToast />
+
     </div>
   )
 }

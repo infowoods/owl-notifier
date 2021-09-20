@@ -42,5 +42,10 @@
   "back_homepage": "Back to Homepage",
   "no_records": "No Records",
   "checking_unfollow": "Checking The Unfollow Result...",
-  "checking_pay": "Checking The Payment's Result..."
+  "checking_pay": "Checking The Payment's Result...",
+  "subcribe_success": "Subscribe Successfully!",
+  "unfollow_success": "Unfollow Successfully!",
+  "setting_update": "Setting Updated!",
+  "pay_with_phone": "Please Scan With MM",
+  "has_paid": "Already Paid"
 }
