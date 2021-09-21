@@ -75,7 +75,7 @@ function User() {
         setFeedList(followsList.follows)
         setLoading(false)
       } else {
-        console.log('error')
+        toast.error('Error')
         setLoading(false)
       }
     } catch (error) {
