@@ -58,18 +58,11 @@ function AuthCallback() {
       }
     }
     auth()
-  }, [ctx.conversation_id, dispatch, push, query])
+  }, [query])
 
   useEffect(() => {
     const res = getMixinContext()
-    if (res) {
-      dispatch({
-        type: 'ctx',
-        ctx: res
-      })
-      storageUtil.set('ctx', res)
-      setCtx(res)
-    }
+    res && setCtx(res)
   }, [])
 
   return (

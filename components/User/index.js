@@ -20,10 +20,12 @@ import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
 import { logout } from '../../utils/loginUtil'
 import styles from './index.module.scss'
+import { getMixinContext } from '../../services/api/mixin'
 
 function User() {
   const { t } = useTranslation('common')
   const [ state, dispatch ]  = useContext(ProfileContext)
+  // const [ theme, setTheme ] = useState('')
   const router = useRouter()
   const [ empty, setEmpty ] = useState(false)
   const [ btnSelect, setBtnSelect ] = useState('')
@@ -144,6 +146,7 @@ function User() {
   }, [check])
 
   useEffect(() => {
+    // setTheme(getMixinContext().appearance || 'light')
     const conversationId = storageUtil.get('current_conversation_id')
     const id = conversationId === null ? '' : conversationId
     storageUtil.get(`user_info_${id}`) && setUserInfo(storageUtil.get(`user_info_${id}`))
@@ -155,7 +158,7 @@ function User() {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content={ state.ctx?.appearance === 'dark' ? "#1E1E1E" : "#F4F6F7"} />
+        {/* <meta name="theme-color" content={ theme === 'dark' ? "#1E1E1E" : "#F4F6F7"} /> */}
         <link rel="icon" href="/favicon.png" />
       </Head>
 

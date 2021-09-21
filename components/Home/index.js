@@ -25,7 +25,7 @@ import styles from './index.module.scss'
 function Home() {
   const { t } = useTranslation('common')
   const [ state ]  = useContext(ProfileContext)
-  console.log('state at homepage:', state.profile)
+  console.log('state profile:', state.profile)
   const [ userInfo, setUserInfo ] = useState('')
   const isLogin = state.profile.user_name !== undefined || (userInfo && userInfo.user_name)
 
@@ -42,7 +42,7 @@ function Home() {
   const [ feedType, setFeedType ] = useState(defaultType)
   const [ feedInfo, setFeedInfo ] = useState({})
   const [ feedError, setFeedError ] = useState('')
-  const [ ctx, setCtx ] = useState({})
+  const [ theme, setTheme ] = useState('')
   const [ groupInfo, setGroupInfo ] = useState(false)
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
@@ -177,7 +177,7 @@ function Home() {
 
   useEffect(() => {
     const res = getMixinContext()
-    setCtx(res)
+    setTheme(res.appearance || 'light')
     if (!res?.app_version) {
       storageUtil.set('platform', 'browser')
     }
@@ -197,7 +197,6 @@ function Home() {
       initialFunc()
     }
     // storageUtil.get(`user_info_${conversation_id}`) && setUserInfo(storageUtil.get(`user_info_${conversation_id}`))
-    res.appearance && document.documentElement.setAttribute('data-theme', res.appearance)
   }, [])
 
   return (
@@ -205,7 +204,7 @@ function Home() {
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content={ ctx?.appearance === 'dark' ? "#080808" : "#FFFFFF"} />
+        <meta name="theme-color" content={ theme === 'dark' ? "#080808" : "#FFFFFF"} />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
