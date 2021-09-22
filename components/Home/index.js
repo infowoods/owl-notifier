@@ -196,7 +196,6 @@ function Home() {
       }
       initialFunc()
     }
-    // storageUtil.get(`user_info_${conversation_id}`) && setUserInfo(storageUtil.get(`user_info_${conversation_id}`))
   }, [])
 
   return (
