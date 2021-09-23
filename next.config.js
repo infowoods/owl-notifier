@@ -1,5 +1,5 @@
 const path = require('path')
-const { i18n } = require('./next-i18next.config')
+// const { i18n } = require('./next-i18next.config')
 
 module.exports = {
   reactStrictMode: true,
@@ -10,5 +10,8 @@ module.exports = {
   images: {
     domains: ['mixin-images.zeromesh.net'],
   },
-  i18n,
+  i18n: {
+    defaultLocale: 'zh',
+    locales: ['zh', 'en'],
+  },
 }
