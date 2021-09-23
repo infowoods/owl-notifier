@@ -25,7 +25,7 @@ import styles from './index.module.scss'
 function Home() {
   const { t } = useTranslation('common')
   const [ state ]  = useContext(ProfileContext)
-  console.log('state profile:', state.profile)
+  // console.log('state profile:', state.profile)
   const [ userInfo, setUserInfo ] = useState('')
   const isLogin = state.profile.user_name !== undefined || (userInfo && userInfo.user_name)
 

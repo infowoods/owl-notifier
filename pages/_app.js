@@ -1,12 +1,12 @@
 import { useReducer, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { appWithTranslation, useTranslation } from 'next-i18next'
+import { appWithTranslation } from 'next-i18next'
 import { i18n } from 'next-i18next'
 import { getMixinContext } from '../services/api/mixin'
 import { ProfileContext, state, reducer} from '../stores/useProfile'
-import storageUtil from '../utils/storageUtil'
 import '../styles/globals.scss'
 import '../styles/themes.scss'
+const i18nConfig = require('../next-i18next.config')
 
 function MyApp({ Component, pageProps }) {
   const store = useReducer(reducer, state)
@@ -28,4 +28,4 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-export default appWithTranslation(MyApp)
+export default appWithTranslation(MyApp, i18nConfig)
