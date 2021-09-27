@@ -2,33 +2,35 @@ import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import styles from './index.module.scss'
-import Head from 'next/head'
-import TopBar from '../TopBar'
 import toast from 'react-hot-toast'
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 const BottomSheet = dynamic(() => import('../../widgets/BottomSheet'))
-import Avatar from '../../widgets/Avatar'
 import { useRouter } from 'next/router'
-import storageUtil from '../../utils/storageUtil'
 import { logout } from '../../utils/loginUtil'
 import { ProfileContext } from '../../stores/useProfile'
 import { getUserSettings, updateUserSettings } from '../../services/api/owl'
 
-function Settings(props) {
+function Settings() {
   const router = useRouter()
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
-  const [ userInfo, setUserInfo ] = useState('')
+  const [ , dispatch ]  = useContext(ProfileContext)
   const [ userUtc, setUserUtc ] = useState(null)
   const [ tempUtc, setTempUtc ] = useState(null)
   const [ utcShow, setUtcShow ] = useState(false)
 
   const handleUserSettings = async () => {
-    const data = await getUserSettings()
-    if (data) {
-      data.utc.toString() && setUserUtc(data.utc) && setTempUtc(data.utc)
-    } else {
-      toast.error(t('get_settings_error'))
+    try {
+      const data = await getUserSettings()
+      if (data) {
+        data.utc.toString() && setUserUtc(data.utc) && setTempUtc(data.utc)
+      } else {
+        toast.error(t('get_settings_error'))
+      }
+    } catch (error) {
+      if (error?.action === 'logout') {
+        logout(dispatch)
+        router.push('/')
+      }
     }
   }
 
@@ -44,27 +46,11 @@ function Settings(props) {
   }
 
   useEffect(() => {
-    const conversationId = storageUtil.get('current_conversation_id')
-    const id = conversationId === null ? '' : conversationId
-    storageUtil.get(`user_info_${id}`) && setUserInfo(storageUtil.get(`user_info_${id}`))
     handleUserSettings()
   }, [])
 
   return (
     <div className={styles.main}>
-      <Head>
-        <title>Owl Deliver</title>
-        <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content={ state.ctx?.appearance === 'dark' ? "#1E1E1E" : "#F4F6F7"} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
-      <TopBar url="/user" />
-
-      <div className={styles.avatar}>
-        <Avatar group={userInfo?.user_type === 'MIXIN_GROUP'} imgSrc={userInfo?.user_icon} />
-      </div>
-
       <div>
         <p className={styles.title}>
           # {t('settings')}
@@ -134,7 +120,6 @@ function Settings(props) {
         </div>
       </div>
 
-      {/* <Toaster /> */}
       <OwlToast />
 
     </div>

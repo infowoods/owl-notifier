@@ -1,11 +1,5 @@
 .main {
-  max-width: 840px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 0 10px 12px 10px;
-  border-left: 1px solid $borderOpaque;
-  border-right: 1px solid $borderOpaque;
-  background: $backgroundPrimary;
+  height: calc(100vh - 145px);
 }
 
 .avatar, .login {

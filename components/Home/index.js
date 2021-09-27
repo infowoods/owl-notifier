@@ -2,9 +2,6 @@ import { useEffect, useContext, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import { ProfileContext } from '../../stores/useProfile'
-import Head from 'next/head'
-import Link from 'next/link'
-import TopBar from '../TopBar'
 import toast from 'react-hot-toast'
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 const Overlay = dynamic(() => import('../../widgets/Overlay'))
@@ -13,21 +10,18 @@ const PriceSheet = dynamic(() => import('./PriceSheet'))
 const FeedTypeSheet = dynamic(() => import('./FeedTypeSheet'))
 import Icon from '../../widgets/Icon'
 import Input from '../../widgets/Input'
-import Avatar from '../../widgets/Avatar'
 import Loading from '../../widgets/Loading'
 import { feedOptions, subscribeOptions } from './config'
 import { authLogin } from '../../utils/loginUtil'
-import { checkGroup, parseFeed, subscribeTopic, checkOrder } from '../../services/api/owl'
-import { getMixinContext } from '../../services/api/mixin'
+import { parseFeed, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import styles from './index.module.scss'
 
 function Home() {
   const { t } = useTranslation('common')
   const [ state ]  = useContext(ProfileContext)
-  // console.log('state profile:', state.profile)
-  const [ userInfo, setUserInfo ] = useState('')
-  const isLogin = state.profile.user_name !== undefined || (userInfo && userInfo.user_name)
+  console.log('state profile:', state)
+  const isLogin = state.userInfo && state.userInfo.user_name
 
   const [ feed, setFeed ] = useState('')
   const [ show, setShow ] = useState(false)
@@ -42,8 +36,6 @@ function Home() {
   const [ feedType, setFeedType ] = useState(defaultType)
   const [ feedInfo, setFeedInfo ] = useState({})
   const [ feedError, setFeedError ] = useState('')
-  const [ theme, setTheme ] = useState('')
-  const [ groupInfo, setGroupInfo ] = useState(false)
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
@@ -175,61 +167,8 @@ function Home() {
     }
   }, [check])
 
-  useEffect(() => {
-    const res = getMixinContext()
-    setTheme(res.appearance || 'light')
-    if (!res?.app_version) {
-      storageUtil.set('platform', 'browser')
-    }
-    // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
-    storageUtil.get(`user_info_${res?.conversation_id || ''}`) && setUserInfo(storageUtil.get(`user_info_${res?.conversation_id || ''}`))
-    storageUtil.set('current_conversation_id', res?.conversation_id || null)
-    // storageUtil.set('current_conversation_id', res?.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc')
-
-    if (res?.conversation_id) {
-      const initialFunc = async () => {
-        const data = await checkGroup({conversation_id: res.conversation_id})
-        if (!res?.err_code) {
-          setLoading(false)
-          setGroupInfo(data)
-        }
-      }
-      initialFunc()
-    }
-  }, [])
-
   return (
     <div className={styles.main}>
-      <Head>
-        <title>Owl Deliver</title>
-        <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content={ theme === 'dark' ? "#080808" : "#FFFFFF"} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
-      <TopBar />
-
-      {/* 登录状态 */}
-      {
-        isLogin ?
-        <div className={styles.avatar}>
-          <Link href="/user" >
-            <a>
-              <Avatar group={groupInfo?.is_group} imgSrc={userInfo?.user_icon} />
-            </a>
-          </Link>
-        </div>
-        :
-        <div
-          className={styles.login}
-          onClick={() => authLogin()}
-        >
-          <span>
-            {groupInfo?.is_group ? t('owner_login') : t('login')}
-          </span>
-        </div>
-      }
-
       {/* 搜索类型选择 */}
       <div className={styles.options}>
         <span>{t('current_type')}{t('colon')}</span>

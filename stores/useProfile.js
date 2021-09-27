@@ -4,6 +4,9 @@ export const ProfileContext = React.createContext({})
 
 export const state = {
   profile: {},
+  userInfo: {},
+  groupInfo: {},
+  isLogin: false
 }
 
 export function reducer(preState, action) {
@@ -13,6 +16,21 @@ export function reducer(preState, action) {
       return {
         ...preState,
         profile: action.profile
+      }
+    case 'userInfo':
+      return {
+        ...preState,
+        userInfo: action.userInfo
+      }
+    case 'groupInfo':
+      return {
+        ...preState,
+        groupInfo: action.groupInfo
+      }
+    case 'isLogin':
+      return {
+        ...preState,
+        isLogin: action.isLogin
       }
     default:
       return preState

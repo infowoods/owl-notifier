@@ -3,8 +3,6 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { ProfileContext } from '../../stores/useProfile'
-import Head from 'next/head'
-import TopBar from '../TopBar'
 import toast from 'react-hot-toast'
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 const PriceSheet = dynamic(() => import('../Home/PriceSheet'))
@@ -12,7 +10,6 @@ const QrCodeSheet = dynamic(() => import('../Home/QrCodeSheet'))
 const Overlay = dynamic(() => import('../../widgets/Overlay'))
 import { subscribeOptions } from '../Home/config'
 import Icon from '../../widgets/Icon'
-import Avatar from '../../widgets/Avatar'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
 import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
@@ -20,16 +17,13 @@ import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp } from '../../utils/timeUtil'
 import { logout } from '../../utils/loginUtil'
 import styles from './index.module.scss'
-import { getMixinContext } from '../../services/api/mixin'
 
 function User() {
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
-  // const [ theme, setTheme ] = useState('')
+  const [ , dispatch ]  = useContext(ProfileContext)
   const router = useRouter()
   const [ empty, setEmpty ] = useState(false)
   const [ btnSelect, setBtnSelect ] = useState('')
-  const [ userInfo, setUserInfo ] = useState('')
   const [ feedList, setFeedList ] = useState([])
   const [ loading, setLoading ] = useState(true)
   const [ showSubscribe, setShowSubscribe ] = useState(false)
@@ -80,8 +74,13 @@ function User() {
       }
     } catch (error) {
       setLoading(false)
+      console.log('error:', error)
       if (error?.data?.message === 'no user data') {
         setEmpty(true)
+      }
+      if (error?.action === 'logout') {
+        logout(dispatch)
+        router.push('/')
       }
     } finally {
       setLoading(false)
@@ -146,36 +145,11 @@ function User() {
   }, [check])
 
   useEffect(() => {
-    // setTheme(getMixinContext().appearance || 'light')
-    const conversationId = storageUtil.get('current_conversation_id')
-    const id = conversationId === null ? '' : conversationId
-    storageUtil.get(`user_info_${id}`) && setUserInfo(storageUtil.get(`user_info_${id}`))
     getUserFollows()
   }, [])
 
   return (
     <div className={styles.main}>
-      <Head>
-        <title>Owl Deliver</title>
-        <meta name="description" content="猫头鹰订阅器" />
-        {/* <meta name="theme-color" content={ theme === 'dark' ? "#1E1E1E" : "#F4F6F7"} /> */}
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
-      <TopBar url="/" />
-
-      <div className={styles.avatar}>
-        <div>
-          <Icon
-            type="settings-fill"
-            onClick={() => {
-              router.push('/settings')
-            }}
-          />
-          <Avatar group={userInfo?.user_type === 'MIXIN_GROUP'} imgSrc={userInfo?.user_icon} />
-        </div>
-      </div>
-
       {
         empty &&
         <div className={styles.empty}>

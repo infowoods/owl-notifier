@@ -39,6 +39,7 @@ owlrss.interceptors.response.use(
       return Promise.reject({ code: error.code, message: error.description })
     }
     if (res.status === 403 || res.status === 401) {
+      console.log('status:', res.status)
       return Promise.reject({ action: 'logout', status: res.status, data: res.data })
     }
     if (res.status === 202) {
@@ -49,9 +50,14 @@ owlrss.interceptors.response.use(
     }
   },
   (err) => {
+    // err.response: config, data, headers, status, statusText
+    if (err.response.status === 403 || err.response.status === 401) {
+      return Promise.reject({ action: 'logout', status: err.response.status, data: err.response.data })
+    }
     if (err.response && err.response.data) {
       return Promise.reject(err.response.data)
-    } else {
+    }
+    else {
       return Promise.reject({ code: -1 })
     }
   }

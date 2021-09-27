@@ -1,7 +1,11 @@
 import Image from 'next/image'
 
 function Avatar(props) {
-  const { group=false, imgSrc } = props
+  const {
+    group = false,
+    imgSrc,
+    ...others
+  } = props
   const defalutAvatar = '/default-avatar.png'
 
   return (
@@ -10,6 +14,7 @@ function Avatar(props) {
       alt="avatar"
       width={35}
       height={35}
+      {...others}
     />
   )
 }
