@@ -39,7 +39,6 @@ owlrss.interceptors.response.use(
       return Promise.reject({ code: error.code, message: error.description })
     }
     if (res.status === 403 || res.status === 401) {
-      console.log('status:', res.status)
       return Promise.reject({ action: 'logout', status: res.status, data: res.data })
     }
     if (res.status === 202) {

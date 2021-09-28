@@ -15,7 +15,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script defer src="/fonts/iconfont-2021-08-29.js" />
+          <script defer src="/fonts/iconfont-2021-09-28.js" />
         </body>
       </Html>
     )

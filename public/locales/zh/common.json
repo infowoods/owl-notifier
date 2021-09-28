@@ -47,5 +47,13 @@
   "unfollow_success": "取关成功！",
   "setting_update": "设置成功！",
   "pay_with_phone": "请用手机扫码",
-  "has_paid": "已支付"
+  "has_paid": "已支付",
+  "push_date": "上次推送时间",
+  "crawl_date": "上次获取源时间",
+  "copy": "复 制",
+  "source_uri": "源地址",
+  "copy_success": "复制成功",
+  "try_again": "复制失败，请重试",
+  "will_expire": "即将到期",
+  "renew": "我要续费"
 }

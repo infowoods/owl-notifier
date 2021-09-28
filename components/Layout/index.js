@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { useTranslation } from 'next-i18next'
+import { i18n, useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import TopBar from '../TopBar'
 import Avatar from '../../widgets/Avatar'
@@ -12,19 +12,13 @@ import { ProfileContext } from '../../stores/useProfile'
 import { authLogin } from '../../utils/loginUtil'
 import styles from './index.module.scss'
 
-function Layout(props) {
-  const {
-    children,
-  } = props
-
+function Layout({ children }) {
   const { t } = useTranslation('common')
-  const [ , dispatch ]  = useContext(ProfileContext)
+  const [ state, dispatch ]  = useContext(ProfileContext)
   const { pathname, push } = useRouter()
   const [ theme, setTheme ] = useState('')
   const [ init, setInit ] = useState(false)
-  const [ userInfo, setUserInfo ] = useState('')
-  const [ groupInfo, setGroupInfo ] = useState(false)
-  const isLogin = userInfo && userInfo.user_name
+  const isLogin = state.userInfo && state.userInfo.user_name
 
   const backLink = (path) => {
     switch (path) {
@@ -41,8 +35,6 @@ function Layout(props) {
     switch (path) {
       case '/':
         return '/user'
-      case '/user':
-        return '/settings'
       default:
         break
     }
@@ -58,11 +50,13 @@ function Layout(props) {
   }
 
   useEffect(() => {
+    // console.log('>>> layout init')
     const ctx = getMixinContext()
     if (ctx?.locale && ctx.locale !== 'zh-CN') {
       i18n.changeLanguage('en')
       push(pathname, pathname, { locale: 'en' })
     }
+
     ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
     setTheme(ctx.appearance || 'light')
 
@@ -71,11 +65,11 @@ function Layout(props) {
     }
 
     // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
-    storageUtil.get(`user_info_${ctx?.conversation_id || ''}`) && setUserInfo(storageUtil.get(`user_info_${ctx?.conversation_id || ''}`))
-    dispatch({
+    storageUtil.get(`user_info_${ctx?.conversation_id || ''}`) && dispatch({
       type: 'userInfo',
       userInfo: storageUtil.get(`user_info_${ctx?.conversation_id || ''}`)
     })
+
     storageUtil.set('current_conversation_id', ctx?.conversation_id || null)
     // storageUtil.set('current_conversation_id', ctx?.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc')
 
@@ -83,25 +77,34 @@ function Layout(props) {
       const initialFunc = async () => {
         const data = await checkGroup({conversation_id: ctx.conversation_id})
         if (!data?.err_code) {
-          setGroupInfo(data)
           dispatch({
             type: 'groupInfo',
-            userInfo: data
+            groupInfo: data
           })
+          setInit(true)
         }
       }
       initialFunc()
+    } else {
+      setInit(true)
     }
-    setInit(true)
   }, [])
 
   return (
-    pathname !== '/callback/mixin' ?
+    (pathname !== '/callback/mixin' && pathname !== '/_error') ?
     <div className={`${styles.wrap} ${pathname === '/' ? styles.bgLight : styles.bgGray}`}>
       <Head>
         <title>Owl Deliver</title>
         <meta name="description" content="猫头鹰订阅器" />
-        <meta name="theme-color" content={ theme === 'dark' ? "#080808" : "#FFFFFF"} />
+        <meta
+          name="theme-color"
+          content={
+            theme === 'dark' ?
+            (pathname === '/' ? "#080808" : "#1E1E1E")
+            :
+            (pathname === '/' ? "#FFFFFF" : "#F4F6F7")
+          }
+        />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
@@ -121,8 +124,8 @@ function Layout(props) {
             init ?
               isLogin ?
               <Avatar
-                group={groupInfo?.is_group}
-                imgSrc={userInfo?.user_icon}
+                group={state.groupInfo?.is_group}
+                imgSrc={state.userInfo?.user_icon}
                 onClick={handleClick}
               />
               :
@@ -131,11 +134,14 @@ function Layout(props) {
                 onClick={() => authLogin()}
               >
                 <span>
-                  {groupInfo?.is_group ? t('owner_login') : t('login')}
+                  {
+                    state.groupInfo?.is_group ?
+                    t('owner_login') : t('login')
+                  }
                 </span>
               </div>
             :
-            <div style={{ height: '38px' }}></div>
+            <div style={{ height: '35px' }}></div>
           }
         </div>
       </div>

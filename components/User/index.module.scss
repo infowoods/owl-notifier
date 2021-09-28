@@ -1,5 +1,5 @@
 .main {
-  height: calc(100vh - 99px);
+  min-height: calc(100vh - 99px);
 }
 
 .avatar {
@@ -72,10 +72,18 @@
     span {
       color: $contentPrimary;
     }
+    &:nth-child(2) {
+      padding: 4px 0;
+    }
   }
 }
 .increaseMargin {
   margin-top: 10px;
+}
+.renew {
+  span {
+    color: $notice !important;
+  }
 }
 
 .feedDesc {
@@ -98,4 +106,18 @@
 
 .buttonAccent {
   background: $backgroundLightAccent;
+}
+
+.copy {
+  margin-top: 12px;
+  span {
+    &:first-child {
+      color: $contentPrimary;
+      font-size: 14px;
+    }
+    i {
+      color: $contentSecondry;
+      vertical-align: middle;
+    }
+  }
 }

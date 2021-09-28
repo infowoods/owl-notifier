@@ -17,6 +17,14 @@ export function logout (dispatch, conversation_id) {
     type: 'profile',
     profile: {},
   })
+  dispatch({
+    type: 'userInfo',
+    userInfo: {},
+  })
+  dispatch({
+    type: 'groupInfo',
+    groupInfo: {},
+  })
   console.log('logout')
   StorageUtil.del(OWL_USER + id)
   StorageUtil.del('mixin_token')

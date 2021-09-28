@@ -1,6 +1,6 @@
 export const feedOptions = (t) => [
   {
-    type: 'topic',
+    type: 'oak',
     icon: 'oak-leaf',
     name: t('oak'),
     placeholder: t('oak_ph'),
@@ -24,12 +24,12 @@ export const feedOptions = (t) => [
     name: t('twitter'),
     placeholder: t('twitter_ph'),
   },
-  {
-    type: 'youtube',
-    icon: 'youtube-fill',
-    name: t('youtube'),
-    placeholder: t('youtube_ph'),
-  }
+  // {
+  //   type: 'youtube',
+  //   icon: 'youtube-fill',
+  //   name: t('youtube'),
+  //   placeholder: t('youtube_ph'),
+  // }
 ]
 
 export const subscribeOptions = (monthlyPrice, yearlyPrice) => [

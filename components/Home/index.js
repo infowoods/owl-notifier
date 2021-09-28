@@ -20,8 +20,8 @@ import styles from './index.module.scss'
 function Home() {
   const { t } = useTranslation('common')
   const [ state ]  = useContext(ProfileContext)
-  console.log('state profile:', state)
   const isLogin = state.userInfo && state.userInfo.user_name
+  // console.log('homepage state:', state)
 
   const [ feed, setFeed ] = useState('')
   const [ show, setShow ] = useState(false)
@@ -104,7 +104,7 @@ function Home() {
         setLoading(false)
       }
     } catch (error) {
-      setFeedError(error?.data.message)
+      setFeedError(error?.data?.message || 'parse_error')
       setLoading(false)
     }
   }
@@ -115,16 +115,38 @@ function Home() {
       tid: feedInfo.tid,
       period: period
     }
-    const res = await subscribeTopic(params) || {}
-    if (res?.payment_uri) {
-      if (storageUtil.get('platform') === 'browser') {
-        setPayUrl(res.payment_uri)
-      } else {
-        window.open(res.payment_uri)
+    try {
+      const res = await subscribeTopic(params) || {}
+      if (res?.payment_uri) {
+        if (storageUtil.get('platform') === 'browser') {
+          setPayUrl(res.payment_uri)
+        } else {
+          window.open(res.payment_uri)
+        }
+        setShowSubscribe(false)
+        res?.order_id && setOrderId(res.order_id)
+        setCheck(true)
       }
-      setShowSubscribe(false)
-      res?.order_id && setOrderId(res.order_id)
-      setCheck(true)
+    } catch (error) {
+      toast.error(error?.data.message || 'Failed')
+    }
+  }
+
+  const inputValidate = (feed) => {
+    const trimFeed = feed.trim()
+    switch (feedType.type) {
+      case 'rss':
+        return (trimFeed.slice(0, 8) === 'https://' || trimFeed.slice(0, 7) === 'http://')
+      case 'oak':
+        return trimFeed.slice(0, 4) === 'oth:'
+      case 'weibo':
+        const wReg = new RegExp(/^[A-Za-z0-9_]{3,20}$/)
+        return wReg.test(trimFeed)
+      case 'twitter':
+        const tReg = new RegExp(/^[A-Za-z0-9_]{4,15}$/)
+        return tReg.test(trimFeed)
+      default:
+        return
     }
   }
 
@@ -132,8 +154,12 @@ function Home() {
     setFeedInfo({})
     setFeedError('')
     setFollowBtnText(t('follow'))
-    setLoading(true)
-    parseExternalFeed(feed)
+    if (inputValidate(feed)) {
+      setLoading(true)
+      parseExternalFeed(feed)
+    } else {
+      setFeedError('validate_error')
+    }
   }
 
   const handleKeyDown = (e) => {
@@ -168,7 +194,7 @@ function Home() {
   }, [check])
 
   return (
-    <div className={styles.main}>
+    <div className={`${isLogin ? styles.main : styles.mainNotLogin}`}>
       {/* 搜索类型选择 */}
       <div className={styles.options}>
         <span>{t('current_type')}{t('colon')}</span>

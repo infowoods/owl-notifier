@@ -47,5 +47,13 @@
   "unfollow_success": "Unfollow Successfully!",
   "setting_update": "Setting Updated!",
   "pay_with_phone": "Please Scan With MM",
-  "has_paid": "Already Paid"
+  "has_paid": "Already Paid",
+  "push_date": "Last Push Time",
+  "crawl_date": "Last Source Update",
+  "copy": "Copy",
+  "source_uri": "Source Uri",
+  "copy_success": "Copy Success",
+  "try_again": "Copy Failed. Please Try Again",
+  "will_expire": "Expire Soon",
+  "renew": "Renew"
 }

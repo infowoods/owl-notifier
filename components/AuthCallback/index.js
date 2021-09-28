@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { ProfileContext } from '../../stores/useProfile'
-import { owlSignIn } from '../../services/api/owl'
+import { owlSignIn, checkGroup } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { getMixinContext } from '../../services/api/mixin'
 import Head from 'next/head'
@@ -41,8 +41,8 @@ function AuthCallback() {
         const data = await owlSignIn(params) || {}
         if (data?.access_token) {
           dispatch({
-            type: 'profile',
-            profile: data,
+            type: 'userInfo',
+            userInfo: data,
           })
           storageUtil.set(`user_info_${conversation_id}`, data)
           push('/')
@@ -60,6 +60,19 @@ function AuthCallback() {
   useEffect(() => {
     const res = getMixinContext()
     res && setCtx(res)
+    if (res?.conversation_id) {
+      const initialFunc = async () => {
+        const data = await checkGroup({conversation_id: res.conversation_id})
+        // const data = await checkGroup({conversation_id: 'e608b413-8ee9-426e-843e-77a3d6bb7cbc'})
+        if (!data?.err_code) {
+          dispatch({
+            type: 'groupInfo',
+            groupInfo: data
+          })
+        }
+      }
+      initialFunc()
+    }
   }, [])
 
   return (
