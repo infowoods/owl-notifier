@@ -69,7 +69,11 @@ function User() {
       const followsList = await getFollows()
       if (followsList.utc_offset?.toString()) {
         setOffset(followsList.utc_offset)
-        setFeedList(followsList.follows)
+        if (!followsList.follows?.ing?.length && !followsList.follows?.history?.length) {
+          setEmpty(true)
+        } else {
+          setFeedList(followsList.follows)
+        }
         setLoading(false)
       } else {
         toast.error('Error')
@@ -79,11 +83,13 @@ function User() {
       setLoading(false)
       if (error?.data?.message === 'no user data') {
         setEmpty(true)
+        return
       }
       if (error?.action === 'logout') {
         logout(dispatch)
         router.push('/')
       }
+      toast.error('Failed')
     } finally {
       setLoading(false)
     }

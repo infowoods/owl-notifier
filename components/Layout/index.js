@@ -84,13 +84,11 @@ function Layout({ children }) {
             type: 'groupInfo',
             groupInfo: data
           })
-          console.log('>> refesh in mixin init')
           setInit(true)
         }
       }
       initialFunc()
     } else {
-      console.log('>> refesh desktop init')
       setInit(true)
     }
   }, [])
