@@ -152,7 +152,7 @@ function Layout({ children }) {
           }
         </div>
       </div>
-      {children}
+      {init && children}
     </div>
     :
     <div className={styles.noTopBar}>
