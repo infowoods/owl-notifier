@@ -16,21 +16,21 @@
   background: $backgroundSecondary;
 }
 
-.avatar, .login {
+.avatarWrap, .login {
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
-  margin-top: 6px;
 }
 
-.avatar {
-  div {
+.avatarWrap {
+  margin-top: 12px;
+  >div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     i {
       vertical-align: middle;
-      font-size: 27px; // 27+8=35
+      font-size: 28px; // 28+8=36
       color: $contentPrimary;
       cursor: pointer;
       padding: 4px;
@@ -46,6 +46,10 @@
   }
 }
 
+.avatar {
+  height: 40px;
+}
+
 .login {
   span {
     line-height: 32px;
@@ -54,16 +58,17 @@
     background: $backgroundSecondary;
     border-radius: 8px;
     font-size: 14px;
-    margin-top: 12px;
+    // margin-top: 12px;
     &:hover {
       color: $accent;
     }
   }
 }
 
-.callback {
+.noTopBar {
   max-width: 840px;
   margin: 0 auto;
   border-left: 1px solid $borderOpaque;
   border-right: 1px solid $borderOpaque;
+  background: $backgroundPrimary;
 }

@@ -1,5 +1,5 @@
 .main {
-  min-height: calc(100vh - 99px);
+  min-height: calc(100vh - 110px);
 }
 
 .avatar {
@@ -115,9 +115,12 @@
       color: $contentPrimary;
       font-size: 14px;
     }
-    i {
-      color: $contentSecondry;
-      vertical-align: middle;
+    &:last-child {
+      cursor: pointer;
+      i {
+        color: $contentSecondry;
+        vertical-align: middle;
+      }
     }
   }
 }

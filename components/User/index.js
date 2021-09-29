@@ -15,6 +15,7 @@ import Loading from '../../widgets/Loading'
 import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp, timeDifference } from '../../utils/timeUtil'
+import { copyText } from '../../utils/copyUtil'
 import { logout } from '../../utils/loginUtil'
 import styles from './index.module.scss'
 
@@ -129,17 +130,6 @@ function User() {
       }
     } catch (error) {
       toast.error(error?.data.message || 'Failed')
-    }
-  }
-
-  const handleCopy = async (val) => {
-    if (navigator.clipboard) {
-      try {
-        await navigator.clipboard.writeText(val)
-        toast.success(t('copy_success'))
-      } catch (error) {
-        toast.error(t('try_again'))
-      }
     }
   }
 
@@ -275,7 +265,7 @@ function User() {
                         <span>
                           {t('source_uri')} ({sourceType(feed.source_type)}){t('colon')}
                         </span>
-                        <span onClick={() => handleCopy(feed.uri)}>
+                        <span onClick={() => copyText(feed.uri, toast, t)}>
                           {feed.uri} <Icon type="copy" />
                         </span>
                       </p>

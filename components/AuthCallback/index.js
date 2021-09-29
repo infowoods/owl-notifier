@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useTranslation } from 'next-i18next'
+import { useTranslation, i18n } from 'next-i18next'
 import { ProfileContext } from '../../stores/useProfile'
 import { owlSignIn, checkGroup } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
@@ -44,7 +44,14 @@ function AuthCallback() {
             type: 'userInfo',
             userInfo: data,
           })
-          storageUtil.set(`user_info_${conversation_id}`, data)
+          storageUtil.set(`user_info_${conversation_id}`, data) // userInfo persistence
+
+          // if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en') {
+          //   i18n.changeLanguage('en')
+          //   push('/', '/', { locale: 'en' })
+          // } else {
+          //   push('/')
+          // }
           push('/')
         }
       } catch (error) {

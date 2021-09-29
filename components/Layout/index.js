@@ -50,14 +50,15 @@ function Layout({ children }) {
   }
 
   useEffect(() => {
-    // console.log('>>> layout init')
+    console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
-    if (ctx?.locale && ctx.locale !== 'zh-CN') {
+    if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en' && pathname !== '/callback/mixin') {
       i18n.changeLanguage('en')
       push(pathname, pathname, { locale: 'en' })
     }
 
     ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
+    // document.documentElement.setAttribute('data-theme', 'dark')
     setTheme(ctx.appearance || 'light')
 
     if (!ctx?.app_version) {
@@ -76,19 +77,30 @@ function Layout({ children }) {
     if (ctx?.conversation_id) {
       const initialFunc = async () => {
         const data = await checkGroup({conversation_id: ctx.conversation_id})
+        // const data = await checkGroup({conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e'})
         if (!data?.err_code) {
           dispatch({
             type: 'groupInfo',
             groupInfo: data
           })
+          console.log('>> refesh in mixin init')
           setInit(true)
         }
       }
       initialFunc()
     } else {
+      console.log('>> refesh desktop init')
       setInit(true)
     }
   }, [])
+
+  // useEffect(() => {
+  //   const ctx = getMixinContext()
+  //   if (ctx?.locale && ctx.locale !== 'zh-CN') {
+  //     i18n.changeLanguage('en')
+  //     push(pathname, pathname, { locale: 'en' })
+  //   }
+  // }, [isLogin])
 
   return (
     (pathname !== '/callback/mixin' && pathname !== '/_error') ?
@@ -111,7 +123,7 @@ function Layout({ children }) {
       <TopBar url={backLink(pathname)} />
 
       {/* 登录状态 */}
-      <div className={styles.avatar}>
+      <div className={styles.avatarWrap}>
         <div>
           {
             pathname === '/user' &&
@@ -123,11 +135,13 @@ function Layout({ children }) {
           {
             init ?
               isLogin ?
-              <Avatar
-                group={state.groupInfo?.is_group}
-                imgSrc={state.userInfo?.user_icon}
-                onClick={handleClick}
-              />
+              <div className={styles.avatar}>
+                <Avatar
+                  group={state.groupInfo?.is_group}
+                  imgSrc={state.userInfo?.user_icon}
+                  onClick={handleClick}
+                />
+              </div>
               :
               <div
                 className={styles.login}
@@ -141,14 +155,14 @@ function Layout({ children }) {
                 </span>
               </div>
             :
-            <div style={{ height: '35px' }}></div>
+            <div style={{ height: '40px' }}></div>
           }
         </div>
       </div>
       {children}
     </div>
     :
-    <div className={styles.callback}>
+    <div className={styles.noTopBar}>
       {children}
     </div>
   )

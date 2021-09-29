@@ -12,8 +12,8 @@ function Avatar(props) {
     <Image
       src={group ? defalutAvatar : (imgSrc ? imgSrc : defalutAvatar)}
       alt="avatar"
-      width={35}
-      height={35}
+      width={36}
+      height={36}
       {...others}
     />
   )

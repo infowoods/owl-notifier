@@ -194,7 +194,7 @@ function Home() {
   }, [check])
 
   return (
-    <div className={`${isLogin ? styles.main : styles.mainNotLogin}`}>
+    <div className={styles.main}>
       {/* 搜索类型选择 */}
       <div className={styles.options}>
         <span>{t('current_type')}{t('colon')}</span>
