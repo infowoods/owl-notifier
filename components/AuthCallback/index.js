@@ -6,11 +6,13 @@ import { owlSignIn, checkGroup } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import { getMixinContext } from '../../services/api/mixin'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
+import toast from 'react-hot-toast'
+const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 import styles from './index.module.scss'
 
 function AuthCallback() {
   const { t } = useTranslation('common')
-  const [ error, setError ] = useState('')
   const [ loading, setLoading ] = useState(true)
   const [ ctx, setCtx ] = useState({})
   const [ , dispatch ]  = useContext(ProfileContext)
@@ -46,17 +48,17 @@ function AuthCallback() {
           })
           storageUtil.set(`user_info_${conversation_id}`, data) // userInfo persistence
 
-          // if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en') {
-          //   i18n.changeLanguage('en')
-          //   push('/', '/', { locale: 'en' })
-          // } else {
-          //   push('/')
-          // }
-          push('/')
+          if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en') {
+            i18n.changeLanguage('en')
+            push('/', '/', { locale: 'en' })
+          } else {
+            push('/')
+          }
         }
       } catch (error) {
         setLoading(false)
-        error?.data?.message && setError(error?.data?.message)
+        toast.error('Auth Failed')
+        push('/')
       } finally {
         setLoading(false)
       }
@@ -91,18 +93,6 @@ function AuthCallback() {
       </Head>
 
       {
-        error &&
-        <div className={styles.error}>
-          <p>
-            {t('auth_failed')}{t('colon')}{error}
-          </p>
-          <p onClick={() => push('/')}>
-            👉  {t('back_homepage')}
-          </p>
-        </div>
-      }
-
-      {
         loading &&
         <div className={styles.loading}>
           <span className={styles.bar}>
@@ -110,6 +100,8 @@ function AuthCallback() {
           </span>
         </div>
       }
+
+      <OwlToast />
     </div>
   )
 }

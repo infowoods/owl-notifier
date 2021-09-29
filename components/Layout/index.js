@@ -50,11 +50,12 @@ function Layout({ children }) {
   }
 
   useEffect(() => {
-    console.log('>>> layout init:', pathname)
+    // console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
     if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en' && pathname !== '/callback/mixin') {
       i18n.changeLanguage('en')
       push(pathname, pathname, { locale: 'en' })
+      return
     }
 
     ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
@@ -93,14 +94,6 @@ function Layout({ children }) {
       setInit(true)
     }
   }, [])
-
-  // useEffect(() => {
-  //   const ctx = getMixinContext()
-  //   if (ctx?.locale && ctx.locale !== 'zh-CN') {
-  //     i18n.changeLanguage('en')
-  //     push(pathname, pathname, { locale: 'en' })
-  //   }
-  // }, [isLogin])
 
   return (
     (pathname !== '/callback/mixin' && pathname !== '/_error') ?
