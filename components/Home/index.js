@@ -28,7 +28,7 @@ function Home() {
   const [ showSubscribe, setShowSubscribe ] = useState(false)
   const [ check, setCheck ] = useState(false)
   const defaultType = {
-    type: 'topic',
+    type: 'oak',
     icon: 'oak-leaf',
     name: t('oak'),
     placeholder: t('oak_ph'),
@@ -70,14 +70,13 @@ function Home() {
   }
 
   const parseExternalFeed = async (feed) => {
-    const uri = 'oth:' + feedType.type + '/user/' + feed
     let parseUrl
     switch (feedType.type) {
       case 'rss':
         parseUrl = feed
         break
       case 'oak':
-        parseUrl = uri
+        parseUrl = feed
         break
       case 'weibo':
         parseUrl = 'https://weibo.com/' + feed
