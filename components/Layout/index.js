@@ -10,6 +10,7 @@ import storageUtil from '../../utils/storageUtil'
 import { checkGroup } from '../../services/api/owl'
 import { ProfileContext } from '../../stores/useProfile'
 import { authLogin } from '../../utils/loginUtil'
+import Loading from '../../widgets/Loading'
 import styles from './index.module.scss'
 
 function Layout({ children }) {
@@ -111,50 +112,56 @@ function Layout({ children }) {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <TopBar url={backLink(pathname)} />
+      {
+        init ?
+        <>
+          <TopBar url={backLink(pathname)} />
 
-      {/* 登录状态 */}
-      <div className={styles.avatarWrap}>
-        <div>
-          {
-            pathname === '/user' &&
-            <Icon
-              type="settings-fill"
-              onClick={() => push('/settings')}
-            />
-          }
-          {
-            init ?
-              isLogin ?
-              <div className={styles.avatar}>
-                <Avatar
-                  group={state.groupInfo?.is_group}
-                  imgSrc={state.userInfo?.user_icon}
-                  onClick={handleClick}
+          {/* 登录状态 */}
+          <div className={styles.avatarWrap}>
+            <div>
+              {
+                pathname === '/user' &&
+                <Icon
+                  type="settings-fill"
+                  onClick={() => push('/settings')}
                 />
-              </div>
-              :
-              <div
-                className={styles.login}
-                onClick={() => authLogin()}
-              >
-                <span>
-                  {
-                    state.groupInfo?.is_group ?
-                    t('owner_login') : t('login')
-                  }
-                </span>
-              </div>
-            :
-            <div style={{ height: '40px' }}></div>
-          }
+              }
+              {
+                isLogin ?
+                <div className={styles.avatar}>
+                  <Avatar
+                    group={state.groupInfo?.is_group}
+                    imgSrc={state.userInfo?.user_icon}
+                    onClick={handleClick}
+                  />
+                </div>
+                :
+                <div
+                  className={styles.login}
+                  onClick={() => authLogin()}
+                >
+                  <span>
+                    {
+                      state.groupInfo?.is_group ?
+                      t('owner_login') : t('login')
+                    }
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+          { children }
+        </>
+        :
+        <div className={styles.notInit}>
+          <Loading size={36} className={styles.loading} />
         </div>
-      </div>
-      {init && children}
+      }
     </div>
     :
     <div className={styles.noTopBar}>
-      {children}
+      { children }
     </div>
   )
 }

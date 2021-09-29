@@ -68,7 +68,19 @@
 .noTopBar {
   max-width: 840px;
   margin: 0 auto;
+  min-height: 100vh;
   border-left: 1px solid $borderOpaque;
   border-right: 1px solid $borderOpaque;
   background: $backgroundPrimary;
+}
+
+.notInit {
+  max-width: 840px;
+  margin: 0 auto;
+  min-height: calc(100vh - 12px);
+  background: $backgroundPrimary;
+}
+
+.loading {
+  padding-top: 64%;
 }
