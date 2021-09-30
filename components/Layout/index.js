@@ -53,15 +53,15 @@ function Layout({ children }) {
   useEffect(() => {
     // console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
+    ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
+    // document.documentElement.setAttribute('data-theme', 'dark')
+    setTheme(ctx.appearance || 'light')
+
     if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en' && pathname !== '/callback/mixin') {
       i18n.changeLanguage('en')
       push(pathname, pathname, { locale: 'en' })
       return
     }
-
-    ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
-    // document.documentElement.setAttribute('data-theme', 'dark')
-    setTheme(ctx.appearance || 'light')
 
     if (!ctx?.app_version) {
       storageUtil.set('platform', 'browser')

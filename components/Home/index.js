@@ -103,7 +103,7 @@ function Home() {
         setLoading(false)
       }
     } catch (error) {
-      setFeedError(error?.data?.message || 'parse_error')
+      setFeedError(error?.data?.message || `${feedType.type}_parse_error`)
       setLoading(false)
     }
   }
@@ -157,7 +157,7 @@ function Home() {
       setLoading(true)
       parseExternalFeed(feed)
     } else {
-      setFeedError('validate_error')
+      setFeedError(`${feedType.type}_validate_error`)
     }
   }
 
@@ -277,7 +277,7 @@ function Home() {
         <div className={styles.errorInfo}>
           <Icon type="info-fill" />
           <p>
-            {t('parse_error')}
+            {t(feedError)}
           </p>
         </div>
       }
