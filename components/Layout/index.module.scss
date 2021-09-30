@@ -6,6 +6,7 @@
   padding: 0 10px 12px 10px;
   border-left: 1px solid $borderOpaque;
   border-right: 1px solid $borderOpaque;
+  background: $backgroundPrimary
 }
 
 .bgLight {
@@ -77,7 +78,8 @@
 .notInit {
   max-width: 840px;
   margin: 0 auto;
-  min-height: calc(100vh - 12px);
+  // min-height: calc(100vh - 12px);
+  min-height: 100vh;
   background: $backgroundPrimary;
 }
 

@@ -277,7 +277,12 @@ function Home() {
         <div className={styles.errorInfo}>
           <Icon type="info-fill" />
           <p>
-            {t(feedError)}
+            {
+              feedError.indexOf(' ') >= 0 ?
+              feedError
+              :
+              t(feedError)
+            }
           </p>
         </div>
       }

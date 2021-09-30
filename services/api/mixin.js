@@ -36,3 +36,15 @@ export function getMixinContext () {
   }
   return ctx
 }
+
+export  function reloadTheme (platform) {
+  switch (platform) {
+    case 'iOS':
+      window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.reloadTheme && window.webkit.messageHandlers.reloadTheme.postMessage('');
+      return
+    case 'Android':
+    case 'Desktop':
+      window.MixinContext && (typeof window.MixinContext.reloadTheme === 'function') && window.MixinContext.reloadTheme()
+      return
+  }
+}

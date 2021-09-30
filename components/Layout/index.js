@@ -5,7 +5,7 @@ import TopBar from '../TopBar'
 import Avatar from '../../widgets/Avatar'
 import Icon from '../../widgets/Icon'
 import { useRouter } from 'next/router'
-import { getMixinContext } from '../../services/api/mixin'
+import { getMixinContext, reloadTheme } from '../../services/api/mixin'
 import storageUtil from '../../utils/storageUtil'
 import { checkGroup } from '../../services/api/owl'
 import { ProfileContext } from '../../stores/useProfile'
@@ -19,7 +19,16 @@ function Layout({ children }) {
   const { pathname, push } = useRouter()
   const [ theme, setTheme ] = useState('')
   const [ init, setInit ] = useState(false)
+  const [ platform, setPlatform ] = useState(false)
   const isLogin = state.userInfo && state.userInfo.user_name
+
+  const getBarColor = (path) => {
+    if (theme === 'dark') {
+      reloadTheme(platform)
+      return path === '/' ? "#080808" : "#1E1E1E"
+    }
+    return path === '/' ? "#FFFFFF" : "#F4F6F7"
+  }
 
   const backLink = (path) => {
     switch (path) {
@@ -66,6 +75,7 @@ function Layout({ children }) {
     if (!ctx?.app_version) {
       storageUtil.set('platform', 'browser')
     }
+    ctx?.platform && setPlatform(ctx?.platform)
 
     // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
     storageUtil.get(`user_info_${ctx?.conversation_id || ''}`) && dispatch({
@@ -95,70 +105,71 @@ function Layout({ children }) {
   }, [])
 
   return (
-    (pathname !== '/callback/mixin' && pathname !== '/_error') ?
-    <div className={`${styles.wrap} ${pathname === '/' ? styles.bgLight : styles.bgGray}`}>
-      <Head>
-        <title>Owl Deliver</title>
-        <meta name="description" content="猫头鹰订阅器" />
-        <meta
-          name="theme-color"
-          content={
-            theme === 'dark' ?
-            (pathname === '/' ? "#080808" : "#1E1E1E")
-            :
-            (pathname === '/' ? "#FFFFFF" : "#F4F6F7")
-          }
-        />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+    pathname !== '/callback/mixin' && pathname !== '/_error' ?
+    (
+      init ?
+      <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
+        <Head>
+          <title>Owl Deliver</title>
+          <meta name="description" content="猫头鹰订阅器" />
+          <meta
+            name="theme-color"
+            content={getBarColor(pathname)}
+          />
+          <link rel="icon" href="/favicon.png" />
+        </Head>
 
-      {
-        init ?
-        <>
-          <TopBar url={backLink(pathname)} />
+        <TopBar url={backLink(pathname)} />
 
-          {/* 登录状态 */}
-          <div className={styles.avatarWrap}>
-            <div>
-              {
-                pathname === '/user' &&
-                <Icon
-                  type="settings-fill"
-                  onClick={() => push('/settings')}
+        <div className={styles.avatarWrap}>
+          <div>
+            {
+              pathname === '/user' &&
+              <Icon
+                type="settings-fill"
+                onClick={() => push('/settings')}
+              />
+            }
+            {
+              isLogin ?
+              <div className={styles.avatar}>
+                <Avatar
+                  group={state.groupInfo?.is_group}
+                  imgSrc={state.userInfo?.user_icon}
+                  onClick={handleClick}
                 />
-              }
-              {
-                isLogin ?
-                <div className={styles.avatar}>
-                  <Avatar
-                    group={state.groupInfo?.is_group}
-                    imgSrc={state.userInfo?.user_icon}
-                    onClick={handleClick}
-                  />
-                </div>
-                :
-                <div
-                  className={styles.login}
-                  onClick={() => authLogin()}
-                >
-                  <span>
-                    {
-                      state.groupInfo?.is_group ?
-                      t('owner_login') : t('login')
-                    }
-                  </span>
-                </div>
-              }
-            </div>
+              </div>
+              :
+              <div
+                className={styles.login}
+                onClick={() => authLogin()}
+              >
+                <span>
+                  {
+                    state.groupInfo?.is_group ?
+                    t('owner_login') : t('login')
+                  }
+                </span>
+              </div>
+            }
           </div>
-          { children }
-        </>
-        :
-        <div className={styles.notInit}>
-          <Loading size={36} className={styles.loading} />
         </div>
-      }
-    </div>
+          { children }
+      </div>
+      :
+      <div className={`${styles.notInit}`}>
+        <Head>
+          <title>Owl Deliver</title>
+          <meta name="description" content="猫头鹰订阅器" />
+          <meta
+            name="theme-color"
+            content={getBarColor(pathname)}
+          />
+          <link rel="icon" href="/favicon.png" />
+        </Head>
+        <Loading size={36} className={styles.loading} />
+      </div>
+    )
     :
     <div className={styles.noTopBar}>
       { children }
