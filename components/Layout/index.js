@@ -157,7 +157,7 @@ function Layout({ children }) {
           { children }
       </div>
       :
-      <div className={`${styles.notInit}`}>
+      <div className={`${styles.notInit} ${pathname !== '/' && styles.bgGray}`}>
         <Head>
           <title>Owl Deliver</title>
           <meta name="description" content="猫头鹰订阅器" />

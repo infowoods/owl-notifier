@@ -7,20 +7,7 @@ export async function getStaticProps({ locale }) {
     props: {
       ...(await serverSideTranslations(locale, ['common'], i18nConfig)),
     },
-  };
+  }
 }
 
 export default Home
-// export default function HomePage() {
-//   return (
-//     <Home />
-//   )
-// }
-
-// HomePage.getLayout = function getLayout(page) {
-//   return (
-//     <HomeLayout>
-//       {page}
-//     </HomeLayout>
-//   )
-// }
