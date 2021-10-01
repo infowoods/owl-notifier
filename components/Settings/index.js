@@ -27,6 +27,9 @@ function Settings() {
         toast.error(t('get_settings_error'))
       }
     } catch (error) {
+      if (error?.data?.message === 'user data is empty') {
+        setUserUtc('-')
+      }
       if (error?.action === 'logout') {
         logout(dispatch)
         router.push('/')
