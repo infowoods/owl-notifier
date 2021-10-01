@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getToken } from '../../utils/loginUtil'
 
-const OWL_API_HOST = 'https://owl-api.owldeliver.one/v1dev'
+const OWL_API_HOST = 'https://owl-api.owldeliver.one/v1'
 
 const owlrss = axios.create({
   baseURL: OWL_API_HOST,
