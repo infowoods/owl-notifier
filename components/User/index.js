@@ -85,6 +85,10 @@ function User() {
         setEmpty(true)
         return
       }
+      if (error?.data?.err_code === 'OWL-D100') {
+        setEmpty(true)
+        return
+      }
       if (error?.action === 'logout') {
         logout(dispatch)
         router.push('/')
