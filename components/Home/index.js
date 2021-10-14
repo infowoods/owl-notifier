@@ -9,6 +9,7 @@ const QrCodeSheet = dynamic(() => import('./QrCodeSheet'))
 const PriceSheet = dynamic(() => import('./PriceSheet'))
 const FeedTypeSheet = dynamic(() => import('./FeedTypeSheet'))
 import Icon from '../../widgets/Icon'
+import Tooltip from '../../widgets/Tooltip'
 import Input from '../../widgets/Input'
 import Loading from '../../widgets/Loading'
 import { feedOptions, subscribeOptions } from './config'
@@ -38,6 +39,10 @@ function Home() {
   const [ feedError, setFeedError ] = useState('')
   const [ monthlyPrice, setMonthlyPrice ] = useState(0)
   const [ yearlyPrice, setYearlyPrice ] = useState(0)
+  const [ monthHubPrice, setMonthHubPrice ] = useState(0)
+  const [ yearHubPrice, setYearHubPrice ] = useState(0)
+  const [ monthPushPrice, setMonthPushPrice ] = useState(0)
+  const [ yearPushPrice, setYearPushPrice ] = useState(0)
   const [ chargeCrypto, setChargeCrypto ] = useState({})
   const [ selectPeriod, setSelectPeriod ] = useState('')
   const [ loading, setLoading ] = useState(false)
@@ -99,6 +104,10 @@ function Home() {
         const yearPrice = (Number(res.price.yearly) + Number(res.service_charge.yearly)).toFixed(8).replace(/\.?0+$/,"")
         setMonthlyPrice(monPrice)
         setYearlyPrice(yearPrice)
+        setMonthHubPrice(Number(res.price.monthly).toFixed(8).replace(/\.?0+$/,""))
+        setMonthHubPrice(Number(res.price.monthly).toFixed(8).replace(/\.?0+$/,""))
+        setMonthPushPrice(Number(res.service_charge.yearly).toFixed(8).replace(/\.?0+$/,""))
+        setYearPushPrice(Number(res.service_charge.yearly).toFixed(8).replace(/\.?0+$/,""))
         setChargeCrypto(res.service_charge.currency)
         setLoading(false)
       }
@@ -257,15 +266,40 @@ function Home() {
             </div>
           </div>
           <div className={styles.feedPrice}>
-            <p>{t('subcribe_price')}{t('colon')}</p>
+            <p>
+              {t('subcribe_price')}
+              <span>{t('price_desc')}{t('colon')}</span>
+            </p>
             <div>
-              <p>
-                {monthlyPrice} {chargeCrypto.symbol} / {t('month')}
-              </p>
+              <Tooltip
+                position="center"
+                theme="dark"
+                content={
+                  <span className={styles.help}>
+                    {monthHubPrice} {chargeCrypto.symbol} + {monthPushPrice} {chargeCrypto.symbol}
+                  </span>
+                }
+              >
+                <p>
+                  {monthlyPrice} {chargeCrypto.symbol} / {t('month')}
+                  <Icon type="help-fill" />
+                </p>
+              </Tooltip>
               <div className={styles.divider}></div>
-              <p>
-                {yearlyPrice} {chargeCrypto.symbol} / {t('year')}
-              </p>
+              <Tooltip
+                position="center"
+                theme="dark"
+                content={
+                  <span className={styles.help}>
+                    {yearHubPrice} {chargeCrypto.symbol} + {yearPushPrice} {chargeCrypto.symbol}
+                  </span>
+                }
+              >
+                <p>
+                  {yearlyPrice} {chargeCrypto.symbol} / {t('year')}
+                  <Icon type="help-fill" />
+                </p>
+              </Tooltip>
             </div>
           </div>
         </>

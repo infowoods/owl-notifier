@@ -23,8 +23,8 @@ function Layout({ children }) {
   const isLogin = state.userInfo && state.userInfo.user_name
 
   const getBarColor = (path) => {
+    reloadTheme(platform)
     if (theme === 'dark') {
-      reloadTheme(platform)
       return path === '/' ? "#080808" : "#1E1E1E"
     }
     return path === '/' ? "#FFFFFF" : "#F4F6F7"
@@ -88,14 +88,23 @@ function Layout({ children }) {
 
     if (ctx?.conversation_id) {
       const initialFunc = async () => {
-        const data = await checkGroup({conversation_id: ctx.conversation_id})
-        // const data = await checkGroup({conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e'})
-        if (!data?.err_code) {
+        const localGroupInfo = storageUtil.get(`group_info_${ctx?.conversation_id || ''}`)
+        if (localGroupInfo) {
           dispatch({
             type: 'groupInfo',
-            groupInfo: data
+            groupInfo: localGroupInfo
           })
           setInit(true)
+        } else {
+          const data = await checkGroup({conversation_id: ctx.conversation_id})
+          // const data = await checkGroup({conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e'})
+          if (!data?.err_code) {
+            dispatch({
+              type: 'groupInfo',
+              groupInfo: data
+            })
+            setInit(true)
+          }
         }
       }
       initialFunc()

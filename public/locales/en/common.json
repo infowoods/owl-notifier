@@ -31,6 +31,7 @@
   "change": "Change",
   "owner_login": "Owner's auth is required",
   "subcribe_price": "Total price",
+  "price_desc": "(Topic fee & Deliver fee)",
   "cancel": "Cancel",
   "confirm": "Confirm",
   "pay": "Pay",

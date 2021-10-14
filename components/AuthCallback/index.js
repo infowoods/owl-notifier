@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useTranslation, i18n } from 'next-i18next'
+import { i18n } from 'next-i18next'
 import { ProfileContext } from '../../stores/useProfile'
 import { owlSignIn, checkGroup } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
@@ -12,7 +12,6 @@ const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 import styles from './index.module.scss'
 
 function AuthCallback() {
-  const { t } = useTranslation('common')
   const [ loading, setLoading ] = useState(true)
   const [ ctx, setCtx ] = useState({})
   const [ , dispatch ]  = useContext(ProfileContext)
@@ -78,6 +77,7 @@ function AuthCallback() {
             type: 'groupInfo',
             groupInfo: data
           })
+          storageUtil.set(`group_info_${res.conversation_id}`, data) // groupInfo persistence
         }
       }
       initialFunc()
