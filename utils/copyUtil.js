@@ -8,17 +8,16 @@ function fallbackCopyText(text, toast, t) {
   textArea.style.position = "fixed"
 
   document.body.appendChild(textArea)
-  textArea.focus()
+  // textArea.focus()
   textArea.select()
 
   try {
     const successful = document.execCommand('copy')
-    document.body.removeChild(textArea)
     successful ? toast.success(t('copy_success')) : toast.error(t('try_again'))
   } catch (err) {
-    document.body.removeChild(textArea)
     toast.error(t('try_again'))
   }
+  document.body.removeChild(textArea)
 }
 
 export function copyText(text, toast, t) {
