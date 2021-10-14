@@ -110,6 +110,7 @@
 
 .copy {
   margin-top: 12px;
+  overflow-x: hidden;
   span {
     &:first-child {
       color: $contentPrimary;

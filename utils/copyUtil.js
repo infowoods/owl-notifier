@@ -8,7 +8,7 @@ function fallbackCopyText(text, toast, t) {
   textArea.style.position = "fixed"
 
   document.body.appendChild(textArea)
-  textArea.focus()
+  // textArea.focus()
   textArea.select()
 
   try {
@@ -17,7 +17,6 @@ function fallbackCopyText(text, toast, t) {
   } catch (err) {
     toast.error(t('try_again'))
   }
-
   document.body.removeChild(textArea)
 }
 
