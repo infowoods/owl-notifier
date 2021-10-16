@@ -62,7 +62,10 @@ function Layout({ children }) {
   useEffect(() => {
     // console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
-    ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
+    if (theme !== ctx.appearance) {
+      document.documentElement.setAttribute('data-theme', ctx.appearance)
+    }
+    // ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
     // document.documentElement.setAttribute('data-theme', 'dark')
     setTheme(ctx.appearance || 'light')
 
