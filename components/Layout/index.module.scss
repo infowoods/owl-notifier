@@ -2,9 +2,11 @@
   max-width: 840px;
   margin: 0 auto;
   padding: 0 10px 12px 10px;
-  border-left: 1px solid $borderOpaque;
-  border-right: 1px solid $borderOpaque;
-  background: $backgroundPrimary
+  background: $backgroundPrimary;
+  @include responsive(lg) {
+    border-left: 1px solid $borderOpaque;
+    border-right: 1px solid $borderOpaque;
+  }
 }
 
 .bgLight {
