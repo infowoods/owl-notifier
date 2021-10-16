@@ -114,8 +114,6 @@ function Layout({ children }) {
   }, [])
 
   return (
-    pathname !== '/callback/mixin' && pathname !== '/_error' ?
-    (
       init ?
       <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
         <Head>
@@ -179,11 +177,6 @@ function Layout({ children }) {
         <Loading size={36} className={styles.loading} />
       </div>
     )
-    :
-    <div className={styles.noTopBar}>
-      { children }
-    </div>
-  )
 }
 
 export default Layout
