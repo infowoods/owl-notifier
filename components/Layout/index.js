@@ -60,7 +60,7 @@ function Layout({ children }) {
   }
 
   useEffect(() => {
-    // console.log('>>> layout init:', pathname)
+    console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
     ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
     // document.documentElement.setAttribute('data-theme', 'dark')
@@ -114,9 +114,6 @@ function Layout({ children }) {
   }, [])
 
   return (
-    pathname !== '/callback/mixin' && pathname !== '/_error' ?
-    (
-      init ?
       <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
         <Head>
           <title>Owl Deliver</title>
@@ -127,63 +124,54 @@ function Layout({ children }) {
           />
           <link rel="icon" href="/favicon.png" />
         </Head>
-
-        <TopBar url={backLink(pathname)} />
-
-        <div className={styles.avatarWrap}>
-          <div>
-            {
-              pathname === '/user' &&
-              <Icon
-                type="settings-fill"
-                onClick={() => push('/settings')}
-              />
-            }
-            {
-              isLogin ?
-              <div className={styles.avatar}>
-                <Avatar
-                  group={state.groupInfo?.is_group}
-                  imgSrc={state.userInfo?.user_icon}
-                  onClick={handleClick}
-                />
+        {
+          init && pathname !== '/callback/mixin' ?
+          <>
+            <TopBar url={backLink(pathname)} />
+            <div className={styles.avatarWrap}>
+              <div>
+                {
+                  pathname === '/user' &&
+                  <Icon
+                    type="settings-fill"
+                    onClick={() => push('/settings')}
+                  />
+                }
+                {
+                  isLogin ?
+                  <div className={styles.avatar}>
+                    <Avatar
+                      group={state.groupInfo?.is_group}
+                      imgSrc={state.userInfo?.user_icon}
+                      onClick={handleClick}
+                    />
+                  </div>
+                  :
+                  <div
+                    className={styles.login}
+                    onClick={() => authLogin()}
+                  >
+                    <span>
+                      {
+                        state.groupInfo?.is_group ?
+                        t('owner_login') : t('login')
+                      }
+                    </span>
+                  </div>
+                }
               </div>
-              :
-              <div
-                className={styles.login}
-                onClick={() => authLogin()}
-              >
-                <span>
-                  {
-                    state.groupInfo?.is_group ?
-                    t('owner_login') : t('login')
-                  }
-                </span>
-              </div>
-            }
-          </div>
-        </div>
+            </div>
+          </>
+          :
+          <>
+            <Loading size={36} className={styles.loading} />
+          </>
+        }
+        <div style={{ opacity: `${init ? '1': '0'}` }}>
           { children }
-      </div>
-      :
-      <div className={`${styles.notInit} ${pathname !== '/' && styles.bgGray}`}>
-        <Head>
-          <title>Owl Deliver</title>
-          <meta name="description" content="猫头鹰订阅器" />
-          <meta
-            name="theme-color"
-            content={getBarColor(pathname)}
-          />
-          <link rel="icon" href="/favicon.png" />
-        </Head>
-        <Loading size={36} className={styles.loading} />
+        </div>
       </div>
     )
-    :
-    <div className={styles.noTopBar}>
-      { children }
-    </div>
-  )
 }
 
 export default Layout

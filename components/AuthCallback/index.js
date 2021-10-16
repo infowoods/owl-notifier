@@ -12,7 +12,6 @@ const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 import styles from './index.module.scss'
 
 function AuthCallback() {
-  const [ loading, setLoading ] = useState(true)
   const [ ctx, setCtx ] = useState({})
   const [ , dispatch ]  = useContext(ProfileContext)
   const { push } = useRouter()
@@ -30,7 +29,6 @@ function AuthCallback() {
   useEffect(() => {
     // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e' // 测试群组1
     // const conversation_id = ctx.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc' // 测试群组2
-    setLoading(true)
     const conversation_id = ctx.conversation_id || ''
 
     const auth = async () => {
@@ -55,11 +53,8 @@ function AuthCallback() {
           }
         }
       } catch (error) {
-        setLoading(false)
         toast.error('Auth Failed')
         push('/')
-      } finally {
-        setLoading(false)
       }
     }
     query?.code && auth()
@@ -91,15 +86,6 @@ function AuthCallback() {
         <meta name="description" content="猫头鹰订阅器" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-
-      {
-        loading &&
-        <div className={styles.loading}>
-          <span className={styles.bar}>
-            <span className={styles.progress}></span>
-          </span>
-        </div>
-      }
 
       <OwlToast />
     </div>
