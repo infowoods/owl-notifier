@@ -114,7 +114,6 @@ function Layout({ children }) {
   }, [])
 
   return (
-      // init ?
       <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
         <Head>
           <title>Owl Deliver</title>
@@ -126,7 +125,7 @@ function Layout({ children }) {
           <link rel="icon" href="/favicon.png" />
         </Head>
         {
-          init ?
+          init && pathname !== '/callback/mixin' ?
           <>
             <TopBar url={backLink(pathname)} />
             <div className={styles.avatarWrap}>
@@ -172,19 +171,6 @@ function Layout({ children }) {
           { children }
         </div>
       </div>
-      // :
-      // <div className={`${styles.notInit} ${pathname !== '/' && styles.bgGray}`}>
-      //   <Head>
-      //     <title>Owl Deliver</title>
-      //     <meta name="description" content="猫头鹰订阅器" />
-      //     <meta
-      //       name="theme-color"
-      //       content={getBarColor(pathname)}
-      //     />
-      //     <link rel="icon" href="/favicon.png" />
-      //   </Head>
-      //   <Loading size={36} className={styles.loading} />
-      // </div>
     )
 }
 
