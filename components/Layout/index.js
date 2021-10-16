@@ -168,7 +168,9 @@ function Layout({ children }) {
             <Loading size={36} className={styles.loading} />
           </>
         }
+        <div style={{ opacity: `${init ? '1': '0'}` }}>
           { children }
+        </div>
       </div>
       // :
       // <div className={`${styles.notInit} ${pathname !== '/' && styles.bgGray}`}>
