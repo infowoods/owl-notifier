@@ -49,6 +49,7 @@
   "rss_validate_error": "校验失败：当前输入不是一个有效的 RSS/Atom 地址",
   "youtube_validate_error": "校验失败：当前输入不是一个有效的 YouTube ID",
   "auth_failed": "授权失败",
+  "auth_expire": "请重新授权",
   "back_homepage": "返回首页",
   "no_records": "无记录",
   "checking_unfollow": "正在检查取关结果...",

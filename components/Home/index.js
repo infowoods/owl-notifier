@@ -13,14 +13,14 @@ import Tooltip from '../../widgets/Tooltip'
 import Input from '../../widgets/Input'
 import Loading from '../../widgets/Loading'
 import { feedOptions, subscribeOptions } from './config'
-import { authLogin } from '../../utils/loginUtil'
+import { authLogin, logout } from '../../utils/loginUtil'
 import { parseFeed, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import styles from './index.module.scss'
 
 function Home() {
   const { t } = useTranslation('common')
-  const [ state ]  = useContext(ProfileContext)
+  const [ state, dispatch ]  = useContext(ProfileContext)
   const isLogin = state.userInfo && state.userInfo.user_name
   // console.log('homepage state:', state)
 
@@ -112,6 +112,11 @@ function Home() {
         setLoading(false)
       }
     } catch (error) {
+      if (error?.action === 'logout') {
+        toast.error(t('auth_expire'))
+        logout(dispatch)
+        return
+      }
       setFeedError(error?.data?.message || `${feedType.type}_parse_error`)
       setLoading(false)
     }

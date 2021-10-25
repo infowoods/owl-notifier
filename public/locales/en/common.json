@@ -49,6 +49,7 @@
   "rss_validate_error": "Validate failed: Current input is not a valid RSS/Atom url",
   "youtube_validate_error": "Validate failed: Current input is not a valid YouTube ID",
   "auth_failed": "Authorization Failed",
+  "auth_expire": "Please Reauthorize",
   "back_homepage": "Back to Homepage",
   "no_records": "No record",
   "checking_unfollow": "Checking the unsubscribe result...",
