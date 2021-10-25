@@ -112,8 +112,10 @@ function Home() {
         setLoading(false)
       }
     } catch (error) {
-      if (error?.data?.action === 'logout') {
+      if (error?.action === 'logout') {
+        toast.error(t('auth_expire'))
         logout(dispatch)
+        return
       }
       setFeedError(error?.data?.message || `${feedType.type}_parse_error`)
       setLoading(false)

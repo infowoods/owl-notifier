@@ -57,7 +57,7 @@ function User() {
         getUserFollows()
       }
     } catch (error) {
-      if (error?.data?.action === 'logout') {
+      if (error?.action === 'logout') {
         logout(dispatch)
         router.push('/')
       }
@@ -90,8 +90,10 @@ function User() {
         return
       }
       if (error?.action === 'logout') {
+        toast.error(t('auth_expire'))
         logout(dispatch)
         router.push('/')
+        return
       }
       toast.error('Failed')
     } finally {
