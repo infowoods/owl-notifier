@@ -114,6 +114,7 @@ function Home() {
     } catch (error) {
       if (error?.action === 'logout') {
         toast.error(t('auth_expire'))
+        setLoading(false)
         logout(dispatch)
         return
       }
