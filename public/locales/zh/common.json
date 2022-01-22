@@ -61,10 +61,12 @@
   "has_paid": "已支付",
   "push_date": "上次推送",
   "crawl_date": "上次抓取",
+  "update_date": "最近更新",
   "copy": "复 制",
   "source_uri": "源地址",
   "copy_success": "复制成功",
   "try_again": "复制失败，请重试",
   "will_expire": "即将到期",
-  "renew": "续 订"
+  "renew": "续 订",
+  "hot_now": "当前热门"
 }

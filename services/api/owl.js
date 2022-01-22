@@ -106,3 +106,12 @@ export function getUserSettings (data) {
   return http.get(`/user/order/${order_id}`)
 }
 
+
+/**
+ *
+ * @returns
+ * 查询热门主题
+ */
+ export function getHotTopics () {
+  return http.get('/topic/hot')
+}

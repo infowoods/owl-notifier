@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { ProfileContext } from '../../stores/useProfile'
 import toast from 'react-hot-toast'
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
@@ -14,6 +15,7 @@ import Input from '../../widgets/Input'
 import Loading from '../../widgets/Loading'
 import { feedOptions, subscribeOptions } from './config'
 import { authLogin, logout } from '../../utils/loginUtil'
+import { formatNum, formatAdd } from '../../utils/numberUtil'
 import { parseFeed, subscribeTopic, checkOrder } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
 import styles from './index.module.scss'
@@ -100,14 +102,14 @@ function Home() {
       const res = await parseFeed(params)
       if (res?.price) {
         setFeedInfo(res)
-        const monPrice = (Number(res.price.monthly) + Number(res.service_charge.monthly)).toFixed(8).replace(/\.?0+$/,"")
-        const yearPrice = (Number(res.price.yearly) + Number(res.service_charge.yearly)).toFixed(8).replace(/\.?0+$/,"")
+        const monPrice = formatAdd(res.price.monthly, res.service_charge.monthly)
+        const yearPrice = formatAdd(res.price.yearly, res.service_charge.yearly)
         setMonthlyPrice(monPrice)
         setYearlyPrice(yearPrice)
-        setMonthHubPrice(Number(res.price.monthly).toFixed(8).replace(/\.?0+$/,""))
-        setYearHubPrice(Number(res.price.yearly).toFixed(8).replace(/\.?0+$/,""))
-        setMonthPushPrice(Number(res.service_charge.monthly).toFixed(8).replace(/\.?0+$/,""))
-        setYearPushPrice(Number(res.service_charge.yearly).toFixed(8).replace(/\.?0+$/,""))
+        setMonthHubPrice(formatNum(res.price.monthly))
+        setYearHubPrice(formatNum(res.price.yearly))
+        setMonthPushPrice(formatNum(res.service_charge.monthly))
+        setYearPushPrice(formatNum(res.service_charge.yearly))
         setChargeCrypto(res.service_charge.currency)
         setLoading(false)
       }
@@ -238,6 +240,10 @@ function Home() {
           onKeyDown={(e) => handleKeyDown(e)}
         />
       </form>
+
+      <Link href="/hot-topics">
+        <a className={styles.hot}>{t('hot_now')} ⚡️</a>
+      </Link>
 
       {/* 解析后源信息卡片 */}
       {
