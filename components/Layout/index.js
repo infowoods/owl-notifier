@@ -33,6 +33,7 @@ function Layout({ children }) {
   const backLink = (path) => {
     switch (path) {
       case '/user':
+      case '/hot-topics':
         return '/'
       case '/settings':
         return '/user'
@@ -44,6 +45,7 @@ function Layout({ children }) {
   const avatarLink = (path) => {
     switch (path) {
       case '/':
+      case '/hot-topics':
         return '/user'
       default:
         break

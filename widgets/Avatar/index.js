@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import styles from './index.module.scss'
 
 function Avatar(props) {
   const {
@@ -14,6 +15,7 @@ function Avatar(props) {
       alt="avatar"
       width={36}
       height={36}
+      className={styles.avatar}
       {...others}
     />
   )

@@ -219,3 +219,13 @@
   white-space: nowrap;
 }
 
+.hot {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  color: $contentNotice;
+  max-width: 520px;
+  margin: 12px auto 0 auto;
+  padding: 0 16px;
+}

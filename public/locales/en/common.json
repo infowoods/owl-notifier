@@ -61,6 +61,7 @@
   "has_paid": "Have paid",
   "push_date": "Last pushed",
   "crawl_date": "Last fetched",
+  "update_date": "Last updated",
   "copy": "Copy",
   "source_uri": "Source URI",
   "copy_success": "Successfully copied",

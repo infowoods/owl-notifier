@@ -206,7 +206,7 @@ function User() {
               }
               const willExipre = timeDifference(feed.expire_ts, Date.now()) < 7
               return (
-                <Collapse title={feed.title} key={feed.tid + index}>
+                <Collapse title={feed.title} key={feed.tid + index} className={willExipre && styles.feedCollapse}>
                   <>
                     {
                       feed.desc &&
@@ -222,8 +222,12 @@ function User() {
                           {convertTimestamp(feed.pushed_ts, offset)}
                         </p>
                         <p>
-                          <span>{t('crawl_date')}{t('colon')}</span>
+                          <span>{t('update_date')}{t('colon')}</span>
                           {convertTimestamp(feed.updated_ts, offset)}
+                        </p>
+                        <p>
+                          <span>{t('crawl_date')}{t('colon')}</span>
+                          {convertTimestamp(feed.fetched_ts, offset)}
                         </p>
                         {
                           willExipre ?
