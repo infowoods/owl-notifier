@@ -120,7 +120,7 @@ function HotTopics(props) {
 
   return (
     <div className={styles.main}>
-      <p className={styles.title}># Hot Topics</p>
+      <p className={styles.title}># {t('hot_now')}</p>
       {
         list && list.map((item, index) => {
 

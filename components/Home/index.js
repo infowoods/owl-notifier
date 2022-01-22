@@ -242,7 +242,7 @@ function Home() {
       </form>
 
       <Link href="/hot-topics">
-        <a className={styles.hot}>Hot Now ⚡️</a>
+        <a className={styles.hot}>{t('hot_now')} ⚡️</a>
       </Link>
 
       {/* 解析后源信息卡片 */}
