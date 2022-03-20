@@ -5,7 +5,8 @@
   justify-content: center;
   align-items: center;
   div {
-    border: 3px solid $contentPrimary;
+    // display: inline-block;
+    border: 3px solid $accent;
     border-left-color: rgba(0, 0, 0, 0);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
