@@ -73,6 +73,7 @@ function Input(props) {
           type={type}
           size="1"
           value={value}
+          disabled={disabled}
           {...inputProps}
           onFocus={handleOnFocus}
           onChange={handleOnChange}
@@ -82,7 +83,7 @@ function Input(props) {
 
         {focus && value !== '' && (
           <Icon
-            type="close-fill"
+            type="close-line"
             className={styles.clear}
             onMouseDown={e => e.preventDefault()}
             onClick={handleOnClear}

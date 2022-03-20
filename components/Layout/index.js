@@ -7,11 +7,12 @@ import Icon from '../../widgets/Icon'
 import { useRouter } from 'next/router'
 import { getMixinContext, reloadTheme } from '../../services/api/mixin'
 import storageUtil from '../../utils/storageUtil'
-import { checkGroup } from '../../services/api/owl'
+import { checkGroup } from '../../services/api/amo'
 import { ProfileContext } from '../../stores/useProfile'
 import { authLogin } from '../../utils/loginUtil'
 import Loading from '../../widgets/Loading'
 import styles from './index.module.scss'
+import BottomNav from '../../widgets/BottomNav'
 
 function Layout({ children }) {
   const { t } = useTranslation('common')
@@ -30,15 +31,11 @@ function Layout({ children }) {
     return path === '/' ? "#FFFFFF" : "#F4F6F7"
   }
 
+  const homeHref = ['/discover', '/', '/user']
+
   const backLink = (path) => {
-    switch (path) {
-      case '/user':
-      case '/hot-topics':
-        return '/'
-      case '/settings':
-        return '/user'
-      default:
-        break
+    if (path.includes('/amos/')) {
+      return '/'
     }
   }
 
@@ -116,9 +113,9 @@ function Layout({ children }) {
   }, [])
 
   return (
-      <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
+      <div className={`${styles.wrap} ${pathname.includes('/amos/') && styles.bgGray}`}>
         <Head>
-          <title>Owl Deliver</title>
+          <title>Amo Notifier</title>
           <meta name="description" content="猫头鹰订阅器" />
           <meta
             name="theme-color"
@@ -141,6 +138,7 @@ function Layout({ children }) {
                 }
                 {
                   isLogin ?
+                  pathname === '/user' ?
                   <div className={styles.avatar}>
                     <Avatar
                       group={state.groupInfo?.is_group}
@@ -148,6 +146,8 @@ function Layout({ children }) {
                       onClick={handleClick}
                     />
                   </div>
+                  :
+                  <></>
                   :
                   <div
                     className={styles.login}
@@ -171,6 +171,9 @@ function Layout({ children }) {
         }
         <div style={{ opacity: `${init ? '1': '0'}` }}>
           { children }
+          {
+            homeHref.includes(pathname) && <BottomNav />
+          }
         </div>
       </div>
     )

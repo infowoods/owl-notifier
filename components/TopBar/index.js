@@ -26,7 +26,7 @@ function TopBar(props) {
           width={28}
           height={28}
         />
-        <span>Owl Deliver</span>
+        <span>Amo Notifier</span>
       </div>
     </div>
   )

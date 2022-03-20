@@ -1,0 +1,60 @@
+.main {
+  min-height: calc(100vh - 156px);
+  @include responsive(xs) {
+    min-height: calc(100vh);
+  }
+}
+
+.avatar, .login {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  margin-top: 6px;
+  img {
+    border-radius: 50%;
+  }
+}
+
+.add {
+  background-color: $contentPrimary;
+  width: 280px;
+  margin: 36px auto;
+  border-radius: 8px;
+  padding: 10px 20px;
+  text-align: center;
+  cursor: pointer;
+  i {
+    color: $contentInversePrimary;
+    font-size: 28px;
+  }
+}
+
+.card {
+  background-color: $backgroundSecondary;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &:hover {
+    opacity: 0.8;
+  }
+  >div {
+    >p {
+      color: $contentPrimary;
+      &:first-child {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
+      &:last-child {
+        font-size: 14px;
+      }
+    }
+  }
+  >i {
+    font-size: 21px;
+  }
+}
