@@ -1,0 +1,62 @@
+.textArea {
+  width: 328px;
+  border: 2px solid $borderOpaque;
+  border-radius: 8px;
+  padding: 8px 6px 8px 12px;
+  transition: border-color .2s;
+  textarea {
+    &:disabled {
+      cursor: not-allowed;
+      color: $contentStateDisabled;
+    }
+  }
+}
+
+.focus {
+  border-color: $contentPrimary;
+}
+
+.disabled {
+  background: $backgroundSecondary;
+  cursor: not-allowed;
+}
+
+.label {
+  color: $contentSecondry;
+  font-size: 12px;
+  line-height: 18px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.row {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+
+}
+
+.inputArea {
+  flex: 1;
+  color: $contentPrimary;
+  background: $backgroundPrimary;
+  background: transparent;
+  font-size: 14px;
+  line-height: 24px;
+  border: none;
+  outline: none;
+  resize: none;
+  &::placeholder {
+    color: $contentStateDisabled;
+  }
+}
+
+.clear {
+  color: $contentPrimary;
+  font-size: 24px;
+  cursor: pointer;
+  visibility: hidden;
+  &.show {
+    visibility: visible;
+  }
+}

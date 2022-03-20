@@ -1,6 +1,3 @@
-import { useState, useEffect, useContext } from 'react'
-import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { ProfileContext } from '../../stores/useProfile'
 import toast from 'react-hot-toast'
@@ -12,17 +9,15 @@ import storageUtil from '../../utils/storageUtil'
 import { logout } from '../../utils/loginUtil'
 import styles from './index.module.scss'
 
-function User() {
-  const { t } = useTranslation('common')
-  const [ , dispatch ]  = useContext(ProfileContext)
-  const router = useRouter()
-
+function Discover() {
+  // const [ , dispatch ]  = useContext(ProfileContext)
+  // const router = useRouter()
 
   return (
     <div className={styles.main}>
-      user
+      COMING SOON
     </div>
   )
 }
 
-export default User
+export default Discover

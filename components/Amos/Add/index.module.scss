@@ -1,0 +1,82 @@
+.add {
+  // border: 1px solid red;
+  // height: 100vh;
+}
+
+.form {
+  >textarea {
+    width: 100%;
+  }
+}
+
+.card {
+  padding: 12px;
+  background-color: $backgroundPrimary;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  >div {
+    max-width: 76%;
+  }
+}
+
+.editor {
+  border-radius: 8px;
+  border: 2px solid $borderOpaque !important;
+  outline: none !important;
+  &:focus {
+    border: 2px solid $contentPrimary !important;
+  }
+}
+
+.pre {
+  background-color: #fafafa !important;
+  min-height: 240px;
+  z-index: -1;
+}
+
+.editBtn {
+  bottom: 84px;
+  right: 12px;
+  z-index: 99;
+}
+
+.saveBtn {
+  bottom: 32px;
+  right: 12px;
+  z-index: 99;
+}
+
+.info {
+  margin: 0 14px 46px 14px;
+  padding: 12px 8px;
+  background-color: $backgroundSecondary;
+  border-radius: 8px;
+  h2 {
+    font-size: 18px;
+    line-height: 32px;
+    color: $contentPrimary;
+    margin: 0;
+    margin-bottom: 4px;
+  }
+  >div {
+    margin-bottom: 14px;
+  }
+}
+
+.parse {
+  font-size: 14px;
+  line-height: 24px;
+  color: $contentPrimary;
+  >span {
+    color: $contentSecondry;
+  }
+}
+
+.note {
+  color: $notice;
+  font-size: 14px;
+  margin-top: 24px;
+}

@@ -1,6 +1,6 @@
-import Amos from '../components/Amos'
+import Add from '../../components/Amos/Add'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-const i18nConfig = require('../next-i18next.config')
+const i18nConfig = require('../../next-i18next.config')
 
 export async function getStaticProps({ locale }) {
   return {
@@ -10,4 +10,4 @@ export async function getStaticProps({ locale }) {
   }
 }
 
-export default Amos
+export default Add

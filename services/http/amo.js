@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { getToken } from '../../utils/loginUtil'
 
-const OWL_API_HOST = 'https://owl-api.owldeliver.one/v1dev'
+const OWL_API_HOST = 'https://api.amo.run/v1beta'
 
-const owlrss = axios.create({
+const amoscript = axios.create({
   baseURL: OWL_API_HOST,
   timeout: 15000,
   responseType: 'json',
@@ -12,7 +12,7 @@ const owlrss = axios.create({
   }
 })
 
-owlrss.interceptors.request.use(
+amoscript.interceptors.request.use(
   async (configs) => {
     const token = await getToken(configs)
     if (token) {
@@ -24,7 +24,7 @@ owlrss.interceptors.request.use(
 )
 
 // err handler
-owlrss.interceptors.response.use(
+amoscript.interceptors.response.use(
   (res) => {
     // res: config, data, headers, status, statusText
     // res.data: message
@@ -63,8 +63,8 @@ owlrss.interceptors.response.use(
 )
 
 async function request (options) {
-  const res = await owlrss.request(options)
-  return Promise.resolve(res.data)
+  const res = await amoscript.request(options)
+  return Promise.resolve(res)
 }
 
 const http = {
@@ -81,6 +81,15 @@ const http = {
     const config = {
       url,
       method: 'get',
+      ...options
+    }
+    return request(config)
+  },
+
+  put: (url, options = {}) => {
+    const config = {
+      url,
+      method: 'put',
       ...options
     }
     return request(config)

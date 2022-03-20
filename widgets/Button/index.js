@@ -16,9 +16,11 @@ function Button(props) {
     ...others
   } = props
 
+  console.log(type)
+
   return (
     <button
-      className={`${styles.button} ${styles.type} ${styles.size} ${styles.loading && styles.loading} ${className}`}
+      className={`${styles.button} ${styles[type]} ${styles[size]} ${loading && styles[loading]} ${className}`}
       disabled={disabled}
       {...others}
     >
