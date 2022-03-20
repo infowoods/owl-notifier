@@ -2,9 +2,9 @@ import { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { i18n } from 'next-i18next'
 import { ProfileContext } from '../../stores/useProfile'
-import { amoAuth, checkGroup } from '../../services/api/amo'
+import { owlSignIn, checkGroup } from '../../services/api/owl'
 import storageUtil from '../../utils/storageUtil'
-import { getMixinContext, getAccessToken } from '../../services/api/mixin'
+import { getMixinContext } from '../../services/api/mixin'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
@@ -27,17 +27,18 @@ function AuthCallback() {
   const query = useQuery()
 
   useEffect(() => {
+    // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e' // 测试群组1
+    // const conversation_id = ctx.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc' // 测试群组2
     const conversation_id = ctx.conversation_id || ''
 
-    const auth = async (token) => {
+    const auth = async () => {
       try {
         const params = {
-          mixin_access_token: token,
+          code: query.code,
           conversation_id: conversation_id,
         }
-        const data = await amoAuth(params)
-        console.log('auth data:', data)
-        if (data) {
+        const data = await owlSignIn(params) || {}
+        if (data?.access_token) {
           dispatch({
             type: 'userInfo',
             userInfo: data,
@@ -52,46 +53,37 @@ function AuthCallback() {
           }
         }
       } catch (error) {
-        console.log('auth error:', error)
         toast.error('Auth Failed')
-        // push('/')
+        push('/')
       }
     }
-
-    const getToken = async () => {
-      const token = await getAccessToken(query.code)
-      console.log('ttk:', token)
-      token && auth(token)
-    }
-
-    query?.code && getToken()
-
+    query?.code && auth()
   }, [query])
 
-  // useEffect(() => {
-  //   const res = getMixinContext()
-  //   res && setCtx(res)
-  //   if (res?.conversation_id) {
-  //     const initialFunc = async () => {
-  //       const data = await checkGroup({conversation_id: res.conversation_id})
-  //       // const data = await checkGroup({conversation_id: 'e608b413-8ee9-426e-843e-77a3d6bb7cbc'})
-  //       if (!data?.err_code) {
-  //         dispatch({
-  //           type: 'groupInfo',
-  //           groupInfo: data
-  //         })
-  //         storageUtil.set(`group_info_${res.conversation_id}`, data) // groupInfo persistence
-  //       }
-  //     }
-  //     initialFunc()
-  //   }
-  // }, [])
+  useEffect(() => {
+    const res = getMixinContext()
+    res && setCtx(res)
+    if (res?.conversation_id) {
+      const initialFunc = async () => {
+        const data = await checkGroup({conversation_id: res.conversation_id})
+        // const data = await checkGroup({conversation_id: 'e608b413-8ee9-426e-843e-77a3d6bb7cbc'})
+        if (!data?.err_code) {
+          dispatch({
+            type: 'groupInfo',
+            groupInfo: data
+          })
+          storageUtil.set(`group_info_${res.conversation_id}`, data) // groupInfo persistence
+        }
+      }
+      initialFunc()
+    }
+  }, [])
 
   return (
     <div className={styles.main}>
       <Head>
-        <title>Amo Notifier</title>
-        <meta name="description" content="Amo" />
+        <title>Owl Deliver</title>
+        <meta name="description" content="猫头鹰订阅器" />
         <link rel="icon" href="/favicon.png" />
       </Head>
 

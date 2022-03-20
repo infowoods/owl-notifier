@@ -1,20 +1,16 @@
 import http from '../../services/http/mixin'
-import { MIXIN_CLIENT_ID, MIXIN_SECRET_KEY } from '../../constants'
+import { MIXIN_CLIENT_ID, StorageKeys } from '../../constants'
 import StorageUtil from '../../utils/storageUtil'
 
 export async function getAccessToken (code) {
-  // const verifier = localStorage.getItem('code-verifier')
+  const verifier = localStorage.getItem('code-verifier')
   const data = {
     client_id: MIXIN_CLIENT_ID,
     code,
-    client_secret: MIXIN_SECRET_KEY,
-    // code_verifier: verifier
+    code_verifier: verifier
   }
   const res = await http.post('/oauth/token', { data })
-  console.log('tk:', res.access_token)
-  if (res?.access_token) {
-    return res.access_token
-  }
+  return res.access_token
 }
 
 export function getUser (id) {

@@ -12,7 +12,6 @@
   }
   .card {
     background: $backgroundPrimary;
-    // background: $backgroundSecondary;
     border-radius: 8px;
     padding: 20px 18px;
     display: flex;
@@ -32,7 +31,6 @@
   }
   .children {
     background: $backgroundPrimary;
-    // background: $backgroundSecondary;
     padding: 0 18px;
     border-radius: 0 0 8px 8px;
     color: $contentSecondry;

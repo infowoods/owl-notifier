@@ -3,6 +3,108 @@
   cursor: pointer;
   position: relative;
 
+  @mixin large {
+    padding: 15px 24px ;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 16px;
+  }
+  @mixin medium {
+    padding: 11px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+  }
+  @mixin small {
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 14px;
+  }
+
+  &.primary {
+    background: $primary-blue;
+    color: $button-white;
+    border: none;
+    &.large {
+      @include large;
+    }
+    &.medium{
+      @include medium;
+    }
+    &.small {
+      @include small;
+    }
+    &:hover{
+      opacity: 0.9;
+    }
+    &:active {
+      opacity: 0.8;
+    }
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  &.secondary {
+    border: 1px solid $line-3;
+    color: $primary-blue;
+    background: $surface;
+    &.large {
+      @include large;
+    }
+    &.medium{
+      @include medium;
+    }
+    &.small {
+      @include small;
+    }
+    &:hover{
+      opacity: 0.9;
+    }
+    &:active {
+      opacity: 0.8;
+    }
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  &.text {
+    border: none;
+    color: $primary-blue;
+    padding: 7px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    background: $surface;
+    &:hover {
+      color: $primary1
+    }
+    &:active {
+      color: $primary1;
+      opacity: 0.8;
+    }
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  &.floating {
+    position: absolute;
+    border: none;
+    box-shadow: 0px 2px 8px $shadow;
+    background: $primary-blue;
+    color: $surface;
+    padding: 13px 20px 14px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
   &:active {
     opacity: 0.64;
   }
@@ -10,94 +112,4 @@
     opacity: 0.32;
     cursor: not-allowed;
   }
-}
-
-.large {
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 16px;
-}
-
-.medium {
-  border-radius: 8px;
-  padding: 11px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 14px;
-}
-
-.small {
-  border-radius: 8px;
-  padding: 7px 12px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 14px;
-}
-
-.primary {
-  background: $backgroundInversePrimary;
-  color: $contentInversePrimary;
-  border: none;
-
-  &:hover{
-    opacity: 0.9;
-  }
-  &:active {
-    opacity: 0.8;
-  }
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-}
-
-.secondary {
-  border: 2px solid $borderOpaque;
-  color: $contentPrimary;
-  background: $backgroundPrimary;
-  &:hover{
-    opacity: 0.9;
-  }
-  &:active {
-    opacity: 0.8;
-  }
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-}
-
-.text {
-  border: none;
-  color: $accent;
-  padding: 7px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: bold;
-  background: $backgroundPrimary;
-  &:hover {
-    color: $primary;
-  }
-  &:active {
-    color: $primary;
-    opacity: 0.8;
-  }
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-}
-
-.floating {
-  position: fixed;
-  border: none;
-  box-shadow: 0px 2px 8px $shadow;
-  background: $backgroundAccent;
-  color: $contentInversePrimary;
-  padding: 13px 20px 14px;
-  border-radius: 24px;
-  font-size: 14px;
-  font-weight: bold;
 }
