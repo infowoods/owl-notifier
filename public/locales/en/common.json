@@ -1,5 +1,7 @@
 {
   "colon": ": ",
+  "home": "Home",
+  "me": "Me",
   "login": "Please Login",
   "logout": "Logout",
   "desc": "Description",

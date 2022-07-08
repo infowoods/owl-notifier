@@ -11,6 +11,7 @@ import { checkGroup } from '../../services/api/owl'
 import { ProfileContext } from '../../stores/useProfile'
 import { authLogin } from '../../utils/loginUtil'
 import Loading from '../../widgets/Loading'
+import BottomNav from '../../widgets/BottomNav'
 import styles from './index.module.scss'
 
 function Layout({ children }) {
@@ -21,6 +22,8 @@ function Layout({ children }) {
   const [ init, setInit ] = useState(false)
   const [ platform, setPlatform ] = useState(false)
   const isLogin = state.userInfo && state.userInfo.user_name
+
+  const navHref = ['/', '/user']
 
   const getBarColor = (path) => {
     reloadTheme(platform)
@@ -171,6 +174,9 @@ function Layout({ children }) {
         }
         <div style={{ opacity: `${init ? '1': '0'}` }}>
           { children }
+          {
+            navHref.includes(pathname) && <BottomNav t={t} />
+          }
         </div>
       </div>
     )
