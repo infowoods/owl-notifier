@@ -2,10 +2,12 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  max-width: 820px;
+  max-width: 840px;
+  left: calc(50vw - 420px);
   background-color: $backgroundPrimary;
+
   @include responsive(xs) {
-    max-width: calc(100vw - 18px);
+    left: 0;
   }
 
   >div {
@@ -19,7 +21,7 @@
   text-align: center;
   color: $contentSecondry;
   >i {
-    font-size: 32px;
+    font-size: 28px;
     padding-top: 6px;
   }
   >p {
@@ -35,7 +37,7 @@
   text-align: center;
   color: $contentPrimary !important;
   >i {
-    font-size: 32px;
+    font-size: 28px;
     padding-top: 6px;
   }
   >p {

@@ -1,9 +1,9 @@
 .wrap {
   max-width: 840px;
   margin: 0 auto;
-  padding: 0 10px 12px 10px;
+  padding: 0 10px 60px 10px;
   background: $backgroundPrimary;
-  min-height: 100vh;
+
   @include responsive(lg) {
     border-left: 1px solid $borderOpaque;
     border-right: 1px solid $borderOpaque;
@@ -57,10 +57,8 @@
     line-height: 32px;
     color: $contentPrimary;
     padding: 4px 10px;
-    background: $backgroundSecondary;
     border-radius: 8px;
     font-size: 14px;
-    // margin-top: 12px;
     &:hover {
       color: $accent;
     }
