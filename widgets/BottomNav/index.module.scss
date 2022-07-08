@@ -1,0 +1,45 @@
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 820px;
+  background-color: $backgroundPrimary;
+  @include responsive(xs) {
+    max-width: calc(100vw - 18px);
+  }
+
+  >div {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.default {
+  cursor: pointer;
+  text-align: center;
+  color: $contentSecondry;
+  >i {
+    font-size: 32px;
+    padding-top: 6px;
+  }
+  >p {
+    font-size: 14px;
+    padding-bottom: 6px;
+  }
+  &:hover {
+    color: $contentPrimary;
+  }
+}
+
+.active {
+  text-align: center;
+  color: $contentPrimary !important;
+  >i {
+    font-size: 32px;
+    padding-top: 6px;
+  }
+  >p {
+    font-size: 14px;
+    padding-bottom: 6px;
+  }
+}

@@ -3,22 +3,30 @@ import { useState, useEffect, useContext } from "react"
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
+
 import { ProfileContext } from '../../stores/useProfile'
+
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 const PriceSheet = dynamic(() => import('../Home/PriceSheet'))
 const Overlay = dynamic(() => import('../../widgets/Overlay'))
 const QrCodeSheet = dynamic(() => import('../Home/QrCodeSheet'))
+
 import { subscribeOptions } from '../Home/config'
+
 import Icon from "../../widgets/Icon"
-import { getHotTopics } from '../../services/api/owl'
+import Loading from "../../widgets/Loading"
+
 import { copyText } from '../../utils/copyUtil'
 import { formatAdd } from '../../utils/numberUtil'
 import { authLogin, logout } from '../../utils/loginUtil'
 import storageUtil from '../../utils/storageUtil'
+
+import { getHotTopics } from '../../services/api/owl'
 import { subscribeTopic, checkOrder } from '../../services/api/owl'
+
 import styles from './index.module.scss'
 
-function HotTopics(props) {
+function HotTopics() {
   const { t } = useTranslation('common')
   const [ state, dispatch ]  = useContext(ProfileContext)
   const isLogin = state.userInfo && state.userInfo.user_name
@@ -34,10 +42,12 @@ function HotTopics(props) {
   const [ check, setCheck ] = useState(false)
   const [ intervalId, setIntervalId ] = useState(null)
   const [ followedIdx, setFollowedIdx ] = useState('')
+  const [ loading, setLoading ] = useState(true)
 
   useEffect(() => {
     const invokeFunc = async () => {
       const res = await getHotTopics()
+      setLoading(false)
       res && res?.length > 0 && setList(res)
     }
     invokeFunc()
@@ -122,9 +132,10 @@ function HotTopics(props) {
     <div className={styles.main}>
       <p className={styles.title}># {t('hot_now')}</p>
       {
-        list && list.map((item, index) => {
-
-          return (
+        loading ?
+        <Loading size={40} className={styles.loading} />
+        :
+        list && list.map((item, index) => (
             <div className={styles.card} key={index}>
               <p>{item.title}</p>
               <p>
@@ -146,7 +157,7 @@ function HotTopics(props) {
               </button>
             </div>
           )
-        })
+        )
       }
 
       <PriceSheet
