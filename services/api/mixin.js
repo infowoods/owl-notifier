@@ -1,5 +1,5 @@
 import http from '../../services/http/mixin'
-import { MIXIN_CLIENT_ID, StorageKeys } from '../../constants'
+import { MIXIN_CLIENT_ID } from '../../constants'
 import StorageUtil from '../../utils/storageUtil'
 
 export async function getAccessToken (code) {

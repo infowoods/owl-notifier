@@ -1,13 +1,18 @@
 import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
-import styles from './index.module.scss'
 import toast from 'react-hot-toast'
+
+import styles from './index.module.scss'
+
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 const BottomSheet = dynamic(() => import('../../widgets/BottomSheet'))
+
 import { useRouter } from 'next/router'
+
 import { logout } from '../../utils/loginUtil'
 import { ProfileContext } from '../../stores/useProfile'
+
 import { getUserSettings, updateUserSettings } from '../../services/api/owl'
 
 function Settings() {

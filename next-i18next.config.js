@@ -1,3 +1,5 @@
+// this is a workaroud
+
 module.exports = {
   i18n: {
     defaultLocale: 'zh',

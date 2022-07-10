@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+
 import Icon from '../../widgets/Icon'
+
 import styles from './index.module.scss'
 
 function TopBar(props) {
