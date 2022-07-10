@@ -2,21 +2,28 @@ import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
-import { ProfileContext } from '../../stores/useProfile'
 import toast from 'react-hot-toast'
+
+import { ProfileContext } from '../../stores/useProfile'
+
 const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 const PriceSheet = dynamic(() => import('../Home/PriceSheet'))
 const QrCodeSheet = dynamic(() => import('../Home/QrCodeSheet'))
 const Overlay = dynamic(() => import('../../widgets/Overlay'))
+
 import { subscribeOptions } from '../Home/config'
+
 import Icon from '../../widgets/Icon'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
+
 import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
+
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp, timeDifference } from '../../utils/timeUtil'
 import { copyText } from '../../utils/copyUtil'
 import { logout } from '../../utils/loginUtil'
+
 import styles from './index.module.scss'
 
 function User() {

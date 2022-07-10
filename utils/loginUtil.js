@@ -10,7 +10,7 @@ export function authLogin() {
   AuthMixin.requestCode(true)
 }
 
-export function logout (dispatch, conversation_id) {
+export function logout (dispatch) {
   const conversationId = StorageUtil.get('current_conversation_id')
   const id = conversationId === null ? '' : conversationId
   dispatch({

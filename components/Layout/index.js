@@ -1,17 +1,23 @@
 import { useState, useEffect, useContext } from 'react'
+import { useRouter } from 'next/router'
 import { i18n, useTranslation } from 'next-i18next'
 import Head from 'next/head'
+
 import TopBar from '../TopBar'
+
 import Avatar from '../../widgets/Avatar'
 import Icon from '../../widgets/Icon'
-import { useRouter } from 'next/router'
-import { getMixinContext, reloadTheme } from '../../services/api/mixin'
-import storageUtil from '../../utils/storageUtil'
-import { checkGroup } from '../../services/api/owl'
-import { ProfileContext } from '../../stores/useProfile'
-import { authLogin } from '../../utils/loginUtil'
 import Loading from '../../widgets/Loading'
 import BottomNav from '../../widgets/BottomNav'
+
+import { ProfileContext } from '../../stores/useProfile'
+
+import { getMixinContext, reloadTheme } from '../../services/api/mixin'
+import { checkGroup } from '../../services/api/owl'
+
+import storageUtil from '../../utils/storageUtil'
+import { authLogin } from '../../utils/loginUtil'
+
 import styles from './index.module.scss'
 
 function Layout({ children }) {
@@ -68,7 +74,6 @@ function Layout({ children }) {
     console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
     ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
-    // document.documentElement.setAttribute('data-theme', 'dark')
     setTheme(ctx.appearance || 'light')
 
     if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en' && pathname !== '/callback/mixin') {
@@ -82,14 +87,12 @@ function Layout({ children }) {
     }
     ctx?.platform && setPlatform(ctx?.platform)
 
-    // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e'
     storageUtil.get(`user_info_${ctx?.conversation_id || ''}`) && dispatch({
       type: 'userInfo',
       userInfo: storageUtil.get(`user_info_${ctx?.conversation_id || ''}`)
     })
 
     storageUtil.set('current_conversation_id', ctx?.conversation_id || null)
-    // storageUtil.set('current_conversation_id', ctx?.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc')
 
     if (ctx?.conversation_id) {
       const initialFunc = async () => {
@@ -102,7 +105,6 @@ function Layout({ children }) {
           setInit(true)
         } else {
           const data = await checkGroup({conversation_id: ctx.conversation_id})
-          // const data = await checkGroup({conversation_id: '653f40a1-ea00-4a9c-8bb8-6a658025a90e'})
           if (!data?.err_code) {
             dispatch({
               type: 'groupInfo',
@@ -172,7 +174,7 @@ function Layout({ children }) {
             <Loading size={36} className={styles.loading} />
           </>
         }
-        <div style={{ opacity: `${init ? '1': '0'}` }}>
+        <div>
           { children }
           {
             navHref.includes(pathname) && <BottomNav t={t} />

@@ -27,8 +27,6 @@ function AuthCallback() {
   const query = useQuery()
 
   useEffect(() => {
-    // const conversation_id = ctx.conversation_id || '653f40a1-ea00-4a9c-8bb8-6a658025a90e' // 测试群组1
-    // const conversation_id = ctx.conversation_id || 'e608b413-8ee9-426e-843e-77a3d6bb7cbc' // 测试群组2
     const conversation_id = ctx.conversation_id || ''
 
     const auth = async () => {
@@ -66,7 +64,6 @@ function AuthCallback() {
     if (res?.conversation_id) {
       const initialFunc = async () => {
         const data = await checkGroup({conversation_id: res.conversation_id})
-        // const data = await checkGroup({conversation_id: 'e608b413-8ee9-426e-843e-77a3d6bb7cbc'})
         if (!data?.err_code) {
           dispatch({
             type: 'groupInfo',

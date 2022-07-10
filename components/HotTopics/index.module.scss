@@ -6,7 +6,7 @@
   font-size: 18px;
   line-height: 32px;
   font-weight: bold;
-  // font-style: italic;
+  color: $contentPrimary;
 }
 
 .loading {
@@ -21,13 +21,17 @@
 
   >p {
     &:first-of-type {
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 24px;
       font-weight: bold;
+      margin-bottom: 12px;
+      color: $contentPrimary;
     }
+
     &:last-of-type {
       font-size: 14px;
-      margin-top: 8px;
       color: $contentSecondry;
+      margin-bottom: 4px;
       >span {
         color: $contentPrimary;
       }
@@ -38,8 +42,11 @@
 .copy {
   margin-bottom: 8px;
   overflow-x: hidden;
+  line-height: 21px;
+
   span {
     font-size: 14px;
+
     &:first-child {
       color: $contentPrimary;
     }
@@ -47,6 +54,7 @@
       cursor: pointer;
       color: $contentSecondry;
       i {
+        line-height: 21px;
         color: $contentSecondry;
         vertical-align: middle;
       }
