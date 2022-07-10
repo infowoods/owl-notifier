@@ -171,7 +171,7 @@ function Layout({ children }) {
           <Loading size={36} className={styles.loading} />
         </>
       )}
-      <div>
+      <div style={{ opacity: `${init ? '1' : '0'}` }}>
         {children}
         {navHref.includes(pathname) && <BottomNav t={t} />}
       </div>
