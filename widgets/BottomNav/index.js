@@ -20,18 +20,18 @@ function BottomNav({ t }) {
   return (
     <div className={styles.bottomNav}>
       <div>
-        {
-          list.map((item, idx) => (
-            <div
-              key={idx}
-              className={`${pathname === item.href ? styles.active : styles.default}`}
-              onClick={() => push(item.href)}
-            >
-              <Icon type={item.icon} />
-              <p>{t(item.name)}</p>
-            </div>
-          ))
-        }
+        {list.map((item, idx) => (
+          <div
+            key={idx}
+            className={`${
+              pathname === item.href ? styles.active : styles.default
+            }`}
+            onClick={() => push(item.href)}
+          >
+            <Icon type={item.icon} />
+            <p>{t(item.name)}</p>
+          </div>
+        ))}
       </div>
     </div>
   )

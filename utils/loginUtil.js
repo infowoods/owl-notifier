@@ -5,12 +5,11 @@ import { getProfile } from '../services/api/mixin'
 const MIXIN_TOKEN = 'mixin_token'
 const OWL_USER = 'user_info_'
 
-
 export function authLogin() {
   AuthMixin.requestCode(true)
 }
 
-export function logout (dispatch) {
+export function logout(dispatch) {
   const conversationId = StorageUtil.get('current_conversation_id')
   const id = conversationId === null ? '' : conversationId
   dispatch({

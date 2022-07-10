@@ -18,16 +18,15 @@ function Button(props) {
 
   return (
     <button
-      className={`${styles.button} ${styles.type} ${styles.size} ${styles.loading && styles.loading} ${className}`}
+      className={`${styles.button} ${styles.type} ${styles.size} ${
+        styles.loading && styles.loading
+      } ${className}`}
       disabled={disabled}
       {...others}
     >
       {children}
 
-      {
-        loading &&
-        <Loading />
-      }
+      {loading && <Loading />}
     </button>
   )
 }

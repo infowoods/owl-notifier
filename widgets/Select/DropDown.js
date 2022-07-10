@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DropDownModal = props => {
+const DropDownModal = (props) => {
   const { open, dropdownRender, popupElement, dropdownClassName } = props
 
   return (

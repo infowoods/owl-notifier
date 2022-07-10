@@ -13,7 +13,7 @@ export function convertTimestamp(time, offset) {
 
 export function timeDifference(a, b) {
   // a is expire data
-  const diffTime = Math.abs(a*1000 - b)
+  const diffTime = Math.abs(a * 1000 - b)
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
   return diffDays

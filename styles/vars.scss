@@ -2,7 +2,7 @@ $breakpoints: (
   xs: 360px,
   sm: 600px,
   md: 840px,
-  lg: 1024px
+  lg: 1024px,
 );
 
 @mixin responsive($size) {
@@ -19,21 +19,21 @@ $breakpoints: (
 
 @mixin mq($name, $large: null, $medium: null, $small: null, $xsmall: null) {
   @if $xsmall {
-    #{$name}: $xsmall
+    #{$name}: $xsmall;
   }
   @if $small {
     @media (min-width: map-get($breakpoints, sm)) {
-      #{$name}: $small
+      #{$name}: $small;
     }
   }
   @if $medium {
     @media (min-width: map-get($breakpoints, md)) {
-      #{$name}: $medium
+      #{$name}: $medium;
     }
   }
   @if $large {
     @media (min-width: map-get($breakpoints, lg)) {
-      #{$name}: $large
+      #{$name}: $large;
     }
   }
 }

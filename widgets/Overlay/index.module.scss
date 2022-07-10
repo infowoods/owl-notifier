@@ -7,20 +7,20 @@
   max-width: 840px;
   height: 100%;
   z-index: 99;
-  background-color: rgba(0, 0, 0, .61);
+  background-color: rgba(0, 0, 0, 0.61);
   overflow-x: auto;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  >p {
+  > p {
     margin-top: 18px;
     margin-bottom: 48px;
     font-size: 16px;
     color: $contentAlwaysLight;
   }
-  >button {
+  > button {
     background: transparent;
     border: 1px solid $contentAlwaysLight;
     padding: 6px 24px;
@@ -29,7 +29,7 @@
     font-size: 14px;
     cursor: pointer;
     &:hover {
-      background: rgba(0, 0, 0, .07);
+      background: rgba(0, 0, 0, 0.07);
     }
   }
 }

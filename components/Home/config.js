@@ -35,10 +35,10 @@ export const feedOptions = (t) => [
 export const subscribeOptions = (monthlyPrice, yearlyPrice) => [
   {
     period: 'month',
-    price: monthlyPrice
+    price: monthlyPrice,
   },
   {
     period: 'year',
-    price: yearlyPrice
-  }
+    price: yearlyPrice,
+  },
 ]

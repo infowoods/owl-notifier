@@ -11,8 +11,7 @@ function TopBar(props) {
 
   return (
     <div className={styles.bar}>
-      {
-        url &&
+      {url && (
         <Icon
           className={styles.back}
           type="arrow-right"
@@ -20,14 +19,9 @@ function TopBar(props) {
             router.push(url)
           }}
         />
-      }
+      )}
       <div className={`${styles.icon} ${url && styles.iconPadding}`}>
-        <Image
-          src="/favicon.png"
-          alt="favico"
-          width={28}
-          height={28}
-        />
+        <Image src="/favicon.png" alt="favico" width={28} height={28} />
         <span>Owl Deliver</span>
       </div>
     </div>

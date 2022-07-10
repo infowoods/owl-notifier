@@ -12,8 +12,8 @@ const OwlToast = dynamic(() => import('../../widgets/OwlToast'))
 import styles from './index.module.scss'
 
 function AuthCallback() {
-  const [ ctx, setCtx ] = useState({})
-  const [ , dispatch ]  = useContext(ProfileContext)
+  const [ctx, setCtx] = useState({})
+  const [, dispatch] = useContext(ProfileContext)
   const { push } = useRouter()
   const router = useRouter()
 
@@ -35,7 +35,7 @@ function AuthCallback() {
           code: query.code,
           conversation_id: conversation_id,
         }
-        const data = await owlSignIn(params) || {}
+        const data = (await owlSignIn(params)) || {}
         if (data?.access_token) {
           dispatch({
             type: 'userInfo',
@@ -63,11 +63,11 @@ function AuthCallback() {
     res && setCtx(res)
     if (res?.conversation_id) {
       const initialFunc = async () => {
-        const data = await checkGroup({conversation_id: res.conversation_id})
+        const data = await checkGroup({ conversation_id: res.conversation_id })
         if (!data?.err_code) {
           dispatch({
             type: 'groupInfo',
-            groupInfo: data
+            groupInfo: data,
           })
           storageUtil.set(`group_info_${res.conversation_id}`, data) // groupInfo persistence
         }

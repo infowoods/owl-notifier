@@ -3,7 +3,7 @@ import OptionList from './OptionList'
 import DropDown from './DropDown'
 import Selector from './Selector'
 
-const Select = props => {
+const Select = (props) => {
   const {
     wrapperClassName,
     options,
@@ -36,11 +36,11 @@ const Select = props => {
 
     // others
     notFoundContent,
-    isCountryCode
+    isCountryCode,
   } = props
   // ============================= DropDown =============================
   const [innerOpen, setInnerOpen] = React.useState(open || defaultOpen)
-  const onToggleOpen = newOpen => {
+  const onToggleOpen = (newOpen) => {
     const nextOpen = newOpen !== undefined ? newOpen : !innerOpen
 
     if (innerOpen !== nextOpen && !disabled) {
@@ -59,7 +59,7 @@ const Select = props => {
   // ============================= Selector ===============================
   const [innerSearchValue, setInnerSearchValue] = React.useState('')
   let mergedSearchValue = innerSearchValue
-  const triggerSearch = searchText => {
+  const triggerSearch = (searchText) => {
     let newSearchText = searchText
     setInnerSearchValue(newSearchText)
 
@@ -93,7 +93,9 @@ const Select = props => {
   const rawValue = value !== undefined && value !== null ? value : defaultValue
   // Selector display value
   const displayValues = React.useMemo(() => {
-    const displayValues = mergedOptions.filter(item => item.value === rawValue)
+    const displayValues = mergedOptions.filter(
+      (item) => item.value === rawValue
+    )
     return displayValues
   }, [rawValue, mergedOptions])
 
@@ -115,7 +117,7 @@ const Select = props => {
     }
   }, [innerOpen])
 
-  const handleClickOutside = event => {
+  const handleClickOutside = (event) => {
     if (containerRef.current && !containerRef.current.contains(event.target)) {
       onToggleOpen(false)
     }
@@ -162,18 +164,12 @@ const Select = props => {
 Select.propTypes = {
   className: PropTypes.string,
   options: PropTypes.array,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.array,
-  ]),
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
   title: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
   defaultValue: PropTypes.string,
-  value: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   enableSearch: PropTypes.bool,
   optionFilterProp: PropTypes.string,
   filterFuncProp: PropTypes.func,
@@ -193,7 +189,6 @@ Select.defaultProps = {
   dropdownClassName: '',
   buttonTextClassName: '',
   optionFilterProp: 'label',
-
 }
 
 export default Select

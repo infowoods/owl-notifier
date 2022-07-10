@@ -30,7 +30,7 @@
   cursor: pointer;
   margin: 16px 0;
   p {
-    >span {
+    > span {
       &:first-child {
         font-size: 16px;
         margin-right: 8px;
@@ -39,7 +39,7 @@
       &:last-child {
         font-size: 14px;
         color: $contentSecondry;
-        >span {
+        > span {
           font-weight: bold;
           padding: 0 2px;
         }

@@ -18,7 +18,8 @@
   background: $backgroundSecondary;
 }
 
-.avatarWrap, .login {
+.avatarWrap,
+.login {
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
@@ -26,7 +27,7 @@
 
 .avatarWrap {
   margin-top: 12px;
-  >div {
+  > div {
     display: flex;
     justify-content: space-between;
     align-items: center;

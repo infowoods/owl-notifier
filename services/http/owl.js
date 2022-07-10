@@ -8,8 +8,8 @@ const owlrss = axios.create({
   timeout: 15000,
   responseType: 'json',
   headers: {
-    'Content-Type': 'application/json;charset=utf-8'
-  }
+    'Content-Type': 'application/json;charset=utf-8',
+  },
 })
 
 owlrss.interceptors.request.use(
@@ -39,30 +39,36 @@ owlrss.interceptors.response.use(
       return Promise.reject({ code: error.code, message: error.description })
     }
     if (res.status === 403 || res.status === 401) {
-      return Promise.reject({ action: 'logout', status: res.status, data: res.data })
+      return Promise.reject({
+        action: 'logout',
+        status: res.status,
+        data: res.data,
+      })
     }
     if (res.status === 202) {
       return Promise.reject({ status: res.status, data: res.data })
-    }
-    else {
+    } else {
       return Promise.resolve(res.data)
     }
   },
   (err) => {
     // err.response: config, data, headers, status, statusText
     if (err.response.status === 403 || err.response.status === 401) {
-      return Promise.reject({ action: 'logout', status: err.response.status, data: err.response.data })
+      return Promise.reject({
+        action: 'logout',
+        status: err.response.status,
+        data: err.response.data,
+      })
     }
     if (err.response && err.response.data) {
       return Promise.reject(err.response.data)
-    }
-    else {
+    } else {
       return Promise.reject({ code: -1 })
     }
   }
 )
 
-async function request (options) {
+async function request(options) {
   const res = await owlrss.request(options)
   return Promise.resolve(res.data)
 }
@@ -72,7 +78,7 @@ const http = {
     const config = {
       url,
       method: 'post',
-      ...options
+      ...options,
     }
     return request(config)
   },
@@ -81,7 +87,7 @@ const http = {
     const config = {
       url,
       method: 'get',
-      ...options
+      ...options,
     }
     return request(config)
   },
@@ -90,10 +96,10 @@ const http = {
     const config = {
       url,
       method: 'delete',
-      ...options
+      ...options,
     }
     return request(config)
-  }
+  },
 }
 
 export default http

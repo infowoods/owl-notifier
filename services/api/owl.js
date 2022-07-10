@@ -1,6 +1,5 @@
 import http from '../../services/http/owl'
 
-
 /**
  *
  * @param {code} code 授权机器人后mixin返回的code
@@ -8,16 +7,14 @@ import http from '../../services/http/owl'
  * @returns
  * 登录获取owl令牌和用户信息
  */
-export function owlSignIn (data) {
+export function owlSignIn(data) {
   return http.post('/mixin/signin', { data })
 }
 
-
 // 获取用户订阅列表
-export function getFollows (data) {
+export function getFollows(data) {
   return http.get('/user/follows', { data })
 }
-
 
 /**
  *
@@ -25,10 +22,9 @@ export function getFollows (data) {
  * @returns
  * 取消关注Feed
  */
-export function unfollowFeeds (data) {
+export function unfollowFeeds(data) {
   return http.post('/user/follows/unfo', { data })
 }
-
 
 /**
  *
@@ -37,10 +33,9 @@ export function unfollowFeeds (data) {
  * @returns
  * 解析RSS地址
  */
-export function parseFeed (data) {
+export function parseFeed(data) {
   return http.post('/topic', { data })
 }
-
 
 /**
  *
@@ -50,10 +45,9 @@ export function parseFeed (data) {
  * @returns
  * 解析Topic地址
  */
-export function parseTopic (data) {
+export function parseTopic(data) {
   return http.post('/topic', { data })
 }
-
 
 /**
  *
@@ -63,16 +57,14 @@ export function parseTopic (data) {
  * @returns
  * 申请关注
  */
-export function subscribeTopic (data) {
+export function subscribeTopic(data) {
   return http.post('/topic', { data })
 }
 
-
 // 获取用户设置
-export function getUserSettings (data) {
+export function getUserSettings(data) {
   return http.get('/user/settings', { data })
 }
-
 
 /**
  *
@@ -80,10 +72,9 @@ export function getUserSettings (data) {
  * @returns
  * 更改用户设置
  */
- export function updateUserSettings (data) {
+export function updateUserSettings(data) {
   return http.post('/user/settings', { data })
 }
-
 
 /**
  *
@@ -91,10 +82,9 @@ export function getUserSettings (data) {
  * @returns
  * 判断是否群组
  */
- export function checkGroup (data) {
+export function checkGroup(data) {
   return http.post('/mixin/group', { data })
 }
-
 
 /**
  *
@@ -102,16 +92,15 @@ export function getUserSettings (data) {
  * @returns
  * 查询订单状态
  */
- export function checkOrder (order_id) {
+export function checkOrder(order_id) {
   return http.get(`/user/order/${order_id}`)
 }
-
 
 /**
  *
  * @returns
  * 查询热门主题
  */
- export function getHotTopics () {
+export function getHotTopics() {
   return http.get('/topic/hot')
 }

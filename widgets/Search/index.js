@@ -6,7 +6,7 @@ import './index.module.scss'
 
 // 这个组件是实时展示搜索结果的
 
-const Search = props => {
+const Search = (props) => {
   const {
     options,
     placeholder,
@@ -51,12 +51,12 @@ const Search = props => {
     setInputValue('')
   }
 
-  const inputTypeLimit = value => {
+  const inputTypeLimit = (value) => {
     const valueStr = value.toString().replace(/[^a-zA-Z0-9]/, '')
     return valueStr
   }
 
-  const inputLengthLimit = value => {
+  const inputLengthLimit = (value) => {
     const valueStr = value.toString().slice(0, maxLength)
     return valueStr
   }
@@ -67,9 +67,14 @@ const Search = props => {
 
   useEffect(() => {
     let formatValue = inputValue
-    formatValue = type === 'nonSymbols' ? inputTypeLimit(formatValue) : formatValue
-    formatValue = maxLength ? inputLengthLimit(formatValue, maxLength) : formatValue
-    formatValue = customSearchLimit ? customSearchLimit(formatValue) : formatValue
+    formatValue =
+      type === 'nonSymbols' ? inputTypeLimit(formatValue) : formatValue
+    formatValue = maxLength
+      ? inputLengthLimit(formatValue, maxLength)
+      : formatValue
+    formatValue = customSearchLimit
+      ? customSearchLimit(formatValue)
+      : formatValue
     filterCallback(formatValue, options)
   }, [inputValue])
 
@@ -94,7 +99,7 @@ const Search = props => {
         <Icon
           type="close-fill"
           className="clear-icon"
-          onMouseDown={e => e.preventDefault()}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={onClear}
         />
       )}
@@ -120,7 +125,7 @@ Search.defaultProps = {
   searchValue: '',
   options: [],
   onChange: () => {},
-  onSearch: () => {}
+  onSearch: () => {},
 }
 
 export default Search

@@ -17,7 +17,13 @@ import Icon from '../../widgets/Icon'
 import Collapse from '../../widgets/Collapse'
 import Loading from '../../widgets/Loading'
 
-import { getFollows, unfollowFeeds, parseTopic, subscribeTopic, checkOrder } from '../../services/api/owl'
+import {
+  getFollows,
+  unfollowFeeds,
+  parseTopic,
+  subscribeTopic,
+  checkOrder,
+} from '../../services/api/owl'
 
 import storageUtil from '../../utils/storageUtil'
 import { convertTimestamp, timeDifference } from '../../utils/timeUtil'
@@ -28,29 +34,28 @@ import styles from './index.module.scss'
 
 function User() {
   const { t } = useTranslation('common')
-  const [ , dispatch ]  = useContext(ProfileContext)
+  const [, dispatch] = useContext(ProfileContext)
   const router = useRouter()
-  const [ empty, setEmpty ] = useState(false)
-  const [ btnSelect, setBtnSelect ] = useState('')
-  const [ feedList, setFeedList ] = useState([])
-  const [ loading, setLoading ] = useState(true)
-  const [ showSubscribe, setShowSubscribe ] = useState(false)
-  const [ chargeCrypto, setChargeCrypto ] = useState({})
-  const [ selectPeriod, setSelectPeriod ] = useState('')
-  const [ monthlyPrice, setMonthlyPrice ] = useState(0)
-  const [ yearlyPrice, setYearlyPrice ] = useState(0)
-  const [ refollowId, setRefollowId ] = useState('')
-  const [ orderId, setOrderId ] = useState('')
-  const [ check, setCheck ] = useState(false)
-  const [ intervalId, setIntervalId ] = useState(null)
-  const [ payUrl, setPayUrl ] = useState('')
-  const [ offset, setOffset ] = useState(null)
+  const [empty, setEmpty] = useState(false)
+  const [btnSelect, setBtnSelect] = useState('')
+  const [feedList, setFeedList] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [showSubscribe, setShowSubscribe] = useState(false)
+  const [chargeCrypto, setChargeCrypto] = useState({})
+  const [selectPeriod, setSelectPeriod] = useState('')
+  const [monthlyPrice, setMonthlyPrice] = useState(0)
+  const [yearlyPrice, setYearlyPrice] = useState(0)
+  const [refollowId, setRefollowId] = useState('')
+  const [orderId, setOrderId] = useState('')
+  const [check, setCheck] = useState(false)
+  const [intervalId, setIntervalId] = useState(null)
+  const [payUrl, setPayUrl] = useState('')
+  const [offset, setOffset] = useState(null)
 
   const renderReason = (val) => {
     if (val === 'cancel') {
       return t('manual_cancel')
-    }
-    else if (val === 'expired') {
+    } else if (val === 'expired') {
       return t('feed_expired')
     }
   }
@@ -76,7 +81,10 @@ function User() {
       const followsList = await getFollows()
       if (followsList.utc_offset?.toString()) {
         setOffset(followsList.utc_offset)
-        if (!followsList.follows?.ing?.length && !followsList.follows?.history?.length) {
+        if (
+          !followsList.follows?.ing?.length &&
+          !followsList.follows?.history?.length
+        ) {
           setEmpty(true)
         } else {
           setFeedList(followsList.follows)
@@ -114,10 +122,18 @@ function User() {
       tid: tid,
     }
     try {
-      const res = await parseTopic(params) || {}
+      const res = (await parseTopic(params)) || {}
       if (res?.price) {
-        const monPrice = (Number(res.price.monthly) + Number(res.service_charge.monthly)).toFixed(8).replace(/\.?0+$/,"")
-        const yearPrice = (Number(res.price.yearly) + Number(res.service_charge.yearly)).toFixed(8).replace(/\.?0+$/,"")
+        const monPrice = (
+          Number(res.price.monthly) + Number(res.service_charge.monthly)
+        )
+          .toFixed(8)
+          .replace(/\.?0+$/, '')
+        const yearPrice = (
+          Number(res.price.yearly) + Number(res.service_charge.yearly)
+        )
+          .toFixed(8)
+          .replace(/\.?0+$/, '')
         setMonthlyPrice(monPrice)
         setYearlyPrice(yearPrice)
         setChargeCrypto(res.service_charge.currency)
@@ -133,10 +149,10 @@ function User() {
     const params = {
       action: 'follow',
       tid: refollowId,
-      period: period
+      period: period,
     }
     try {
-      const res = await subscribeTopic(params) || {}
+      const res = (await subscribeTopic(params)) || {}
       if (res?.payment_uri) {
         if (storageUtil.get('platform') === 'browser') {
           setPayUrl(res.payment_uri)
@@ -190,67 +206,88 @@ function User() {
 
   return (
     <div className={styles.main}>
-      {
-        empty &&
+      {empty && (
         <div className={styles.empty}>
           <Icon type="ufo" />
           <p>{t('no_records')}</p>
         </div>
-      }
+      )}
 
-      {
-        loading ?
-          <Loading size={40} className={styles.loading} />
-          :
+      {loading ? (
+        <Loading size={40} className={styles.loading} />
+      ) : (
         <>
-          {
-            feedList?.ing && feedList?.ing.length > 0 && <p className={styles.sectionTitle}># {t('following')}</p>
-          }
-          {
-            feedList?.ing && feedList.ing.map((feed, index) => {
+          {feedList?.ing && feedList?.ing.length > 0 && (
+            <p className={styles.sectionTitle}># {t('following')}</p>
+          )}
+          {feedList?.ing &&
+            feedList.ing.map((feed, index) => {
               const params = {
-                topic_id: feed.tid
+                topic_id: feed.tid,
               }
               const willExipre = timeDifference(feed.expire_ts, Date.now()) < 7
               return (
-                <Collapse title={feed.title} key={feed.tid + index} className={willExipre && styles.feedCollapse}>
+                <Collapse
+                  title={feed.title}
+                  key={feed.tid + index}
+                  className={willExipre && styles.feedCollapse}
+                >
                   <>
-                    {
-                      feed.desc &&
+                    {feed.desc && (
                       <p className={styles.feedDesc}>
-                        <span>{t('desc')}{t('colon')}</span>
+                        <span>
+                          {t('desc')}
+                          {t('colon')}
+                        </span>
                         {feed.desc}
                       </p>
-                    }
-                    <div className={`${styles.detail} ${feed.desc && styles.increaseMargin}`}>
+                    )}
+                    <div
+                      className={`${styles.detail} ${
+                        feed.desc && styles.increaseMargin
+                      }`}
+                    >
                       <div>
                         <p>
-                          <span>{t('push_date')}{t('colon')}</span>
+                          <span>
+                            {t('push_date')}
+                            {t('colon')}
+                          </span>
                           {convertTimestamp(feed.pushed_ts, offset)}
                         </p>
                         <p>
-                          <span>{t('update_date')}{t('colon')}</span>
+                          <span>
+                            {t('update_date')}
+                            {t('colon')}
+                          </span>
                           {convertTimestamp(feed.updated_ts, offset)}
                         </p>
                         <p>
-                          <span>{t('crawl_date')}{t('colon')}</span>
+                          <span>
+                            {t('crawl_date')}
+                            {t('colon')}
+                          </span>
                           {convertTimestamp(feed.fetched_ts, offset)}
                         </p>
-                        {
-                          willExipre ?
+                        {willExipre ? (
                           <p className={styles.renew}>
-                            <span>{t('will_expire')}{t('colon')}</span>
+                            <span>
+                              {t('will_expire')}
+                              {t('colon')}
+                            </span>
                             {convertTimestamp(feed.expire_ts, offset)}
                           </p>
-                          :
+                        ) : (
                           <p>
-                            <span>{t('expire_date')}{t('colon')}</span>
+                            <span>
+                              {t('expire_date')}
+                              {t('colon')}
+                            </span>
                             {convertTimestamp(feed.expire_ts, offset)}
                           </p>
-                        }
+                        )}
                       </div>
-                      {
-                        willExipre ?
+                      {willExipre ? (
                         <button
                           className={`${styles.button} ${styles.buttonAccent}`}
                           onClick={() => {
@@ -259,14 +296,13 @@ function User() {
                             setRefollowId(feed.tid)
                           }}
                         >
-                          {
-                            btnSelect === index + 'renew' ?
+                          {btnSelect === index + 'renew' ? (
                             <Loading size={18} className={styles.btnLoading} />
-                            :
+                          ) : (
                             t('renew')
-                          }
+                          )}
                         </button>
-                        :
+                      ) : (
                         <button
                           className={styles.button}
                           onClick={() => {
@@ -274,19 +310,19 @@ function User() {
                             handleUnfollow(params)
                           }}
                         >
-                          {
-                            btnSelect === index + 'unfollow' ?
+                          {btnSelect === index + 'unfollow' ? (
                             <Loading size={18} className={styles.btnLoading} />
-                            :
+                          ) : (
                             t('unfollow')
-                          }
+                          )}
                         </button>
-                      }
+                      )}
                     </div>
                     <div className={styles.copy}>
                       <p>
                         <span>
-                          {t('source_uri')} ({sourceType(feed.source_type)}){t('colon')}
+                          {t('source_uri')} ({sourceType(feed.source_type)})
+                          {t('colon')}
                         </span>
                         <span onClick={() => copyText(feed.uri, toast, t)}>
                           {feed.uri} <Icon type="copy" />
@@ -296,27 +332,35 @@ function User() {
                   </>
                 </Collapse>
               )
-            })
-          }
+            })}
 
-          {
-            feedList?.history && feedList?.history.length > 0 && <p className={styles.sectionTitle}># {t('history')}</p>
-          }
-          {
-            feedList?.history && feedList?.history.map((feed, index) => {
+          {feedList?.history && feedList?.history.length > 0 && (
+            <p className={styles.sectionTitle}># {t('history')}</p>
+          )}
+          {feedList?.history &&
+            feedList?.history.map((feed, index) => {
               return (
                 <Collapse title={feed.title} key={feed.tid + index}>
                   <>
-                    {
-                      feed.desc &&
+                    {feed.desc && (
                       <p className={styles.feedDesc}>
-                        <span>{t('desc')}{t('colon')}</span>
+                        <span>
+                          {t('desc')}
+                          {t('colon')}
+                        </span>
                         {feed.desc}
                       </p>
-                    }
-                    <div className={`${styles.detail} ${feed.desc && styles.increaseMargin}`}>
+                    )}
+                    <div
+                      className={`${styles.detail} ${
+                        feed.desc && styles.increaseMargin
+                      }`}
+                    >
                       <p>
-                        <span>{t('unfollow_reason')}{t('colon')}</span>
+                        <span>
+                          {t('unfollow_reason')}
+                          {t('colon')}
+                        </span>
                         {renderReason(feed.reason)}
                       </p>
                       <button
@@ -327,21 +371,19 @@ function User() {
                           setRefollowId(feed.tid)
                         }}
                       >
-                        {
-                          btnSelect === index + 'refollow' ?
+                        {btnSelect === index + 'refollow' ? (
                           <Loading size={18} className={styles.btnLoading} />
-                          :
+                        ) : (
                           t('refollow')
-                        }
+                        )}
                       </button>
                     </div>
                   </>
                 </Collapse>
               )
-            })
-          }
+            })}
         </>
-      }
+      )}
 
       <PriceSheet
         t={t}
@@ -375,13 +417,18 @@ function User() {
         t={t}
         show={payUrl}
         id={payUrl}
-        onClose={() => {setPayUrl('')}}
-        onCancel={() => {setPayUrl('')}}
-        onConfirm={() => {setPayUrl('')}}
+        onClose={() => {
+          setPayUrl('')
+        }}
+        onCancel={() => {
+          setPayUrl('')
+        }}
+        onConfirm={() => {
+          setPayUrl('')
+        }}
       />
 
       <OwlToast />
-
     </div>
   )
 }

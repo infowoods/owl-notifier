@@ -1,7 +1,7 @@
 import React from 'react'
 import Icon from '../Icon'
 import classnames from 'classnames'
-const Selector = props => {
+const Selector = (props) => {
   const {
     title,
     className,
@@ -14,7 +14,7 @@ const Selector = props => {
     onToggleOpen,
     enableSearch,
     searchValue,
-    isCountryCode
+    isCountryCode,
   } = props
   const item = values.length > 0 && values[0]
   let inputValue = item && (item.children || item.label)
@@ -51,8 +51,10 @@ const Selector = props => {
 
   const renderNomalSelector = () => (
     <div
-      class={`button-text ${buttonTextClassName} ${!hasTextInput &&
-        'LightGray'}`}>
+      class={`button-text ${buttonTextClassName} ${
+        !hasTextInput && 'LightGray'
+      }`}
+    >
       {!hasTextInput ? placeholder : inputValue}
     </div>
   )
@@ -69,7 +71,8 @@ const Selector = props => {
         class={classnames('input-text', {
           LightGray: !hasTextInput,
           'open-opacity': open,
-        })}>
+        })}
+      >
         {!searchValue ? (!hasTextInput ? placeholder : inputValue) : null}
       </span>
     </div>
@@ -77,17 +80,16 @@ const Selector = props => {
 
   return (
     <div class={buttonClass} onClick={handleButtonClick}>
-      {title && <div class="title">
-        <strong>{title}</strong>
-      </div>}
+      {title && (
+        <div class="title">
+          <strong>{title}</strong>
+        </div>
+      )}
       <div class="selector">
         {enableSearch && !disabled
           ? renderInputSelector()
           : renderNomalSelector()}
-          <Icon
-            type="arrow-right-s-line"
-            class={`arrow ${open && 'arrow-up'}`}
-          />
+        <Icon type="arrow-right-s-line" class={`arrow ${open && 'arrow-up'}`} />
       </div>
     </div>
   )

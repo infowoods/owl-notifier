@@ -1,16 +1,9 @@
-import BottomSheet from "../../../widgets/BottomSheet"
+import BottomSheet from '../../../widgets/BottomSheet'
 import styles from './index.module.scss'
 const QRCode = require('qrcode.react')
 
 function QrCodeSheet(props) {
-  const {
-    t,
-    show,
-    id,
-    onClose,
-    onCancel,
-    onConfirm,
-  } = props
+  const { t, show, id, onClose, onCancel, onConfirm } = props
 
   return (
     <BottomSheet
@@ -28,7 +21,7 @@ function QrCodeSheet(props) {
           value={id}
           size={240}
           imageSettings={{
-            src: "/mixin-logo.png",
+            src: '/mixin-logo.png',
             width: 50,
             height: 50,
           }}

@@ -5,9 +5,9 @@
   padding: 13px 16px 13px 21px;
   border: 1px solid gray;
   border-radius: 8px;
-  transition: border-color .2s;
+  transition: border-color 0.2s;
 
-  &-focus{
+  &-focus {
     border-color: blue;
   }
 

@@ -1,11 +1,11 @@
 function fallbackCopyText(text, toast, t) {
-  var textArea = document.createElement("textarea")
+  var textArea = document.createElement('textarea')
   textArea.value = text
 
   // Avoid scrolling to bottom
-  textArea.style.top = "0"
-  textArea.style.left = "0"
-  textArea.style.position = "fixed"
+  textArea.style.top = '0'
+  textArea.style.left = '0'
+  textArea.style.position = 'fixed'
 
   document.body.appendChild(textArea)
   // textArea.focus()
@@ -25,9 +25,12 @@ export function copyText(text, toast, t) {
     fallbackCopyText(text, toast, t)
     return
   }
-  navigator.clipboard.writeText(text).then(() => {
-    toast.success(t('copy_success'))
-  }, (err) => {
-    fallbackCopyText(text, toast, t)
-  })
+  navigator.clipboard.writeText(text).then(
+    () => {
+      toast.success(t('copy_success'))
+    },
+    (err) => {
+      fallbackCopyText(text, toast, t)
+    }
+  )
 }

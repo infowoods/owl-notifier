@@ -11,7 +11,7 @@ function getFilterFunction(optionFilterProp) {
 export const getFilterOptions = (
   searchValue,
   options,
-  { optionFilterProp, filterFuncProp },
+  { optionFilterProp, filterFuncProp }
 ) => {
   const filteredOptions = []
   let filterFunc
@@ -21,7 +21,7 @@ export const getFilterOptions = (
     filterFunc = getFilterFunction(optionFilterProp)
   }
 
-  options.forEach(item => {    
+  options.forEach((item) => {
     if (filterFunc(searchValue, item)) {
       filteredOptions.push(item)
     }
