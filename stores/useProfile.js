@@ -6,7 +6,7 @@ export const state = {
   profile: {},
   userInfo: {},
   groupInfo: {},
-  isLogin: false
+  isLogin: false,
 }
 
 export function reducer(preState, action) {
@@ -15,22 +15,22 @@ export function reducer(preState, action) {
     case 'profile':
       return {
         ...preState,
-        profile: action.profile
+        profile: action.profile,
       }
     case 'userInfo':
       return {
         ...preState,
-        userInfo: action.userInfo
+        userInfo: action.userInfo,
       }
     case 'groupInfo':
       return {
         ...preState,
-        groupInfo: action.groupInfo
+        groupInfo: action.groupInfo,
       }
     case 'isLogin':
       return {
         ...preState,
-        isLogin: action.isLogin
+        isLogin: action.isLogin,
       }
     default:
       return preState

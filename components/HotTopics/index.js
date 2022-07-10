@@ -1,5 +1,4 @@
-
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import toast from 'react-hot-toast'
@@ -13,8 +12,8 @@ const QrCodeSheet = dynamic(() => import('../Home/QrCodeSheet'))
 
 import { subscribeOptions } from '../Home/config'
 
-import Icon from "../../widgets/Icon"
-import Loading from "../../widgets/Loading"
+import Icon from '../../widgets/Icon'
+import Loading from '../../widgets/Loading'
 
 import { copyText } from '../../utils/copyUtil'
 import { formatAdd } from '../../utils/numberUtil'
@@ -28,21 +27,21 @@ import styles from './index.module.scss'
 
 function HotTopics() {
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
+  const [state, dispatch] = useContext(ProfileContext)
   const isLogin = state.userInfo && state.userInfo.user_name
-  const [ list, setList ] = useState([])
-  const [ showSubscribe, setShowSubscribe ] = useState(false)
-  const [ monthlyPrice, setMonthlyPrice ] = useState(0)
-  const [ yearlyPrice, setYearlyPrice ] = useState(0)
-  const [ chargeCrypto, setChargeCrypto ] = useState({})
-  const [ selectPeriod, setSelectPeriod ] = useState('')
-  const [ feedInfo, setFeedInfo ] = useState({})
-  const [ payUrl, setPayUrl ] = useState('')
-  const [ orderId, setOrderId ] = useState('')
-  const [ check, setCheck ] = useState(false)
-  const [ intervalId, setIntervalId ] = useState(null)
-  const [ followedIdx, setFollowedIdx ] = useState('')
-  const [ loading, setLoading ] = useState(true)
+  const [list, setList] = useState([])
+  const [showSubscribe, setShowSubscribe] = useState(false)
+  const [monthlyPrice, setMonthlyPrice] = useState(0)
+  const [yearlyPrice, setYearlyPrice] = useState(0)
+  const [chargeCrypto, setChargeCrypto] = useState({})
+  const [selectPeriod, setSelectPeriod] = useState('')
+  const [feedInfo, setFeedInfo] = useState({})
+  const [payUrl, setPayUrl] = useState('')
+  const [orderId, setOrderId] = useState('')
+  const [check, setCheck] = useState(false)
+  const [intervalId, setIntervalId] = useState(null)
+  const [followedIdx, setFollowedIdx] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const invokeFunc = async () => {
@@ -104,10 +103,10 @@ function HotTopics() {
     const params = {
       action: 'follow',
       tid: feedInfo.tid,
-      period: period
+      period: period,
     }
     try {
-      const res = await subscribeTopic(params) || {}
+      const res = (await subscribeTopic(params)) || {}
       if (res?.payment_uri) {
         if (storageUtil.get('platform') === 'browser') {
           setPayUrl(res.payment_uri)
@@ -131,34 +130,39 @@ function HotTopics() {
   return (
     <div className={styles.main}>
       <p className={styles.title}># {t('hot_now')}</p>
-      {
-        loading ?
+      {loading ? (
         <Loading size={40} className={styles.loading} />
-        :
-        list && list.map((item, index) => (
-            <div className={styles.card} key={index}>
-              <p>{item.title}</p>
+      ) : (
+        list &&
+        list.map((item, index) => (
+          <div className={styles.card} key={index}>
+            <p>{item.title}</p>
+            <p>
+              <span>
+                {t('desc')}
+                {t('colon')}
+              </span>
+              {item.desc}
+            </p>
+            <div className={styles.copy}>
               <p>
-                <span>{t('desc')}{t('colon')}</span>
-                {item.desc}
+                <span>
+                  {t('source_uri')} ({sourceType(item.source_type)}){t('colon')}
+                </span>
+                <span onClick={() => copyText(item.uri, toast, t)}>
+                  {item.uri} <Icon type="copy" />
+                </span>
               </p>
-              <div className={styles.copy}>
-                <p>
-                  <span>
-                    {t('source_uri')} ({sourceType(item.source_type)}){t('colon')}
-                  </span>
-                  <span onClick={() => copyText(item.uri, toast, t)}>
-                    {item.uri} <Icon type="copy" />
-                  </span>
-                </p>
-              </div>
-              <button className={styles.button} onClick={() => setPriceInfo(item)}>
-                {item.tid === followedIdx ? t('following') : t('follow')}
-              </button>
             </div>
-          )
-        )
-      }
+            <button
+              className={styles.button}
+              onClick={() => setPriceInfo(item)}
+            >
+              {item.tid === followedIdx ? t('following') : t('follow')}
+            </button>
+          </div>
+        ))
+      )}
 
       <PriceSheet
         t={t}
@@ -192,9 +196,15 @@ function HotTopics() {
         t={t}
         show={payUrl}
         id={payUrl}
-        onClose={() => {setPayUrl('')}}
-        onCancel={() => {setPayUrl('')}}
-        onConfirm={() => {setPayUrl('')}}
+        onClose={() => {
+          setPayUrl('')
+        }}
+        onCancel={() => {
+          setPayUrl('')
+        }}
+        onConfirm={() => {
+          setPayUrl('')
+        }}
       />
 
       <OwlToast />

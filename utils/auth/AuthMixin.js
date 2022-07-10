@@ -3,14 +3,11 @@ import { MIXIN_CLIENT_ID, MIXIN_OAUTH_HOST } from '../../constants'
 const crypto = require('crypto')
 
 class OAuth {
-  sha256 (buffer) {
-    return crypto
-      .createHash('sha256')
-      .update(buffer)
-      .digest()
+  sha256(buffer) {
+    return crypto.createHash('sha256').update(buffer).digest()
   }
 
-  base64URLEncode (str) {
+  base64URLEncode(str) {
     return str
       .toString('base64')
       .replace(/\+/g, '-')
@@ -18,7 +15,7 @@ class OAuth {
       .replace(/=/g, '')
   }
 
-  requestCode (pkce=false, state='') {
+  requestCode(pkce = false, state = '') {
     if (pkce) {
       this.requestCodePkce(state)
     } else {
@@ -26,7 +23,7 @@ class OAuth {
     }
   }
 
-  requestCodePkce (state) {
+  requestCodePkce(state) {
     // const randomCode = crypto.randomBytes(32)
     // const verifier = this.base64URLEncode(randomCode)
     // const challenge = this.base64URLEncode(this.sha256(randomCode))
@@ -39,7 +36,7 @@ class OAuth {
     window.location.href = url
   }
 
-  requestCodeServe (state) {
+  requestCodeServe(state) {
     let url = `${MIXIN_OAUTH_HOST}/oauth/authorize?client_id=${MIXIN_CLIENT_ID}&response_type=code&scope=PROFILE%3AREAD`
     if (state) {
       const str = encodeURIComponent(JSON.stringify(state))

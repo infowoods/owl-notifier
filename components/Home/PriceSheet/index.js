@@ -1,6 +1,6 @@
-import BottomSheet from "../../../widgets/BottomSheet"
-import Image from "next/image"
-import Icon from "../../../widgets/Icon"
+import BottomSheet from '../../../widgets/BottomSheet'
+import Image from 'next/image'
+import Icon from '../../../widgets/Icon'
 import styles from './index.module.scss'
 
 function PriceSheet(props) {
@@ -31,38 +31,37 @@ function PriceSheet(props) {
       onConfirm={onConfirm}
     >
       <div className={styles.sheet}>
-        {
-          options.map((item) => {
-            return (
-              <div
-                key={item.period}
-                className={`${item.period === selectPeriod && styles.optionSelected}`}
-                onClick={() => {
-                  setSelectPeriod(item.period)
-                }}
-              >
-                <div className={styles.subcribePrice}>
-                  <div>
-                    <Image
-                      src={chargeCrypto.icon_url}
-                      alt="crypto"
-                      width={25}
-                      height={25}
-                      quality={100}
-                    />
-                    <span>
-                      {item.price} {chargeCrypto.symbol} / {t(item.period)}
-                    </span>
-                  </div>
+        {options.map((item) => {
+          return (
+            <div
+              key={item.period}
+              className={`${
+                item.period === selectPeriod && styles.optionSelected
+              }`}
+              onClick={() => {
+                setSelectPeriod(item.period)
+              }}
+            >
+              <div className={styles.subcribePrice}>
+                <div>
+                  <Image
+                    src={chargeCrypto.icon_url}
+                    alt="crypto"
+                    width={25}
+                    height={25}
+                    quality={100}
+                  />
+                  <span>
+                    {item.price} {chargeCrypto.symbol} / {t(item.period)}
+                  </span>
                 </div>
-                {
-                  item.period === selectPeriod &&
-                  <Icon type="check-line" className={styles.selected} />
-                }
               </div>
-            )
-          })
-        }
+              {item.period === selectPeriod && (
+                <Icon type="check-line" className={styles.selected} />
+              )}
+            </div>
+          )
+        })}
       </div>
     </BottomSheet>
   )

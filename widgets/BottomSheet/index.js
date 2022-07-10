@@ -13,7 +13,7 @@ function BottomSheet(props) {
     confirmTitle,
     confirmText,
     onClose,
-    children
+    children,
   } = props
 
   const handleOnClose = (e) => {
@@ -29,30 +29,27 @@ function BottomSheet(props) {
   }, [show])
 
   return (
-    show &&
-    <div
-      className={`${styles.overlay} ${className}`}
-      onClick={handleOnClose}
-    >
-      <div
-        className={styles.sheet}
-        onClick={(e) => { e.stopPropagation() }}
-      >
-        {
-          withConfirm &&
-          <div className={styles.sheetTitle}>
-            <div onClick={() => onCancel()}>
-              {t('cancel')}
+    show && (
+      <div className={`${styles.overlay} ${className}`} onClick={handleOnClose}>
+        <div
+          className={styles.sheet}
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
+          {withConfirm && (
+            <div className={styles.sheetTitle}>
+              <div onClick={() => onCancel()}>{t('cancel')}</div>
+              <div>{confirmTitle}</div>
+              <div onClick={() => onConfirm()}>
+                {confirmText ? confirmText : t('confirm')}
+              </div>
             </div>
-            <div>{confirmTitle}</div>
-            <div onClick={() => onConfirm()}>
-              {confirmText ? confirmText : t('confirm')}
-            </div>
-          </div>
-        }
-        {children}
+          )}
+          {children}
+        </div>
       </div>
-    </div>
+    )
   )
 }
 

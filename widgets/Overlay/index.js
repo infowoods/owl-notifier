@@ -14,16 +14,13 @@ function Overlay(props) {
   }, [visible])
 
   return (
-    visible &&
-    <div className={styles.overlay}>
-      <Loading size={32} className={styles.loading} />
-      <p>
-        {desc}
-      </p>
-      <button onClick={onCancel}>
-        {t('cancel')}
-      </button>
-    </div>
+    visible && (
+      <div className={styles.overlay}>
+        <Loading size={32} className={styles.loading} />
+        <p>{desc}</p>
+        <button onClick={onCancel}>{t('cancel')}</button>
+      </div>
+    )
   )
 }
 

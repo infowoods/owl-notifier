@@ -4,7 +4,7 @@
   position: relative;
 
   @mixin large {
-    padding: 15px 24px ;
+    padding: 15px 24px;
     font-size: 16px;
     font-weight: bold;
     line-height: 16px;
@@ -29,13 +29,13 @@
     &.large {
       @include large;
     }
-    &.medium{
+    &.medium {
       @include medium;
     }
     &.small {
       @include small;
     }
-    &:hover{
+    &:hover {
       opacity: 0.9;
     }
     &:active {
@@ -54,13 +54,13 @@
     &.large {
       @include large;
     }
-    &.medium{
+    &.medium {
       @include medium;
     }
     &.small {
       @include small;
     }
-    &:hover{
+    &:hover {
       opacity: 0.9;
     }
     &:active {
@@ -81,7 +81,7 @@
     font-weight: bold;
     background: $surface;
     &:hover {
-      color: $primary1
+      color: $primary1;
     }
     &:active {
       color: $primary1;

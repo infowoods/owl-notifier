@@ -1,4 +1,4 @@
-import { Toaster } from "react-hot-toast"
+import { Toaster } from 'react-hot-toast'
 import styles from './index.module.scss'
 
 function OwlToast(props) {

@@ -10,7 +10,7 @@
     left: 0;
   }
 
-  >div {
+  > div {
     display: flex;
     justify-content: space-around;
   }
@@ -20,11 +20,11 @@
   cursor: pointer;
   text-align: center;
   color: $contentSecondry;
-  >i {
+  > i {
     font-size: 28px;
     padding-top: 6px;
   }
-  >p {
+  > p {
     font-size: 14px;
     padding-bottom: 6px;
   }
@@ -36,11 +36,11 @@
 .active {
   text-align: center;
   color: $contentPrimary !important;
-  >i {
+  > i {
     font-size: 28px;
     padding-top: 6px;
   }
-  >p {
+  > p {
     font-size: 14px;
     padding-bottom: 6px;
   }

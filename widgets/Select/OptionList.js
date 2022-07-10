@@ -1,13 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
-const OptionList = props => {
-  const {
-    flattenOptions,
-    values,
-    onSelect,
-    notFoundContent,
-    onToggleOpen,
-  } = props
+const OptionList = (props) => {
+  const { flattenOptions, values, onSelect, notFoundContent, onToggleOpen } =
+    props
 
   const onSelectValue = (value, index) => {
     if (value !== null) {
@@ -18,7 +13,7 @@ const OptionList = props => {
   }
 
   const [activeIndex, setActiveIndex] = React.useState(null)
-  const setActive = index => {
+  const setActive = (index) => {
     setActiveIndex(index)
   }
 
@@ -49,7 +44,8 @@ const OptionList = props => {
             if (!disabled) {
               onSelectValue(value, itemIndex)
             }
-          }}>
+          }}
+        >
           {children || label}
         </div>
       )

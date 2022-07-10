@@ -18,10 +18,10 @@ import { getUserSettings, updateUserSettings } from '../../services/api/owl'
 function Settings() {
   const router = useRouter()
   const { t } = useTranslation('common')
-  const [ , dispatch ]  = useContext(ProfileContext)
-  const [ userUtc, setUserUtc ] = useState(null)
-  const [ tempUtc, setTempUtc ] = useState(null)
-  const [ utcShow, setUtcShow ] = useState(false)
+  const [, dispatch] = useContext(ProfileContext)
+  const [userUtc, setUserUtc] = useState(null)
+  const [tempUtc, setTempUtc] = useState(null)
+  const [utcShow, setUtcShow] = useState(false)
 
   const handleUserSettings = async () => {
     try {
@@ -60,13 +60,14 @@ function Settings() {
   return (
     <div className={styles.main}>
       <div>
-        <p className={styles.title}>
-          # {t('settings')}
-        </p>
+        <p className={styles.title}># {t('settings')}</p>
 
         <div className={styles.card}>
           <p>
-            <span>UTC {t('time')}{t('colon')}</span>
+            <span>
+              UTC {t('time')}
+              {t('colon')}
+            </span>
             <span>
               {t('current_utc')} - (<span>{userUtc}</span>)
             </span>
@@ -97,21 +98,23 @@ function Settings() {
           <div className={styles.sheet}>
             <div>
               <div className={styles.itemsGroup}>
-                {
-                  [...Array(24).keys()].map((item) => {
-                    return (
-                      <div
-                        className={`${styles.item} ${(tempUtc?.toString() ? item - 11 === tempUtc : item - 11 === userUtc) && styles.itemSelected}`}
-                        key={item}
-                        onClick={() => setTempUtc(item - 11)}
-                      >
-                        <div>UTC</div>
-                        <div>{item - 11}</div>
-                        <div></div>
-                      </div>
-                    )
-                  })
-                }
+                {[...Array(24).keys()].map((item) => {
+                  return (
+                    <div
+                      className={`${styles.item} ${
+                        (tempUtc?.toString()
+                          ? item - 11 === tempUtc
+                          : item - 11 === userUtc) && styles.itemSelected
+                      }`}
+                      key={item}
+                      onClick={() => setTempUtc(item - 11)}
+                    >
+                      <div>UTC</div>
+                      <div>{item - 11}</div>
+                      <div></div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -129,7 +132,6 @@ function Settings() {
       </div>
 
       <OwlToast />
-
     </div>
   )
 }

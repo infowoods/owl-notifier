@@ -5,7 +5,8 @@
   }
 }
 
-.avatar, .login {
+.avatar,
+.login {
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
@@ -59,7 +60,7 @@
   @include responsive(xs) {
     margin-top: 32px;
   }
-  >span {
+  > span {
     margin-right: 12px;
     font-size: 16px;
     color: $contentPrimary;
@@ -129,7 +130,7 @@
     justify-content: space-between;
     align-items: center;
 
-    >div {
+    > div {
       max-width: 68%; // description may very long
 
       p {
@@ -172,12 +173,12 @@
   background: $backgroundSecondary;
   display: flex;
   align-items: center;
-  >i {
+  > i {
     color: $notice;
     font-size: 21px;
     margin-right: 8px;
   }
-  >p {
+  > p {
     color: $contentPrimary;
     font-size: 14px;
   }
@@ -187,12 +188,12 @@
   max-width: 520px;
   margin: 0 auto;
   padding: 0 16px;
-  >p {
+  > p {
     color: $contentSecondry;
     margin-bottom: 6px;
     font-size: 14px;
     font-weight: bold;
-    >span {
+    > span {
       font-weight: normal;
       font-size: 12px;
       margin-left: 4px;
@@ -206,7 +207,7 @@
       line-height: 16px;
       color: $contentSecondry;
       cursor: pointer;
-      >i {
+      > i {
         font-size: 14px;
         line-height: 16px;
         vertical-align: middle;

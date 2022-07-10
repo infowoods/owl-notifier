@@ -12,9 +12,9 @@ function Tooltip(props) {
     theme,
     position,
     tooltipClassName,
-    positionPercent
+    positionPercent,
   } = props
-  const [ visible, setVisible ] = useState(false)
+  const [visible, setVisible] = useState(false)
   const tooltipRef = useRef()
 
   useEffect(() => {
@@ -36,7 +36,10 @@ function Tooltip(props) {
     >
       <div
         className={`${styles.tooltip} ${styles[theme]} ${styles[position]} ${styles[tooltipClassName]}`}
-        style={{ display: visible ? 'block' : 'none', [position]: positionPercent }}
+        style={{
+          display: visible ? 'block' : 'none',
+          [position]: positionPercent,
+        }}
         onMouseDown={(e) => e.preventDefault()}
       >
         {content}
@@ -44,7 +47,9 @@ function Tooltip(props) {
 
       <div
         ref={tooltipRef}
-        className={`${styles.children} ${styles[className] || styles[props.className]}`}
+        className={`${styles.children} ${
+          styles[className] || styles[props.className]
+        }`}
         tabIndex="0"
         onBlur={() => setVisible(false)}
         onClick={() => setVisible(true)}
@@ -57,15 +62,12 @@ function Tooltip(props) {
 
 Tooltip.defaultProps = {
   theme: 'dark',
-  position: 'center'
+  position: 'center',
 }
 
 Tooltip.propTypes = {
   visible: PropTypes.bool,
-  content: PropTypes.oneOfType([
-    PropTypes.elementType,
-    PropTypes.object
-  ]),
+  content: PropTypes.oneOfType([PropTypes.elementType, PropTypes.object]),
   onChange: PropTypes.func,
   class: PropTypes.string,
   theme: PropTypes.oneOf(['white', 'dark']),

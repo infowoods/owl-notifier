@@ -3,7 +3,7 @@
   border: 2px solid $borderOpaque;
   border-radius: 8px;
   padding: 12px 12px 12px 18px;
-  transition: border-color .2s;
+  transition: border-color 0.2s;
 }
 
 .focus {
@@ -31,7 +31,7 @@
 
   input {
     flex: 1;
-    color:$contentPrimary;
+    color: $contentPrimary;
     background: $backgroundPrimary;
     border: 0;
     font-size: 16px;
@@ -44,8 +44,8 @@
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus,
-    &:-webkit-autofill:active  {
-        box-shadow: 0 0 0 30px $backgroundPrimary inset !important;
+    &:-webkit-autofill:active {
+      box-shadow: 0 0 0 30px $backgroundPrimary inset !important;
     }
     &:-webkit-autofill {
       -webkit-text-fill-color: $contentPrimary !important;
@@ -62,7 +62,8 @@
   color: $contentSecondry;
 }
 
-.disabled, .label input{
+.disabled,
+.label input {
   background: $backgroundPrimary;
   color: $contentStateDisabled;
   cursor: not-allowed;

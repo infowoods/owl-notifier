@@ -22,43 +22,38 @@ import styles from './index.module.scss'
 
 function Home() {
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
+  const [state, dispatch] = useContext(ProfileContext)
   const isLogin = state.userInfo && state.userInfo.user_name
   // console.log('homepage state:', state)
 
-  const [ feed, setFeed ] = useState('')
-  const [ show, setShow ] = useState(false)
-  const [ showSubscribe, setShowSubscribe ] = useState(false)
-  const [ check, setCheck ] = useState(false)
+  const [feed, setFeed] = useState('')
+  const [show, setShow] = useState(false)
+  const [showSubscribe, setShowSubscribe] = useState(false)
+  const [check, setCheck] = useState(false)
   const defaultType = {
     type: 'oak',
     icon: 'oak-leaf',
     name: t('oak'),
     placeholder: t('oak_ph'),
   }
-  const [ feedType, setFeedType ] = useState(defaultType)
-  const [ feedInfo, setFeedInfo ] = useState({})
-  const [ feedError, setFeedError ] = useState('')
-  const [ monthlyPrice, setMonthlyPrice ] = useState(0)
-  const [ yearlyPrice, setYearlyPrice ] = useState(0)
-  const [ monthHubPrice, setMonthHubPrice ] = useState(0)
-  const [ yearHubPrice, setYearHubPrice ] = useState(0)
-  const [ monthPushPrice, setMonthPushPrice ] = useState(0)
-  const [ yearPushPrice, setYearPushPrice ] = useState(0)
-  const [ chargeCrypto, setChargeCrypto ] = useState({})
-  const [ selectPeriod, setSelectPeriod ] = useState('')
-  const [ loading, setLoading ] = useState(false)
-  const [ orderId, setOrderId ] = useState('')
-  const [ intervalId, setIntervalId ] = useState(null)
-  const [ followBtnText, setFollowBtnText ] = useState(t('follow'))
-  const [ payUrl, setPayUrl ] = useState('')
+  const [feedType, setFeedType] = useState(defaultType)
+  const [feedInfo, setFeedInfo] = useState({})
+  const [feedError, setFeedError] = useState('')
+  const [monthlyPrice, setMonthlyPrice] = useState(0)
+  const [yearlyPrice, setYearlyPrice] = useState(0)
+  const [monthHubPrice, setMonthHubPrice] = useState(0)
+  const [yearHubPrice, setYearHubPrice] = useState(0)
+  const [monthPushPrice, setMonthPushPrice] = useState(0)
+  const [yearPushPrice, setYearPushPrice] = useState(0)
+  const [chargeCrypto, setChargeCrypto] = useState({})
+  const [selectPeriod, setSelectPeriod] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [orderId, setOrderId] = useState('')
+  const [intervalId, setIntervalId] = useState(null)
+  const [followBtnText, setFollowBtnText] = useState(t('follow'))
+  const [payUrl, setPayUrl] = useState('')
 
-  const prefix = (
-    <Icon
-      type="search"
-      className={styles.searchIcon}
-    />
-  )
+  const prefix = <Icon type="search" className={styles.searchIcon} />
 
   const handleSearch = (val) => {
     if (!val) {
@@ -96,13 +91,16 @@ function Home() {
     }
     const params = {
       action: 'parse_uri',
-      uri: parseUrl
+      uri: parseUrl,
     }
     try {
       const res = await parseFeed(params)
       if (res?.price) {
         setFeedInfo(res)
-        const monPrice = formatAdd(res.price.monthly, res.service_charge.monthly)
+        const monPrice = formatAdd(
+          res.price.monthly,
+          res.service_charge.monthly
+        )
         const yearPrice = formatAdd(res.price.yearly, res.service_charge.yearly)
         setMonthlyPrice(monPrice)
         setYearlyPrice(yearPrice)
@@ -129,10 +127,10 @@ function Home() {
     const params = {
       action: 'follow',
       tid: feedInfo.tid,
-      period: period
+      period: period,
     }
     try {
-      const res = await subscribeTopic(params) || {}
+      const res = (await subscribeTopic(params)) || {}
       if (res?.payment_uri) {
         if (storageUtil.get('platform') === 'browser') {
           setPayUrl(res.payment_uri)
@@ -152,7 +150,10 @@ function Home() {
     const trimFeed = feed.trim()
     switch (feedType.type) {
       case 'rss':
-        return (trimFeed.slice(0, 8) === 'https://' || trimFeed.slice(0, 7) === 'http://')
+        return (
+          trimFeed.slice(0, 8) === 'https://' ||
+          trimFeed.slice(0, 7) === 'http://'
+        )
       case 'oak':
         return trimFeed.slice(0, 4) === 'oth:'
       case 'weibo':
@@ -213,7 +214,10 @@ function Home() {
     <div className={styles.main}>
       {/* 搜索类型选择 */}
       <div className={styles.options}>
-        <span>{t('current_type')}{t('colon')}</span>
+        <span>
+          {t('current_type')}
+          {t('colon')}
+        </span>
         <div
           className={`${show && styles.optionsActive}`}
           onClick={() => setShow(true)}
@@ -246,92 +250,88 @@ function Home() {
       </Link>
 
       {/* 解析后源信息卡片 */}
-      {
-        loading ?
+      {loading ? (
         <div className={styles.loadingWrap}>
           <Loading size={30} className={styles.loading} />
-          <span className={styles.loadingHint}>
-            {t('loading_hint')}
-          </span>
+          <span className={styles.loadingHint}>{t('loading_hint')}</span>
         </div>
-        :
-        feedInfo?.tid &&
-        <>
-          <div className={styles.feedInfo}>
-            <div className={styles.feedDesc}>
-              <div>
-                <p>
-                  {feedInfo.title}
-                </p>
-                {
-                  feedInfo.desc &&
-                  <p>{t('desc')}{t('colon')}{feedInfo.desc}</p>
-                }
+      ) : (
+        feedInfo?.tid && (
+          <>
+            <div className={styles.feedInfo}>
+              <div className={styles.feedDesc}>
+                <div>
+                  <p>{feedInfo.title}</p>
+                  {feedInfo.desc && (
+                    <p>
+                      {t('desc')}
+                      {t('colon')}
+                      {feedInfo.desc}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    setShowSubscribe(true)
+                  }}
+                >
+                  {followBtnText}
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  setShowSubscribe(true)
-                }}
-              >
-                {followBtnText}
-              </button>
             </div>
-          </div>
-          <div className={styles.feedPrice}>
-            <p>
-              {t('subcribe_price')}
-              <span>{t('price_desc')}{t('colon')}</span>
-            </p>
-            <div>
-              <Tooltip
-                position="center"
-                theme="dark"
-                content={
-                  <span className={styles.help}>
-                    {monthHubPrice} {chargeCrypto.symbol} + {monthPushPrice} {chargeCrypto.symbol}
-                  </span>
-                }
-              >
-                <p>
-                  {monthlyPrice} {chargeCrypto.symbol} / {t('month')}
-                  <Icon type="help-fill" />
-                </p>
-              </Tooltip>
-              <div className={styles.divider}></div>
-              <Tooltip
-                position="center"
-                theme="dark"
-                content={
-                  <span className={styles.help}>
-                    {yearHubPrice} {chargeCrypto.symbol} + {yearPushPrice} {chargeCrypto.symbol}
-                  </span>
-                }
-              >
-                <p>
-                  {yearlyPrice} {chargeCrypto.symbol} / {t('year')}
-                  <Icon type="help-fill" />
-                </p>
-              </Tooltip>
+            <div className={styles.feedPrice}>
+              <p>
+                {t('subcribe_price')}
+                <span>
+                  {t('price_desc')}
+                  {t('colon')}
+                </span>
+              </p>
+              <div>
+                <Tooltip
+                  position="center"
+                  theme="dark"
+                  content={
+                    <span className={styles.help}>
+                      {monthHubPrice} {chargeCrypto.symbol} + {monthPushPrice}{' '}
+                      {chargeCrypto.symbol}
+                    </span>
+                  }
+                >
+                  <p>
+                    {monthlyPrice} {chargeCrypto.symbol} / {t('month')}
+                    <Icon type="help-fill" />
+                  </p>
+                </Tooltip>
+                <div className={styles.divider}></div>
+                <Tooltip
+                  position="center"
+                  theme="dark"
+                  content={
+                    <span className={styles.help}>
+                      {yearHubPrice} {chargeCrypto.symbol} + {yearPushPrice}{' '}
+                      {chargeCrypto.symbol}
+                    </span>
+                  }
+                >
+                  <p>
+                    {yearlyPrice} {chargeCrypto.symbol} / {t('year')}
+                    <Icon type="help-fill" />
+                  </p>
+                </Tooltip>
+              </div>
             </div>
-          </div>
-        </>
-      }
+          </>
+        )
+      )}
 
       {/* 解析错误 */}
-      {
-        feedError &&
+      {feedError && (
         <div className={styles.errorInfo}>
           <Icon type="info-fill" />
-          <p>
-            {
-              feedError.indexOf(' ') >= 0 ?
-              feedError
-              :
-              t(feedError)
-            }
-          </p>
+          <p>{feedError.indexOf(' ') >= 0 ? feedError : t(feedError)}</p>
         </div>
-      }
+      )}
 
       {/* 搜索源选项 */}
       <FeedTypeSheet
@@ -343,7 +343,7 @@ function Home() {
         setFeedType={setFeedType}
         setFeedInfo={setFeedInfo}
         setFeedError={setFeedError}
-        setShow = {setShow}
+        setShow={setShow}
       />
 
       {/* 订阅价格选项 */}
@@ -379,13 +379,18 @@ function Home() {
         t={t}
         show={payUrl}
         id={payUrl}
-        onClose={() => {setPayUrl('')}}
-        onCancel={() => {setPayUrl('')}}
-        onConfirm={() => {setPayUrl('')}}
+        onClose={() => {
+          setPayUrl('')
+        }}
+        onCancel={() => {
+          setPayUrl('')
+        }}
+        onConfirm={() => {
+          setPayUrl('')
+        }}
       />
 
       <OwlToast />
-
     </div>
   )
 }
