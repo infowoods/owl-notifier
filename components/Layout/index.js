@@ -22,11 +22,11 @@ import styles from './index.module.scss'
 
 function Layout({ children }) {
   const { t } = useTranslation('common')
-  const [ state, dispatch ]  = useContext(ProfileContext)
+  const [state, dispatch] = useContext(ProfileContext)
   const { pathname, push } = useRouter()
-  const [ theme, setTheme ] = useState('')
-  const [ init, setInit ] = useState(false)
-  const [ platform, setPlatform ] = useState(false)
+  const [theme, setTheme] = useState('')
+  const [init, setInit] = useState(false)
+  const [platform, setPlatform] = useState(false)
   const isLogin = state.userInfo && state.userInfo.user_name
 
   const navHref = ['/', '/user']
@@ -34,9 +34,9 @@ function Layout({ children }) {
   const getBarColor = (path) => {
     reloadTheme(platform)
     if (theme === 'dark') {
-      return path === '/' ? "#080808" : "#1E1E1E"
+      return path === '/' ? '#080808' : '#1E1E1E'
     }
-    return path === '/' ? "#FFFFFF" : "#F4F6F7"
+    return path === '/' ? '#FFFFFF' : '#F4F6F7'
   }
 
   const backLink = (path) => {
@@ -73,10 +73,16 @@ function Layout({ children }) {
   useEffect(() => {
     console.log('>>> layout init:', pathname)
     const ctx = getMixinContext()
-    ctx.appearance && document.documentElement.setAttribute('data-theme', ctx.appearance)
+    ctx.appearance &&
+      document.documentElement.setAttribute('data-theme', ctx.appearance)
     setTheme(ctx.appearance || 'light')
 
-    if (ctx?.locale && ctx.locale !== 'zh-CN' && i18n.language !== 'en' && pathname !== '/callback/mixin') {
+    if (
+      ctx?.locale &&
+      ctx.locale !== 'zh-CN' &&
+      i18n.language !== 'en' &&
+      pathname !== '/callback/mixin'
+    ) {
       i18n.changeLanguage('en')
       push(pathname, pathname, { locale: 'en' })
       return
@@ -87,28 +93,33 @@ function Layout({ children }) {
     }
     ctx?.platform && setPlatform(ctx?.platform)
 
-    storageUtil.get(`user_info_${ctx?.conversation_id || ''}`) && dispatch({
-      type: 'userInfo',
-      userInfo: storageUtil.get(`user_info_${ctx?.conversation_id || ''}`)
-    })
+    storageUtil.get(`user_info_${ctx?.conversation_id || ''}`) &&
+      dispatch({
+        type: 'userInfo',
+        userInfo: storageUtil.get(`user_info_${ctx?.conversation_id || ''}`),
+      })
 
     storageUtil.set('current_conversation_id', ctx?.conversation_id || null)
 
     if (ctx?.conversation_id) {
       const initialFunc = async () => {
-        const localGroupInfo = storageUtil.get(`group_info_${ctx?.conversation_id || ''}`)
+        const localGroupInfo = storageUtil.get(
+          `group_info_${ctx?.conversation_id || ''}`
+        )
         if (localGroupInfo) {
           dispatch({
             type: 'groupInfo',
-            groupInfo: localGroupInfo
+            groupInfo: localGroupInfo,
           })
           setInit(true)
         } else {
-          const data = await checkGroup({conversation_id: ctx.conversation_id})
+          const data = await checkGroup({
+            conversation_id: ctx.conversation_id,
+          })
           if (!data?.err_code) {
             dispatch({
               type: 'groupInfo',
-              groupInfo: data
+              groupInfo: data,
             })
             setInit(true)
           }
@@ -121,67 +132,51 @@ function Layout({ children }) {
   }, [])
 
   return (
-      <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
-        <Head>
-          <title>Owl Deliver</title>
-          <meta name="description" content="猫头鹰订阅器" />
-          <meta
-            name="theme-color"
-            content={getBarColor(pathname)}
-          />
-          <link rel="icon" href="/favicon.png" />
-        </Head>
-        {
-          init && pathname !== '/callback/mixin' ?
-          <>
-            <TopBar url={backLink(pathname)} />
-            <div className={styles.avatarWrap}>
-              <div>
-                {
-                  pathname === '/user' &&
-                  <Icon
-                    type="settings-fill"
-                    onClick={() => push('/settings')}
+    <div className={`${styles.wrap} ${pathname !== '/' && styles.bgGray}`}>
+      <Head>
+        <title>Owl Deliver</title>
+        <meta name="description" content="猫头鹰订阅器" />
+        <meta name="theme-color" content={getBarColor(pathname)} />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+
+      {init && pathname !== '/callback/mixin' ? (
+        <>
+          <TopBar url={backLink(pathname)} />
+          <div className={styles.avatarWrap}>
+            <div>
+              {pathname === '/user' && (
+                <Icon type="settings-fill" onClick={() => push('/settings')} />
+              )}
+              {isLogin ? (
+                <div className={styles.avatar}>
+                  <Avatar
+                    group={state.groupInfo?.is_group}
+                    imgSrc={state.userInfo?.user_icon}
+                    onClick={handleClick}
                   />
-                }
-                {
-                  isLogin ?
-                  <div className={styles.avatar}>
-                    <Avatar
-                      group={state.groupInfo?.is_group}
-                      imgSrc={state.userInfo?.user_icon}
-                      onClick={handleClick}
-                    />
-                  </div>
-                  :
-                  <div
-                    className={styles.login}
-                    onClick={() => authLogin()}
-                  >
-                    <span>
-                      {
-                        state.groupInfo?.is_group ?
-                        t('owner_login') : t('login')
-                      }
-                    </span>
-                  </div>
-                }
-              </div>
+                </div>
+              ) : (
+                <div className={styles.login} onClick={() => authLogin()}>
+                  <span>
+                    {state.groupInfo?.is_group ? t('owner_login') : t('login')}
+                  </span>
+                </div>
+              )}
             </div>
-          </>
-          :
-          <>
-            <Loading size={36} className={styles.loading} />
-          </>
-        }
-        <div>
-          { children }
-          {
-            navHref.includes(pathname) && <BottomNav t={t} />
-          }
-        </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <Loading size={36} className={styles.loading} />
+        </>
+      )}
+      <div>
+        {children}
+        {navHref.includes(pathname) && <BottomNav t={t} />}
       </div>
-    )
+    </div>
+  )
 }
 
 export default Layout
